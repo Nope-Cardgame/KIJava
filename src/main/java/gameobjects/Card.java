@@ -1,2 +1,4 @@
-package gameobjects;public class Card {
+package gameobjects;
+
+public class Card {
 }
