@@ -1,4 +1,4 @@
-# Nope - KI Spieler (_<programmier_sprache>_)
+# Nope - KI Spieler (Java)
 
 Kurze Beschreibung des Repos und der übergriefenden Schnittstelle für die unterschiedlichen Clients.
 
@@ -10,9 +10,9 @@ Kurze Beschreibung des Repos und der übergriefenden Schnittstelle für die unte
 ## Mitglieder
 Mitglied | entwickelter Client | 
 --- | --- |
-[GitHub-Benutzername1](https://github.com/GitHub-Benutzername1) | Client1
-[GitHub-Benutzername2](https://github.com/GitHub-Benutzername2) | Client2
-[GitHub-Benutzername3](https://github.com/GitHub-Benutzername3) | Client3
+[Marian Koge](https://github.com/MarianK99) | Client1
+[Alexander Lauruhn](https://github.com/AlexanderLauruhn) | Client2
+[Julius Emil Arendt](https://github.com/Aremju) | Client3
 
 
 ## Installation
