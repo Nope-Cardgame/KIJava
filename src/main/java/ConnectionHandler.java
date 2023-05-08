@@ -28,7 +28,7 @@ public class ConnectionHandler {
         });
 
         socket.on(Socket.EVENT_CONNECT_ERROR, args12 -> {
-            LOG.severe("It didn't work bitch");
+            LOG.severe("It didn't work");
             System.out.println(args12[0]);
         });
 
