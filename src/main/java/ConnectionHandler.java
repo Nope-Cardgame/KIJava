@@ -20,7 +20,7 @@ public class ConnectionHandler {
 
         String urlString = "http://nope.ddns.net/api/signin";
         // This is the body we need to send for sign in and signup
-        String body = """
+        String body = """ 
                 {
                     "username":"Aremju",
                     "password":"thisisastring"
