@@ -1,71 +1,22 @@
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 import java.util.logging.Logger;
 
 public class ConnectionHandler {
     private static final Logger LOG = Logger.getLogger(ConnectionHandler.class.getSimpleName());
 
-    public static String getWebToken() throws IOException, JSONException {
-
-        String urlString = "http://nope.ddns.net/api/signin";
-        // This is the body we need to send for sign in and signup
-        String body = """ 
-                {
-                    "username":"Aremju",
-                    "password":"thisisastring"
-                }""";
-
-        LOG.info("JSON-String: \n" + body);
-
-        URL obj = new URL(urlString);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-        // Invoke HTTP connection with POST-Request and application/json for sending
-        // element and web token
-        con.setRequestMethod("POST");
-        con.setRequestProperty("Content-Type", "application/json");
-        con.setRequestProperty("Accept","application/json");
-
-        con.setDoOutput(true);
-
-        // Send request to the server with its stream
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(body);
-        wr.close();
-
-        int responseCode = con.getResponseCode();
-
-        LOG.info("Response Code: \n" + responseCode);
-        StringBuilder response = new StringBuilder();
-        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
-            String inputLine;
-            // build response and print it
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            LOG.info("Response Body: \n" + response);
-        }
-        JSONObject object = new JSONObject(response.toString());
-        return (String) object.getString("jsonwebtoken");
-    }
-
     public static void main(String[] args) throws URISyntaxException, JSONException, InterruptedException, IOException {
         // Set JWT as an extra header in the options
 
-        Map<String, String> map = Collections.singletonMap("token", getWebToken());
+        TokenReceiver tokenReceiver = new TokenReceiver(Constants.POST_SIGN_IN.get(), Constants.USERNAME.get(),Constants.PASSWORD.get());
+
+        Map<String, String> map = Collections.singletonMap("token", tokenReceiver.getWebToken());
         IO.Options options = IO.Options.builder().setAuth(map).build();
-        Socket socket = IO.socket("http://nope.ddns.net/", options);
+        Socket socket = IO.socket(Constants.DOMAIN.get(), options);
 
         options.forceNew = true;
         // Verbindung zum Server herstellen
