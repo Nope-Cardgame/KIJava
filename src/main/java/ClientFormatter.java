@@ -3,8 +3,10 @@ import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
 
 public class ClientFormatter extends SimpleFormatter {
+
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_GREEN = "\u001B[32m";
+
     @Override
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();

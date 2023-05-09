@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
         ConnectionHandler newInstance = new ConnectionHandler();
 
-        TokenReceiver tokenReceiver = newInstance.addUser();
+        TokenReceiver tokenReceiver = newInstance.createJSONWebtoken();
 
         Map<String, String> map = Collections.singletonMap("token", tokenReceiver.getWebToken());
         IO.Options options = IO.Options.builder().setAuth(map).build();

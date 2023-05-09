@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class TokenReceiver {
 
-    private static final Logger LOG = Logger.getLogger(TokenReceiver.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(TokenReceiver.class.getSimpleName());
     private final String username;
     private final String password;
     private final String urlString;
@@ -22,15 +22,6 @@ public class TokenReceiver {
         this.urlString = urlString;
         this.username = userName;
         this.password = password;
-        initLogger();
-    }
-
-    private void initLogger() {
-        LOG.setUseParentHandlers(false);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new ClientFormatter());
-        LOG.addHandler(consoleHandler);
     }
 
     public String getWebToken() throws IOException, JSONException {
