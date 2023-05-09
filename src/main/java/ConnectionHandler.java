@@ -1,39 +1,14 @@
 import io.socket.client.Socket;
-import org.json.JSONException;
-import java.io.IOException;
-import java.net.URISyntaxException;
+
 import java.util.logging.Logger;
 
 public class ConnectionHandler {
     private static final Logger LOG = NopeLogger.getLogger(ConnectionHandler.class.getSimpleName());
-    private final UserdataFileReader udFileReader = new UserdataFileReader();
 
     public ConnectionHandler(){
     }
 
-    public TokenReceiver createJSONWebtoken(){
-        TokenReceiver tokenReceiver;
-        if(!udFileReader.isEmpty()) {
-            String[] userdata = udFileReader.getUserData();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
-            LOG.info("User " + username + " logged in.");
-
-        } else {
-            String[] userdata = udFileReader.addNewUser();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
-            LOG.info("User " + username + " registered.");
-        }
-
-        return tokenReceiver;
-    }
-
-    public void connect(Socket mySocket) throws URISyntaxException, JSONException, IOException, InterruptedException {
+    public void connect(Socket mySocket) throws InterruptedException {
 
         // Verbindung zum Server herstellen
         mySocket.connect();
