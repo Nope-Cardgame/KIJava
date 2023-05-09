@@ -1,4 +1,18 @@
 package gameobjects.actions;
 
-public class TakeCard {
+import org.json.JSONObject;
+
+public class TakeCard extends Action{
+    public TakeCard(String type, String explanation) {
+        super(type, explanation);
+    }
+
+    public TakeCard(JSONObject jsonObject) {
+        super(jsonObject);
+    }
+
+    @Override
+    public JSONObject toJSONObject() {
+        return null;
+    }
 }

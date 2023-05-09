@@ -1,6 +1,9 @@
 package gameobjects;
 
+import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
+import gameobjects.cards.NumberCard;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -8,19 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class Player {
+public class Player implements Jsonable {
     // Logger for logging purposes
     private static final Logger LOG = Logger.getLogger(Player.class.getSimpleName());
-    private String name;
-    private String webSocketID;
+    private String username;
+    private String socketId;
     private int cardAmount;
     private List<Card> cards;
+    private int ranking;
+    private boolean disqualified;
 
-    public Player(String name, String webSocketID, int cardAmount, List<Card> cards) {
-        this.name = name;
-        this.webSocketID = webSocketID;
-        this.cardAmount = cardAmount;
+    public Player(String username, String socketId, List<Card> cards, int ranking, boolean disqualified) {
+        this.username = username;
+        this.socketId = socketId;
+        this.cardAmount = cards.size();
         this.cards = cards;
+        this.ranking = ranking;
+        this.disqualified = disqualified;
     }
 
     /**
@@ -28,47 +35,72 @@ public class Player {
      *
      * @param playerObject the JSON-Object of a Player instance, it contains
      *                     - name as String
-     *                     - webSocketID as String
+     *                     - socketId as String
      *                     - the amount of Cards
      *                     - an Array of all cards held by the player
+     *                     - information about ranking
+     *                     - information about being disqualified
      */
     public Player(JSONObject playerObject) {
         try {
-            this.name = (String) playerObject.get("name");
-            this.webSocketID = (String) playerObject.get("webSocketID");
+            this.username = playerObject.getString("username");
+            this.socketId = playerObject.getString("socketId");
+            this.cardAmount = playerObject.getInt("cardAmount");
             // TODO: 05.05.2023 make something with the cards
             this.cards = new ArrayList<>();
-            this.cardAmount = 0;
-
+            JSONArray cardArray = playerObject.getJSONArray("cards");
+            for(int iterator = 0; iterator < cardArray.length(); iterator++) {
+                JSONObject cardObject = cardArray.getJSONObject(iterator);
+                if (cardObject.getString("type").equals("number")) {
+                    this.cards.add(new NumberCard(cardObject));
+                } else {
+                    this.cards.add(new ActionCard(cardObject));
+                }
+            }
+            this.ranking = playerObject.getInt("ranking");
+            this.disqualified = playerObject.getBoolean("disqualified");
         } catch (JSONException e) {
             LOG.severe(e.getMessage());
         } finally {
             LOG.info("Player " + this + " was created successfully!");
         }
     }
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
+
+    @Override
+    public boolean equals(Object obj) {
+        boolean erg = false;
+        try {
+            Player otherPlayer = (Player) obj;
+            erg = otherPlayer.getUsername().equals(this.username);
+            erg &= otherPlayer.getSocketId().equals(this.socketId);
+            erg &= otherPlayer.getCardAmount() == this.cardAmount;
+            erg &= otherPlayer.getCards().equals(this.cards);
+            erg &= otherPlayer.isDisqualified() == this.disqualified;
+            erg &= otherPlayer.getRanking() == this.ranking;
+        } catch (ClassCastException e) {
+            LOG.severe(e.getMessage());
+        }
+        return erg;
     }
 
-    public String getWebSocketID() {
-        return webSocketID;
+    public String getUsername() {
+        return this.username;
     }
 
-    public void setWebSocketID(String webSocketID) {
-        this.webSocketID = webSocketID;
+    public void getUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSocketId() {
+        return socketId;
+    }
+
+    public void setSocketId(String socketId) {
+        this.socketId = socketId;
     }
 
     public int getCardAmount() {
         return cardAmount;
-    }
-
-    public void setCardAmount(int cardAmount) {
-        this.cardAmount = cardAmount;
     }
 
     public List<Card> getCards() {
@@ -77,20 +109,27 @@ public class Player {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+        this.cardAmount = cards.size();
+    }
+
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public boolean isDisqualified() {
+        return disqualified;
+    }
+
+    public void setDisqualified(boolean disqualified) {
+        this.disqualified = disqualified;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        boolean erg = false;
-        try {
-            Player otherPlayer = (Player) obj;
-            erg = otherPlayer.getName().equals(this.name);
-            erg &= otherPlayer.getWebSocketID().equals(this.webSocketID);
-            erg &= otherPlayer.getCardAmount() == this.cardAmount;
-            erg &= otherPlayer.getCards().equals(this.cards);
-        } catch (ClassCastException e) {
-            LOG.severe(e.getMessage());
-        }
-        return erg;
+    public JSONObject toJSONObject() {
+        return null;
     }
 }
