@@ -10,9 +10,7 @@ import java.util.logging.Logger;
 
 public class ConnectionHandler {
     private static final Logger LOG = Logger.getLogger(ConnectionHandler.class.getSimpleName());
-    private static final UserdataFileReader udFileReader = new UserdataFileReader();
-
-    private TokenReceiver tokenReceiver;
+    private final UserdataFileReader udFileReader = new UserdataFileReader();
 
     public ConnectionHandler(){
         initLogger();
@@ -26,14 +24,14 @@ public class ConnectionHandler {
         LOG.addHandler(consoleHandler);
     }
 
-    public void connect() throws URISyntaxException, JSONException, IOException, InterruptedException {
-
+    public TokenReceiver addUser(){
+        TokenReceiver tokenReceiver;
         if(!udFileReader.isEmpty()) {
             String[] userdata = udFileReader.getUserData();
             String username = userdata[0];
             String password = userdata[1];
 
-            this.tokenReceiver = new TokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
+            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
             LOG.info("User " + username + " logged in.");
 
         } else {
@@ -41,44 +39,40 @@ public class ConnectionHandler {
             String username = userdata[0];
             String password = userdata[1];
 
-            this.tokenReceiver = new TokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
+            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
             LOG.info("User " + username + " registered.");
         }
 
-        Map<String, String> map = Collections.singletonMap("token", this.tokenReceiver.getWebToken());
-        IO.Options options = IO.Options.builder().setAuth(map).build();
-        Socket socket = IO.socket(Constants.DOMAIN.get(), options);
+        return tokenReceiver;
+    }
 
-        options.forceNew = true;
+    public void connect(Socket mySocket) throws URISyntaxException, JSONException, IOException, InterruptedException {
+
         // Verbindung zum Server herstellen
-        socket.connect();
+        mySocket.connect();
 
         // Listener für das "connect"-Event registrieren
-        socket.on(Socket.EVENT_CONNECT, args1 -> {
+        mySocket.on(Socket.EVENT_CONNECT, args1 -> {
             LOG.info("Connection to server established.");
         });
 
-        socket.on(Socket.EVENT_CONNECT_ERROR, args2 -> {
+        mySocket.on(Socket.EVENT_CONNECT_ERROR, args2 -> {
             LOG.severe("An issue appeared during the connection to the server.");
             System.out.println(args2[0]);
         });
 
-        socket.on(Socket.EVENT_DISCONNECT, args3 -> {
+        mySocket.on(Socket.EVENT_DISCONNECT, args3 -> {
             LOG.info("Disconnected from the server.");
         });
 
         // Listener für das "chat message"-Event registrieren
-        socket.on("gameInvite", args4 -> {
+        mySocket.on("gameInvite", args4 -> {
             LOG.info(Arrays.toString(args4));
         });
 
         // Warten bis die Verbindung hergestellt wurde
-        while (!socket.connected()) {
+        while (!mySocket.connected()) {
             Thread.sleep(100);
         }
-    }
-
-    public TokenReceiver getTokenReceiver() {
-        return tokenReceiver;
     }
 }
