@@ -9,15 +9,20 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
+        Rest rest = new Rest();
+
         ConnectionHandler newInstance = new ConnectionHandler();
 
-        TokenReceiver tokenReceiver = newInstance.createJSONWebtoken();
+        WebTokenReceiver webTokenReceiver = WebTokenReceiver.addUserData();
+        String token = webTokenReceiver.createWebToken();
 
-        Map<String, String> map = Collections.singletonMap("token", tokenReceiver.getWebToken());
+        Map<String, String> map = Collections.singletonMap("token", token);
         IO.Options options = IO.Options.builder().setAuth(map).build();
         Socket socket = IO.socket(Constants.DOMAIN.get(), options);
         options.forceNew = true;
 
         newInstance.connect(socket);
+        //example
+        rest.get_Request(Constants.GET_USER_CONNECTIONS.get(), token);
     }
 }

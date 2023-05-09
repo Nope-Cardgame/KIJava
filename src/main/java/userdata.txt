@@ -1,2 +1,2 @@
-Aremju
-thisisastring
+Java
+123456
