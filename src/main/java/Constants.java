@@ -13,8 +13,8 @@ public enum Constants {
     POST_ALL_TOURNAMENT_INFORMATION("http://nope.ddns.net/api/tournament/"),
     GET_TOURNAMENT_INFORMATION("http://nope.ddns.net/api/tournament/"),  // + {id}
 
-    USERNAME("Aremju"),
-    PASSWORD("thisisastring"),
+    USERNAME("MKoge99"),
+    PASSWORD("safestPasswordInExistence"),
     DOMAIN("http://nope.ddns.net/");
 
     private final String content;
