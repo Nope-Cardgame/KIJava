@@ -1,5 +1,6 @@
 package gameobjects;
 
+import gameobjects.cards.Card;
 import org.json.JSONException;
 import org.json.JSONObject;
 

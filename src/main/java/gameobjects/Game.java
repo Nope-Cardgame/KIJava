@@ -1,4 +1,4 @@
 package gameobjects;
 
-public class Card {
+public class Game {
 }
