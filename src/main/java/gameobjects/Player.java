@@ -1,16 +1,14 @@
 package gameobjects;
 
 import com.google.gson.Gson;
-import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
-import gameobjects.cards.NumberCard;
+import gameobjects.cards.CardFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Player implements Jsonable {
     private String username;
@@ -41,24 +39,56 @@ public class Player implements Jsonable {
      *                     - information about being disqualified
      */
     public Player(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            this.username = jsonObject.getString("username");
+            this.socketId = jsonObject.getString("socketId");
+            this.cardAmount = jsonObject.getInt("cardAmount");
+            this.disqualified = jsonObject.getBoolean("disqualified");
+            this.ranking = jsonObject.getInt("ranking");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } finally {
+            initCardsJson(jsonString);
+        }
+    }
 
+    /**
+     * initializes the Cards using the CardFactory
+     * @param jsonString the jsonString from Constructor
+     */
+    private void initCardsJson(String jsonString) {
+        this.cards = new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("cards");
+            for(int iterator = 0; iterator < jsonArray.length(); iterator++) {
+                this.cards.add(
+                        CardFactory.
+                                getCard(jsonArray.
+                                        getJSONObject(iterator).
+                                toString())
+                );
+            }
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toJSON() {
+        return new Gson().toJson(this);
     }
 
     @Override
     public boolean equals(Object obj) {
-        boolean erg = false;
-        try {
-            Player otherPlayer = (Player) obj;
-            erg = otherPlayer.getUsername().equals(this.username);
-            erg &= otherPlayer.getSocketId().equals(this.socketId);
-            erg &= otherPlayer.getCardAmount() == this.cardAmount;
-            erg &= otherPlayer.getCards().equals(this.cards);
-            erg &= otherPlayer.isDisqualified() == this.disqualified;
-            erg &= otherPlayer.getRanking() == this.ranking;
-        } catch (ClassCastException e) {
-            e.printStackTrace();
-        }
-        return erg;
+        Player otherPlayer = (Player) obj;
+        return this.getUsername().equals(otherPlayer.getUsername())
+                && this.getRanking() == otherPlayer.getRanking()
+                && this.getCardAmount() == otherPlayer.getCardAmount()
+                && this.getSocketId().equals(otherPlayer.getSocketId())
+                && this.isDisqualified() == otherPlayer.isDisqualified()
+                && this.getCards().equals(otherPlayer.getCards());
     }
 
     public String getUsername() {
@@ -104,9 +134,5 @@ public class Player implements Jsonable {
 
     public void setDisqualified(boolean disqualified) {
         this.disqualified = disqualified;
-    }
-    @Override
-    public String toJSON() {
-        return new Gson().toJson(this);
     }
 }
