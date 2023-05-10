@@ -10,7 +10,7 @@ public class NopeLogger {
         logger.setUseParentHandlers(false);
         ConsoleHandler consoleHandler = new ConsoleHandler();
         consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new ClientFormatter());
+        consoleHandler.setFormatter(new ClientFormatter(className));
         logger.addHandler(consoleHandler);
 
         return logger;

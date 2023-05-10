@@ -6,12 +6,32 @@ public class ClientFormatter extends SimpleFormatter {
 
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_MAGENTA = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+
+    private final String classname;
+
+    public ClientFormatter(String classname){
+        this.classname = classname;
+    }
 
     @Override
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
         if (record.getLevel() == Level.INFO) {
-            builder.append(ANSI_GREEN);
+            if(classname.equals("ConnectionHandler")) {
+                builder.append(ANSI_GREEN);
+            } else if(classname.equals("Rest")) {
+                builder.append(ANSI_BLUE);
+            } else if(classname.equals("ServerEventHandler")) {
+                builder.append(ANSI_MAGENTA);
+            } else if(classname.equals("UserdataFileReader")) {
+                builder.append(ANSI_CYAN);
+            } else if(classname.equals("WebTokenReceiver")) {
+                builder.append(ANSI_YELLOW);
+            }
         }
         builder.append(record.getLoggerName());
         builder.append(" -> ");

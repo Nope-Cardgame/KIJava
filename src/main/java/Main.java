@@ -23,6 +23,7 @@ public class Main {
 
         newInstance.connect(socket);
         //example
-        rest.get_Request(Constants.GET_USER_CONNECTIONS.get(), token);
+        rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
+
     }
 }

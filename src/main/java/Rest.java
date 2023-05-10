@@ -5,9 +5,14 @@ import java.util.logging.Logger;
 
 public class Rest {
 
+    enum RequestType {
+        GET,
+        POST
+    }
+
     private static final Logger LOG = NopeLogger.getLogger(Rest.class.getSimpleName());
 
-    public void get_Request(String urlString, String token) throws IOException {
+    public void request(String urlString, String token, RequestType requestType) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
@@ -15,7 +20,7 @@ public class Rest {
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
         // Invoke HTTP connection with POST-Request and application/json for sending
         // element and web token
-        con.setRequestMethod("GET");
+        con.setRequestMethod(requestType.toString());
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
         con.setRequestProperty("Authorization", "Bearer " + token);
