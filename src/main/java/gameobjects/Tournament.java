@@ -5,7 +5,7 @@ import org.json.JSONObject;
 public class Tournament implements Jsonable {
 
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

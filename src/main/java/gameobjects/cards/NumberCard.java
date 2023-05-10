@@ -28,15 +28,13 @@ public class NumberCard extends Card {
             throw new RuntimeException(e);
         }
     }
-
-    @Override
-    public JSONObject toJSONObject() {
-        // TODO: 09.05.2023 implement feature: object back to json
-        return null;
-    }
-
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    @Override
+    public String toJSON() {
+        return null;
     }
 }

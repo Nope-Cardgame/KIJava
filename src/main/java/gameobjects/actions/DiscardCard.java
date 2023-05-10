@@ -10,9 +10,8 @@ public class DiscardCard extends Action{
     public DiscardCard(JSONObject jsonObject) {
         super(jsonObject);
     }
-
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

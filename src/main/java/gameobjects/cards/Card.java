@@ -25,8 +25,6 @@ public abstract class Card implements Jsonable {
 
     }
 
-    public abstract JSONObject toJSONObject();
-
     public String getCardType() {
         return this.type;
     }

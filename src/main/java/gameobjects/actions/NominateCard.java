@@ -12,7 +12,7 @@ public class NominateCard extends Action{
     }
 
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

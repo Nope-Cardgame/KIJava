@@ -27,13 +27,6 @@ public class ActionCard extends Card {
             throw new RuntimeException(e);
         }
     }
-    
-    @Override
-    public JSONObject toJSONObject() {
-        JSONObject object = new JSONObject();
-        // TODO: 09.05.2023 parsing object back to json object 
-        return object;
-    }
 
     public List<String> getColors() {
         return colors;
@@ -41,5 +34,10 @@ public class ActionCard extends Card {
 
     public void setColors(List<String> colors) {
         this.colors = colors;
+    }
+
+    @Override
+    public String toJSON() {
+        return null;
     }
 }

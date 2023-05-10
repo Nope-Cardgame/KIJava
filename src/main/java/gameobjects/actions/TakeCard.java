@@ -12,7 +12,7 @@ public class TakeCard extends Action{
     }
 
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

@@ -21,7 +21,7 @@ public class DisqualifyPlayer extends Action{
     }
 
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

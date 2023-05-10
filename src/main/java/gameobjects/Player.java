@@ -1,5 +1,6 @@
 package gameobjects;
 
+import com.google.gson.Gson;
 import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
@@ -12,8 +13,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class Player implements Jsonable {
-    // Logger for logging purposes
-    private static final Logger LOG = Logger.getLogger(Player.class.getSimpleName());
     private String username;
     private String socketId;
     private int cardAmount;
@@ -60,9 +59,7 @@ public class Player implements Jsonable {
             this.ranking = playerObject.getInt("ranking");
             this.disqualified = playerObject.getBoolean("disqualified");
         } catch (JSONException e) {
-            LOG.severe(e.getMessage());
         } finally {
-            LOG.info("Player " + this + " was created successfully!");
         }
     }
 
@@ -78,7 +75,7 @@ public class Player implements Jsonable {
             erg &= otherPlayer.isDisqualified() == this.disqualified;
             erg &= otherPlayer.getRanking() == this.ranking;
         } catch (ClassCastException e) {
-            LOG.severe(e.getMessage());
+            e.printStackTrace();
         }
         return erg;
     }
@@ -127,9 +124,8 @@ public class Player implements Jsonable {
     public void setDisqualified(boolean disqualified) {
         this.disqualified = disqualified;
     }
-
     @Override
-    public JSONObject toJSONObject() {
-        return null;
+    public String toJSON() {
+        return new Gson().toJson(this);
     }
 }

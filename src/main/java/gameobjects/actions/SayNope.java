@@ -11,8 +11,9 @@ public class SayNope extends Action{
         super(jsonObject);
     }
 
+
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }
