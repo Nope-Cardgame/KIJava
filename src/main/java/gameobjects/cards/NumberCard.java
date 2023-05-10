@@ -37,7 +37,10 @@ public class NumberCard extends Card {
     }
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        ActionCard other = (ActionCard) obj;
+        return other.getColor().equals(this.getColor())
+                && other.getName().equals(this.getName())
+                && other.getCardType().equals(this.getCardType());
     }
 
     @Override

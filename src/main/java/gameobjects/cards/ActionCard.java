@@ -29,7 +29,7 @@ public class ActionCard extends Card {
      */
     public ActionCard(String jsonString) {
         super(jsonString);
-        this.color = new Gson().fromJson(jsonString,getClass()).getColors();
+        this.color = new Gson().fromJson(jsonString,getClass()).getColor();
     }
 
     @Override
@@ -37,11 +37,19 @@ public class ActionCard extends Card {
         return new Gson().toJson(this);
     }
 
-    public List<String> getColors() {
+    @Override
+    public boolean equals(Object obj) {
+        ActionCard other = (ActionCard) obj;
+        return other.getColor().equals(this.getColor())
+                && other.getName().equals(this.getName())
+                && other.getCardType().equals(this.getCardType());
+    }
+
+    public List<String> getColor() {
         return color;
     }
 
-    public void setColors(List<String> color) {
+    public void setColor(List<String> color) {
         this.color = color;
     }
 }
