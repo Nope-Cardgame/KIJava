@@ -1,7 +1,8 @@
 package gameobjects.actions;
 
-import com.google.gson.Gson;
 import gameobjects.Jsonable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public abstract class Action implements Jsonable {
     private String type;
@@ -26,9 +27,13 @@ public abstract class Action implements Jsonable {
      *                   - an "explanation"-property
      */
     public Action(String jsonString) {
-        Gson gson = new Gson();
-        this.explanation = gson.fromJson(jsonString, getClass()).getExplanation();
-        this.type = gson.fromJson(jsonString,getClass()).getType();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            this.explanation = jsonObject.getString("explanation");
+            this.type = jsonObject.getString("type");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getType() {
