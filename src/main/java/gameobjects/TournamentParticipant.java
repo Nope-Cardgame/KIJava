@@ -28,7 +28,7 @@ public class TournamentParticipant implements Jsonable {
     }
 
     @Override
-    public JSONObject toJSONObject() {
+    public String toJSON() {
         return null;
     }
 }

@@ -7,8 +7,8 @@ public class SayNope extends Action{
         super(type, explanation);
     }
 
-    public SayNope(JSONObject jsonObject) {
-        super(jsonObject);
+    public SayNope(String jsonString) {
+        super(jsonString);
     }
 
 

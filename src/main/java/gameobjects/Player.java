@@ -20,10 +20,10 @@ public class Player implements Jsonable {
     private int ranking;
     private boolean disqualified;
 
-    public Player(String username, String socketId, List<Card> cards, int ranking, boolean disqualified) {
+    public Player(String username, String socketId, int cardAmount, List<Card> cards, int ranking, boolean disqualified) {
         this.username = username;
         this.socketId = socketId;
-        this.cardAmount = cards.size();
+        this.cardAmount = cardAmount;
         this.cards = cards;
         this.ranking = ranking;
         this.disqualified = disqualified;
@@ -32,7 +32,7 @@ public class Player implements Jsonable {
     /**
      * Creates a Player out of an JSONObject instance
      *
-     * @param playerObject the JSON-Object of a Player instance, it contains
+     * @param jsonString the JSON-Object of a Player instance, it contains
      *                     - name as String
      *                     - socketId as String
      *                     - the amount of Cards
@@ -40,27 +40,8 @@ public class Player implements Jsonable {
      *                     - information about ranking
      *                     - information about being disqualified
      */
-    public Player(JSONObject playerObject) {
-        try {
-            this.username = playerObject.getString("username");
-            this.socketId = playerObject.getString("socketId");
-            this.cardAmount = playerObject.getInt("cardAmount");
-            // TODO: 05.05.2023 make something with the cards
-            this.cards = new ArrayList<>();
-            JSONArray cardArray = playerObject.getJSONArray("cards");
-            for(int iterator = 0; iterator < cardArray.length(); iterator++) {
-                JSONObject cardObject = cardArray.getJSONObject(iterator);
-                if (cardObject.getString("type").equals("number")) {
-                    this.cards.add(new NumberCard(cardObject));
-                } else {
-                    this.cards.add(new ActionCard(cardObject));
-                }
-            }
-            this.ranking = playerObject.getInt("ranking");
-            this.disqualified = playerObject.getBoolean("disqualified");
-        } catch (JSONException e) {
-        } finally {
-        }
+    public Player(String jsonString) {
+
     }
 
     @Override

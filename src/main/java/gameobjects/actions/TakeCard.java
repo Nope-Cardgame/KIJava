@@ -7,8 +7,8 @@ public class TakeCard extends Action{
         super(type, explanation);
     }
 
-    public TakeCard(JSONObject jsonObject) {
-        super(jsonObject);
+    public TakeCard(String jsonString) {
+        super(jsonString);
     }
 
     @Override

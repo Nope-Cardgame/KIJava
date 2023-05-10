@@ -17,7 +17,7 @@ public class PlayerTest {
     @BeforeEach
     void setup() throws JSONException {
         List<Card> cards = new ArrayList<>();
-        this.player = new Player("Aremju", "blablabla",cards, 1,false);
+        this.player = new Player("Aremju", "blablabla",0,cards, 1,false);
     }
 
     @Test
@@ -28,7 +28,7 @@ public class PlayerTest {
         jsonObject.put("cardAmount",1);
         jsonObject.put("ranking",1);
         jsonObject.put("disqualified",false);
-        Player anotherPlayer = new Player(jsonObject);
+        Player anotherPlayer = new Player(jsonObject.toString());
         // pseudo-assert true to determine whether exception occurred or not
         assertTrue(true);
     }

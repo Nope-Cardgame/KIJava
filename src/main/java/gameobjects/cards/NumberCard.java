@@ -15,18 +15,8 @@ public class NumberCard extends Card {
         super(type, name);
     }
 
-    public NumberCard(JSONObject jsonObject) {
-        super(jsonObject);
-        try {
-            this.value = (int) jsonObject.get("value");
-            this.colors = new ArrayList<>();
-            JSONArray colorArray = jsonObject.getJSONArray("color");
-            for (int colorIterator = 0; colorIterator < colorArray.length(); colorIterator++) {
-                colors.add(colorArray.getString(colorIterator));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    public NumberCard(String jsonString) {
+        super(jsonString);
     }
     @Override
     public boolean equals(Object obj) {

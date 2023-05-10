@@ -11,13 +11,8 @@ public class DisqualifyPlayer extends Action{
         this.player = player;
     }
 
-    public DisqualifyPlayer(JSONObject jsonObject) {
-        super(jsonObject);
-        try {
-            this.player = new Player(jsonObject.getJSONObject("player"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    public DisqualifyPlayer(String jsonString) {
+        super(jsonString);
     }
 
     @Override

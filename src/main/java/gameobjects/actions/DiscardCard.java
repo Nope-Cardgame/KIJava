@@ -7,8 +7,8 @@ public class DiscardCard extends Action{
         super(type, explanation);
     }
 
-    public DiscardCard(JSONObject jsonObject) {
-        super(jsonObject);
+    public DiscardCard(String jsonString) {
+        super(jsonString);
     }
     @Override
     public String toJSON() {

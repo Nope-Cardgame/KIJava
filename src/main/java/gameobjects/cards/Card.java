@@ -1,5 +1,6 @@
 package gameobjects.cards;
 
+import com.google.gson.Gson;
 import gameobjects.Jsonable;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,16 +14,10 @@ public abstract class Card implements Jsonable {
         this.type = type;
     }
 
-    public Card(JSONObject jsonObject) {
-        try {
-            this.name = (String) jsonObject.get("name");
-            this.name = (String) jsonObject.get("type");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-
+    public Card(String jsonString) {
+        Gson gson = new Gson();
+        this.type = gson.fromJson(jsonString,getClass()).getCardType();
+        this.name = gson.fromJson(jsonString,getClass()).getName();
     }
 
     public String getCardType() {

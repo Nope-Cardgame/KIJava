@@ -15,17 +15,8 @@ public class ActionCard extends Card {
         this.colors = colors;
     }
 
-    public ActionCard(JSONObject jsonObject) {
-        super(jsonObject);
-        try {
-            this.colors = new ArrayList<>();
-            JSONArray colorArray = jsonObject.getJSONArray("color");
-            for (int colorIterator = 0; colorIterator < colorArray.length(); colorIterator++) {
-                colors.add(colorArray.getString(colorIterator));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    public ActionCard(String jsonString) {
+        super(jsonString);
     }
 
     public List<String> getColors() {

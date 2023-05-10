@@ -7,7 +7,7 @@ public class NominateCard extends Action{
         super(type, explanation);
     }
 
-    public NominateCard(JSONObject jsonObject) {
+    public NominateCard(String jsonObject) {
         super(jsonObject);
     }
 
