@@ -19,7 +19,7 @@ public class ActionCardTest {
         // Check if values are equal
         assertEquals(staticActionCard.getCardType(),anotherActionCard.getCardType());
         assertEquals(staticActionCard.getName(),anotherActionCard.getName());
-        assertEquals(staticActionCard.getColors(),anotherActionCard.getColors());
+        assertEquals(staticActionCard.getColor(),anotherActionCard.getColor());
     }
 
     @Test
