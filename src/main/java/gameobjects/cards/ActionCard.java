@@ -1,34 +1,47 @@
 package gameobjects.cards;
 
-import gameobjects.cards.Card;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import com.google.gson.Gson;
 import java.util.List;
 
 public class ActionCard extends Card {
-    private List<String> colors;
-    public ActionCard(String type, String name, List<String> colors) {
+    // Contains the colors that are used by this type of card
+    private List<String> color;
+
+    /**
+     * Standard Constructor for a ActionCard-Object
+     *
+     * @param type the type of this card
+     * @param color the colors that the card has
+     * @param name the name of the card
+     */
+    public ActionCard(String type, List<String> color, String name) {
         super(type, name);
-        this.colors = colors;
+        this.color = color;
     }
 
+    /**
+     * Constructs the ActionCard by using a Json-String
+     *
+     * @param jsonString the Json-Object-String containing
+     *                   - a "type"-property as String
+     *                   - a "color"-property, which is an array of Strings
+     *                   - a "name"-property, which has the name of the card as string
+     */
     public ActionCard(String jsonString) {
         super(jsonString);
-    }
-
-    public List<String> getColors() {
-        return colors;
-    }
-
-    public void setColors(List<String> colors) {
-        this.colors = colors;
+        this.color = new Gson().fromJson(jsonString,getClass()).getColors();
     }
 
     @Override
     public String toJSON() {
-        return null;
+        return new Gson().toJson(this);
+    }
+
+    public List<String> getColors() {
+        return color;
+    }
+
+    public void setColors(List<String> color) {
+        this.color = color;
     }
 }
