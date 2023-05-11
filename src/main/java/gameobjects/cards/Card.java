@@ -9,11 +9,22 @@ public abstract class Card implements Jsonable {
     private String type;
     private String name;
 
+    /**
+     * Standard-Constructor for Card
+     *
+     * @param type the type of the card
+     * @param name the name of the card
+     */
     public Card(String type, String name) {
         this.name = name;
         this.type = type;
     }
 
+    /**
+     * Creates a Card using a valid jsonString
+     *
+     * @param jsonString the jsonString that must always be valid!
+     */
     public Card(String jsonString) {
         Gson gson = new Gson();
         this.type = gson.fromJson(jsonString,getClass()).getCardType();
