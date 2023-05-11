@@ -104,4 +104,108 @@ public class Game implements Jsonable {
         // TODO: 11.05.2023 Implement toJSON for Game
         return new Gson().toJson(this);
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public boolean isNoActionCards() {
+        return noActionCards;
+    }
+
+    public void setNoActionCards(boolean noActionCards) {
+        this.noActionCards = noActionCards;
+    }
+
+    public boolean isNoWildcards() {
+        return noWildcards;
+    }
+
+    public void setNoWildcards(boolean noWildcards) {
+        this.noWildcards = noWildcards;
+    }
+
+    public boolean isOneMoreStartCards() {
+        return oneMoreStartCards;
+    }
+
+    public void setOneMoreStartCards(boolean oneMoreStartCards) {
+        this.oneMoreStartCards = oneMoreStartCards;
+    }
+
+    public Tournament getTournament() {
+        return tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
+    }
+
+    public String getGameRole() {
+        return gameRole;
+    }
+
+    public void setGameRole(String gameRole) {
+        this.gameRole = gameRole;
+    }
+
+    public int getEncounterRound() {
+        return encounterRound;
+    }
+
+    public void setEncounterRound(int encounterRound) {
+        this.encounterRound = encounterRound;
+    }
+
+    public Action getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(Action lastAction) {
+        this.lastAction = lastAction;
+    }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public Card getInitialTopCard() {
+        return initialTopCard;
+    }
+
+    public void setInitialTopCard(Card initialTopCard) {
+        this.initialTopCard = initialTopCard;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 }
