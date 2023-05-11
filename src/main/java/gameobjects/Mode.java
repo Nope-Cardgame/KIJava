@@ -7,11 +7,22 @@ public class Mode implements Jsonable {
     private String name;
     private int numberOfRounds;
 
+    /**
+     * Standard Constructor for Mode
+     *
+     * @param name the name of the Mode
+     * @param numberOfRounds the number of Rounds
+     */
     public Mode(String name, int numberOfRounds) {
         this.name = name;
         this.numberOfRounds = numberOfRounds;
     }
 
+    /**
+     * Creates a Mode using a valid JSON-String
+     *
+     * @param jsonString mode jsonString that must be valid
+     */
     public Mode(String jsonString) {
         Gson gson = new Gson();
         this.name = gson.fromJson(jsonString,getClass()).getName();

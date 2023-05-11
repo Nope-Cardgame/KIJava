@@ -1,8 +1,6 @@
 package gameobjects;
 
 import com.google.gson.Gson;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class TournamentParticipant implements Jsonable {
     private String username;
@@ -10,6 +8,14 @@ public class TournamentParticipant implements Jsonable {
     private boolean disqualified;
     private int score;
 
+    /**
+     * Standard Constructor for TournamentParticipant
+     *
+     * @param username the username of the participant
+     * @param ranking the ranking of the participant
+     * @param disqualified the flag for being disqualified or not
+     * @param score the current score of the Player
+     */
     public TournamentParticipant(String username, int ranking, boolean disqualified, int score) {
         this.username = username;
         this.ranking = ranking;
@@ -17,6 +23,12 @@ public class TournamentParticipant implements Jsonable {
         this.score = score;
     }
 
+    /**
+     * Creates a TournamentParticipant instance using
+     * a valid jsonString
+     *
+     * @param jsonString a jsonString that must be valid Participant
+     */
     public TournamentParticipant(String jsonString) {
         Gson gson = new Gson();
         this.disqualified = gson.fromJson(jsonString,getClass()).isDisqualified();

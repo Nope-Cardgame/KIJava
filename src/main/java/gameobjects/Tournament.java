@@ -17,6 +17,25 @@ public class Tournament implements Jsonable {
     private String endTime;
 
     /**
+     * Standard Constructor for Tournament
+     *
+     * @param id the id of the tournament (not null)
+     * @param mode the mode of the tournament (not null)
+     * @param participants the participants of the tournament
+     * @param games the games of the tournament (null for invitation)
+     * @param startTime start time of tournament (not null)
+     * @param endTime the end time of this tournament (do not know whether null or not)
+     */
+    public Tournament(String id, Mode mode, List<TournamentParticipant> participants, List<Game> games, String startTime, String endTime) {
+        this.id = id;
+        this.mode = mode;
+        this.participants = participants;
+        this.games = games;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    /**
      * Creates a Tournament instance using
      * a valid jsonString
      *
