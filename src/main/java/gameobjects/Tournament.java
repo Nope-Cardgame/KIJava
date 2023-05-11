@@ -16,6 +16,13 @@ public class Tournament implements Jsonable {
     private String startTime;
     private String endTime;
 
+    /**
+     * Creates a Tournament instance using
+     * a valid jsonString
+     *
+     * @param jsonString jsonString containing the properties
+     *                   of a Tournament, String must be a valid tournament
+     */
     public Tournament(String jsonString) {
         try {
             JSONObject tournamentObject = new JSONObject(jsonString);
@@ -44,5 +51,53 @@ public class Tournament implements Jsonable {
     @Override
     public String toJSON() {
         return new Gson().toJson(this);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Mode getMode() {
+        return mode;
+    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
+    }
+
+    public List<TournamentParticipant> getParticipants() {
+        return this.participants;
+    }
+
+    public void setParticipants(List<TournamentParticipant> participants) {
+        this.participants = participants;
+    }
+
+    public List<Game> getGames() {
+        return this.games;
+    }
+
+    public void setGames(List<Game> games) {
+        this.games = games;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
