@@ -1,5 +1,6 @@
 package gameobjects;
 
+import com.google.gson.Gson;
 import gameobjects.actions.Action;
 import gameobjects.actions.ActionFactory;
 import gameobjects.cards.Card;
@@ -101,6 +102,6 @@ public class Game implements Jsonable {
     @Override
     public String toJSON() {
         // TODO: 11.05.2023 Implement toJSON for Game
-        return null;
+        return new Gson().toJson(this);
     }
 }

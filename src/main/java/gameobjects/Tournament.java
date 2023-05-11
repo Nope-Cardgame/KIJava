@@ -1,5 +1,6 @@
 package gameobjects;
 
+import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,7 +43,6 @@ public class Tournament implements Jsonable {
 
     @Override
     public String toJSON() {
-        // TODO: 11.05.2023 Implementation toJSON for Tournament
-        return null;
+        return new Gson().toJson(this);
     }
 }
