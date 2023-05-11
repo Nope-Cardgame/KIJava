@@ -17,6 +17,18 @@ public class NominateCard extends Action{
     private Player player;
     private Player nominatedPlayer;
     private String nominatedColor;
+
+    /**
+     * Standard-Constructor for a NominateCardInstance
+     *
+     * @param type the type of this Action
+     * @param explanation the reason of this Action
+     * @param amount the Amount that is nominated by the Player
+     * @param cards the Cards placed by nomination
+     * @param player the Player who nominated another Player
+     * @param nominatedPlayer the nominated Player
+     * @param nominatedColor the nominated Color
+     */
     public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, String nominatedColor ) {
         super(type, explanation);
         this.amount = amount;
@@ -26,6 +38,12 @@ public class NominateCard extends Action{
         this.player = player;
     }
 
+    /**
+     * Creates a NominateCard instance using a valid
+     * jsonString
+     *
+     * @param jsonString the jsonString that must always be valid!
+     */
     public NominateCard(String jsonString) {
         super(jsonString);
         try {

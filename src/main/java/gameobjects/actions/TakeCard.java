@@ -15,6 +15,16 @@ public class TakeCard extends Action{
     private int amount;
     private List<Card> cards;
     private Player player;
+
+    /**
+     * Standard-Constructor for a TakeCard instance
+     *
+     * @param type the type of this instance
+     * @param explanation the explanation of this instance
+     * @param amount the amount of cards taken
+     * @param cards the cards taken
+     * @param player the player who took the cards
+     */
     public TakeCard(String type, String explanation, int amount, List<Card> cards, Player player) {
         super(type, explanation);
         this.amount = amount;
@@ -22,6 +32,11 @@ public class TakeCard extends Action{
         this.player = player;
     }
 
+    /**
+     * Creates a TakeCard instance using a valid jsonString
+     *
+     * @param jsonString jsonString that must be valid!
+     */
     public TakeCard(String jsonString) {
         super(jsonString);
         try {

@@ -7,6 +7,14 @@ import org.json.JSONObject;
 
 public class SayNope extends Action{
     private Player player;
+
+    /**
+     * Standard-Constructor for SayNope Action
+     *
+     * @param type the type of this Action
+     * @param explanation the reason of this explanation
+     * @param player the player who says nope
+     */
     public SayNope(String type, String explanation, Player player) {
         super(type, explanation);
         this.player = player;

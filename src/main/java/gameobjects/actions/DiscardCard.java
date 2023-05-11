@@ -15,6 +15,16 @@ public class DiscardCard extends Action{
     private int amount;
     private List<Card> cards;
     private Player player;
+
+    /**
+     * Standard-Constructor of DiscardCard-Action
+     *
+     * @param type the type of the Action
+     * @param explanation the explanation (why?)
+     * @param amount the amount of Cards discarded
+     * @param cards the Cards discarded
+     * @param player the player who discarded the cards
+     */
     public DiscardCard(String type, String explanation, int amount, List<Card> cards, Player player) {
         super(type, explanation);
         this.amount = amount;
@@ -22,19 +32,25 @@ public class DiscardCard extends Action{
         this.player = player;
     }
 
+    /**
+     * Creates a DiscardCard instance with a valid jsonString
+     *
+     * @param jsonString a jsonString representing this object,
+     *                   must be valid.
+     */
     public DiscardCard(String jsonString) {
         super(jsonString);
         try {
             JSONObject takeCardObject = new JSONObject(jsonString);
             this.amount = takeCardObject.getInt("amount");
             this.cards = new ArrayList<>();
-            // Cards must be done
+            // cards
             JSONArray cardArray = takeCardObject.getJSONArray("cards");
             for(int iterator = 0; iterator < cardArray.length(); iterator++) {
                 JSONObject cardObject = cardArray.getJSONObject(iterator);
                 cards.add(CardFactory.getCard(jsonString));
             }
-            // player must be done
+            // player
             JSONObject playerObject = takeCardObject.getJSONObject("player");
             this.player = new Player(playerObject.toString());
 

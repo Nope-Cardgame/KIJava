@@ -4,6 +4,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ActionFactory {
+    /**
+     * Creates a specific Action instance with a valid
+     * jsonString
+     *
+     * @param jsonString Action json which must be valid
+     * @return the correct Action Instance
+     */
     public static Action getAction(String jsonString) {
         Action action = null;
         try {
