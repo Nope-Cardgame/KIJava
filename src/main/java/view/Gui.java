@@ -1,13 +1,10 @@
-package gameobjects.view;
+package view;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
-import gameobjects.cards.NumberCard;
-import gameobjects.command.ActionHandler;
+import command.ActionHandler;
 
 public final class Gui extends JFrame {
     private static Gui INSTANCE = setGui(); // as singleton

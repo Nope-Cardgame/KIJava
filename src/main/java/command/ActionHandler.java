@@ -1,9 +1,9 @@
-package gameobjects.command;
+package command;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import gameobjects.view.Gui;
+import view.Gui;
 
 public class ActionHandler implements ActionListener {
 

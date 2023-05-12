@@ -1,4 +1,4 @@
-package gameobjects.view;
+package view;
 import gameobjects.cards.Card;
 
 import java.util.List;
