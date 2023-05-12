@@ -21,16 +21,12 @@ public class ClientFormatter extends SimpleFormatter {
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
         if (record.getLevel() == Level.INFO) {
-            if(classname.equals("ConnectionHandler")) {
-                builder.append(ANSI_GREEN);
-            } else if(classname.equals("Rest")) {
-                builder.append(ANSI_BLUE);
-            } else if(classname.equals("ServerEventHandler")) {
-                builder.append(ANSI_MAGENTA);
-            } else if(classname.equals("UserdataFileReader")) {
-                builder.append(ANSI_CYAN);
-            } else if(classname.equals("WebTokenReceiver")) {
-                builder.append(ANSI_YELLOW);
+            switch (classname) {
+                case "ConnectionHandler" -> builder.append(ANSI_GREEN);
+                case "Rest" -> builder.append(ANSI_BLUE);
+                case "ServerEventHandler" -> builder.append(ANSI_MAGENTA);
+                case "UserdataFileReader" -> builder.append(ANSI_CYAN);
+                case "WebTokenReceiver" -> builder.append(ANSI_YELLOW);
             }
         }
         builder.append(record.getLoggerName());

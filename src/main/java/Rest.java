@@ -38,6 +38,12 @@ public class Rest {
 
         con.setDoOutput(true);
 
+        // Senden von Dateien an den Server (vlt für die Gameerstellung benötigt)!
+
+        //DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        //wr.writeBytes(String.valueOf(userData));
+        //wr.close();
+
         int responseCode = con.getResponseCode();
 
         LOG.info("Response Code: \n" + responseCode);
