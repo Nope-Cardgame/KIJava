@@ -19,10 +19,12 @@ import org.json.JSONObject;
 
 public class ServerEventHandler {
     private Socket socketInstance;
+    private String username;
     private static final Logger LOG = NopeLogger.getLogger(ServerEventHandler.class.getSimpleName());
 
-    public ServerEventHandler(Socket socket) {
+    public ServerEventHandler(Socket socket, String username) {
         this.socketInstance =  socket;
+        this.username = username;
         LOG.setLevel(Level.ALL);
         addEventListeners();
     }
@@ -51,7 +53,7 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("tournamentInvite", args1 -> {
-            // Einladung verarbeiten (über die GUI)
+            // TODO: 12.05.2023 Implement Event: tournament invite
             LOG.info("tournamentInvite: " +Arrays.toString(args1));
         });
 

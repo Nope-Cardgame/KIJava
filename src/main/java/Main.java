@@ -23,7 +23,7 @@ public class Main {
         options.forceNew = true;
 
         newInstance.connect(socket);
-        ServerEventHandler serverEventHandler = new ServerEventHandler(socket);
+        ServerEventHandler serverEventHandler = new ServerEventHandler(socket, "Aremju");
 
         //example
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
