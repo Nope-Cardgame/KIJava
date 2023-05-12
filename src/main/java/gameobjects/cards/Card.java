@@ -1,31 +1,33 @@
 package gameobjects.cards;
 
-import gameobjects.Jsonable;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.Gson;
+import gameobjects.IJsonable;
 
-public abstract class Card implements Jsonable {
+public abstract class Card implements IJsonable {
     private String type;
     private String name;
 
+    /**
+     * Standard-Constructor for Card
+     *
+     * @param type the type of the card
+     * @param name the name of the card
+     */
     public Card(String type, String name) {
         this.name = name;
         this.type = type;
     }
 
-    public Card(JSONObject jsonObject) {
-        try {
-            this.name = (String) jsonObject.get("name");
-            this.name = (String) jsonObject.get("type");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-
+    /**
+     * Creates a Card using a valid jsonString
+     *
+     * @param jsonString the jsonString that must always be valid!
+     */
+    public Card(String jsonString) {
+        Gson gson = new Gson();
+        this.type = gson.fromJson(jsonString,getClass()).getCardType();
+        this.name = gson.fromJson(jsonString,getClass()).getName();
     }
-
-    public abstract JSONObject toJSONObject();
 
     public String getCardType() {
         return this.type;

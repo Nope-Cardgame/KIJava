@@ -1,19 +1,16 @@
 package gameobjects;
 
-import gameobjects.cards.ActionCard;
+import com.google.gson.Gson;
 import gameobjects.cards.Card;
-import gameobjects.cards.NumberCard;
+import gameobjects.cards.CardFactory;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class Player implements Jsonable {
-    // Logger for logging purposes
-    private static final Logger LOG = Logger.getLogger(Player.class.getSimpleName());
+public class Player implements IJsonable {
     private String username;
     private String socketId;
     private int cardAmount;
@@ -21,10 +18,10 @@ public class Player implements Jsonable {
     private int ranking;
     private boolean disqualified;
 
-    public Player(String username, String socketId, List<Card> cards, int ranking, boolean disqualified) {
+    public Player(String username, String socketId, int cardAmount, List<Card> cards, int ranking, boolean disqualified) {
         this.username = username;
         this.socketId = socketId;
-        this.cardAmount = cards.size();
+        this.cardAmount = cardAmount;
         this.cards = cards;
         this.ranking = ranking;
         this.disqualified = disqualified;
@@ -33,7 +30,7 @@ public class Player implements Jsonable {
     /**
      * Creates a Player out of an JSONObject instance
      *
-     * @param playerObject the JSON-Object of a Player instance, it contains
+     * @param jsonString the JSON-Object of a Player instance, it contains
      *                     - name as String
      *                     - socketId as String
      *                     - the amount of Cards
@@ -41,46 +38,57 @@ public class Player implements Jsonable {
      *                     - information about ranking
      *                     - information about being disqualified
      */
-    public Player(JSONObject playerObject) {
+    public Player(String jsonString) {
         try {
-            this.username = playerObject.getString("username");
-            this.socketId = playerObject.getString("socketId");
-            this.cardAmount = playerObject.getInt("cardAmount");
-            // TODO: 05.05.2023 make something with the cards
-            this.cards = new ArrayList<>();
-            JSONArray cardArray = playerObject.getJSONArray("cards");
-            for(int iterator = 0; iterator < cardArray.length(); iterator++) {
-                JSONObject cardObject = cardArray.getJSONObject(iterator);
-                if (cardObject.getString("type").equals("number")) {
-                    this.cards.add(new NumberCard(cardObject));
-                } else {
-                    this.cards.add(new ActionCard(cardObject));
-                }
-            }
-            this.ranking = playerObject.getInt("ranking");
-            this.disqualified = playerObject.getBoolean("disqualified");
+            JSONObject jsonObject = new JSONObject(jsonString);
+            this.username = jsonObject.getString("username");
+            this.socketId = jsonObject.getString("socketId");
+            this.cardAmount = jsonObject.getInt("cardAmount");
+            this.disqualified = jsonObject.getBoolean("disqualified");
+            this.ranking = jsonObject.getInt("ranking");
         } catch (JSONException e) {
-            LOG.severe(e.getMessage());
+            e.printStackTrace();
         } finally {
-            LOG.info("Player " + this + " was created successfully!");
+            initCardsJson(jsonString);
+        }
+    }
+
+    /**
+     * initializes the Cards using the CardFactory
+     * @param jsonString the jsonString from Constructor
+     */
+    private void initCardsJson(String jsonString) {
+        this.cards = new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("cards");
+            for(int iterator = 0; iterator < jsonArray.length(); iterator++) {
+                this.cards.add(
+                        CardFactory.
+                                getCard(jsonArray.
+                                        getJSONObject(iterator).
+                                toString())
+                );
+            }
+        }catch(JSONException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        boolean erg = false;
-        try {
-            Player otherPlayer = (Player) obj;
-            erg = otherPlayer.getUsername().equals(this.username);
-            erg &= otherPlayer.getSocketId().equals(this.socketId);
-            erg &= otherPlayer.getCardAmount() == this.cardAmount;
-            erg &= otherPlayer.getCards().equals(this.cards);
-            erg &= otherPlayer.isDisqualified() == this.disqualified;
-            erg &= otherPlayer.getRanking() == this.ranking;
-        } catch (ClassCastException e) {
-            LOG.severe(e.getMessage());
-        }
-        return erg;
+        Player otherPlayer = (Player) obj;
+        return this.getUsername().equals(otherPlayer.getUsername())
+                && this.getRanking() == otherPlayer.getRanking()
+                && this.getCardAmount() == otherPlayer.getCardAmount()
+                && this.getSocketId().equals(otherPlayer.getSocketId())
+                && this.isDisqualified() == otherPlayer.isDisqualified()
+                && this.getCards().equals(otherPlayer.getCards());
     }
 
     public String getUsername() {
@@ -126,10 +134,5 @@ public class Player implements Jsonable {
 
     public void setDisqualified(boolean disqualified) {
         this.disqualified = disqualified;
-    }
-
-    @Override
-    public JSONObject toJSONObject() {
-        return null;
     }
 }

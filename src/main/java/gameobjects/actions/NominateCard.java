@@ -1,18 +1,112 @@
 package gameobjects.actions;
 
+import com.google.gson.Gson;
+import gameobjects.Player;
+import gameobjects.cards.Card;
+import gameobjects.cards.CardFactory;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NominateCard extends Action{
-    public NominateCard(String type, String explanation) {
+    private int amount;
+    private List<Card> cards;
+    private Player player;
+    private Player nominatedPlayer;
+    private String nominatedColor;
+
+    /**
+     * Standard-Constructor for a NominateCardInstance
+     *
+     * @param type the type of this Action
+     * @param explanation the reason of this Action
+     * @param amount the Amount that is nominated by the Player
+     * @param cards the Cards placed by nomination
+     * @param player the Player who nominated another Player
+     * @param nominatedPlayer the nominated Player
+     * @param nominatedColor the nominated Color
+     */
+    public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, String nominatedColor ) {
         super(type, explanation);
+        this.amount = amount;
+        this.nominatedColor = nominatedColor;
+        this.cards = cards;
+        this.nominatedPlayer = nominatedPlayer;
+        this.player = player;
     }
 
-    public NominateCard(JSONObject jsonObject) {
-        super(jsonObject);
+    /**
+     * Creates a NominateCard instance using a valid
+     * jsonString
+     *
+     * @param jsonString the jsonString that must always be valid!
+     */
+    public NominateCard(String jsonString) {
+        super(jsonString);
+        try {
+            JSONObject nominateCardObject = new JSONObject(jsonString);
+            this.amount = nominateCardObject.getInt("amount");
+            this.nominatedColor = nominateCardObject.getString("nominatedColor");
+            // Cards
+            this.cards = new ArrayList<>();
+            JSONArray cardArray = nominateCardObject.getJSONArray("cards");
+            for(int iterator = 0; iterator < cardArray.length(); iterator++) {
+                this.cards.add(CardFactory.getCard(cardArray.getJSONObject(iterator).toString()));
+            }
+            // player
+            this.player = new Player(nominateCardObject.getJSONObject("player").toString());
+            // nominatedPlayer
+            this.nominatedPlayer = new Player(nominateCardObject.getJSONObject("nominatedPlayer").toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
-    public JSONObject toJSONObject() {
-        return null;
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Player getNominatedPlayer() {
+        return nominatedPlayer;
+    }
+
+    public void setNominatedPlayer(Player nominatedPlayer) {
+        this.nominatedPlayer = nominatedPlayer;
+    }
+
+    public String getNominatedColor() {
+        return nominatedColor;
+    }
+
+    public void setNominatedColor(String nominatedColor) {
+        this.nominatedColor = nominatedColor;
+    }
+
+    public List<Card> getCards() {
+        return this.cards;
+    }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
     }
 }

@@ -1,42 +1,67 @@
 package gameobjects.cards;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
+import com.google.gson.Gson;
 import java.util.List;
 
 public class NumberCard extends Card {
     private int value;
-    private List<String> colors;
+    private List<String> color;
 
-    public NumberCard(String type, String name) {
+    /**
+     * Standard-Constructor for a NumberCard-instance
+     *
+     * @param type the card type ("number" or an action-card)
+     * @param value the number value of this card
+     * @param color the colors of this card
+     * @param name the name of this card
+     */
+    public NumberCard(String type, int value, List<String> color, String name) {
         super(type, name);
+        this.value = value;
+        this.color = color;
     }
 
-    public NumberCard(JSONObject jsonObject) {
-        super(jsonObject);
-        try {
-            this.value = (int) jsonObject.get("value");
-            this.colors = new ArrayList<>();
-            JSONArray colorArray = jsonObject.getJSONArray("color");
-            for (int colorIterator = 0; colorIterator < colorArray.length(); colorIterator++) {
-                colors.add(colorArray.getString(colorIterator));
-            }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
+    /**
+     * Constructor which uses a JSON-String
+     *
+     * @param jsonString a JSON-String which contains
+     *                   - type-property as String
+     *                   - value-property as int
+     *                   -
+     */
+    public NumberCard(String jsonString) {
+        super(jsonString);
+        Gson gson = new Gson();
+        this.color = gson.fromJson(jsonString,getClass()).getColor();
+        this.value = gson.fromJson(jsonString,getClass()).getValue();
     }
-
-    @Override
-    public JSONObject toJSONObject() {
-        // TODO: 09.05.2023 implement feature: object back to json
-        return null;
-    }
-
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        NumberCard other = (NumberCard) obj;
+        return other.getColor().equals(this.getColor())
+                && other.getName().equals(this.getName())
+                && other.getCardType().equals(this.getCardType())
+                && other.getValue() == this.getValue();
+    }
+
+    @Override
+    public String toJSON() {
+        return new Gson().toJson(this);
+    }
+
+    public List<String> getColor() {
+        return color;
+    }
+
+    public void setColor(List<String> color) {
+        this.color = color;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }
