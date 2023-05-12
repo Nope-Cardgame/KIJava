@@ -9,18 +9,9 @@ import java.util.logging.Logger;
 
 public class UserdataFileReader {
 
-    private static final Logger LOG = Logger.getLogger(UserdataFileReader.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(UserdataFileReader.class.getSimpleName());
 
     public UserdataFileReader(){
-        initLogger();
-    }
-
-    private void initLogger() {
-        LOG.setUseParentHandlers(false);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new ClientFormatter());
-        LOG.addHandler(consoleHandler);
     }
 
     public String[] getUserData(){

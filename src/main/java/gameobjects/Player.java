@@ -1,73 +1,114 @@
 package gameobjects;
 
+import com.google.gson.Gson;
+import gameobjects.cards.Card;
+import gameobjects.cards.CardFactory;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class Player {
-    // Logger for logging purposes
-    private static final Logger LOG = Logger.getLogger(Player.class.getSimpleName());
-    private String name;
-    private String webSocketID;
+public class Player implements IJsonable {
+    private String username;
+    private String socketId;
     private int cardAmount;
     private List<Card> cards;
+    private int ranking;
+    private boolean disqualified;
 
-    public Player(String name, String webSocketID, int cardAmount, List<Card> cards) {
-        this.name = name;
-        this.webSocketID = webSocketID;
+    public Player(String username, String socketId, int cardAmount, List<Card> cards, int ranking, boolean disqualified) {
+        this.username = username;
+        this.socketId = socketId;
         this.cardAmount = cardAmount;
         this.cards = cards;
+        this.ranking = ranking;
+        this.disqualified = disqualified;
     }
 
     /**
      * Creates a Player out of an JSONObject instance
      *
-     * @param playerObject the JSON-Object of a Player instance, it contains
+     * @param jsonString the JSON-Object of a Player instance, it contains
      *                     - name as String
-     *                     - webSocketID as String
+     *                     - socketId as String
      *                     - the amount of Cards
      *                     - an Array of all cards held by the player
+     *                     - information about ranking
+     *                     - information about being disqualified
      */
-    public Player(JSONObject playerObject) {
+    public Player(String jsonString) {
         try {
-            this.name = (String) playerObject.get("name");
-            this.webSocketID = (String) playerObject.get("webSocketID");
-            // TODO: 05.05.2023 make something with the cards
-            this.cards = new ArrayList<>();
-            this.cardAmount = 0;
-
+            JSONObject jsonObject = new JSONObject(jsonString);
+            this.username = jsonObject.getString("username");
+            this.socketId = jsonObject.getString("socketId");
+            this.cardAmount = jsonObject.getInt("cardAmount");
+            this.disqualified = jsonObject.getBoolean("disqualified");
+            this.ranking = jsonObject.getInt("ranking");
         } catch (JSONException e) {
-            LOG.severe(e.getMessage());
+            e.printStackTrace();
         } finally {
-            LOG.info("Player " + this + " was created successfully!");
+            initCardsJson(jsonString);
         }
     }
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
+
+    /**
+     * initializes the Cards using the CardFactory
+     * @param jsonString the jsonString from Constructor
+     */
+    private void initCardsJson(String jsonString) {
+        this.cards = new ArrayList<>();
+        try{
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("cards");
+            for(int iterator = 0; iterator < jsonArray.length(); iterator++) {
+                this.cards.add(
+                        CardFactory.
+                                getCard(jsonArray.
+                                        getJSONObject(iterator).
+                                toString())
+                );
+            }
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public String getWebSocketID() {
-        return webSocketID;
+    @Override
+    public String toJSON() {
+        return new Gson().toJson(this);
     }
 
-    public void setWebSocketID(String webSocketID) {
-        this.webSocketID = webSocketID;
+    @Override
+    public boolean equals(Object obj) {
+        Player otherPlayer = (Player) obj;
+        return this.getUsername().equals(otherPlayer.getUsername())
+                && this.getRanking() == otherPlayer.getRanking()
+                && this.getCardAmount() == otherPlayer.getCardAmount()
+                && this.getSocketId().equals(otherPlayer.getSocketId())
+                && this.isDisqualified() == otherPlayer.isDisqualified()
+                && this.getCards().equals(otherPlayer.getCards());
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void getUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSocketId() {
+        return socketId;
+    }
+
+    public void setSocketId(String socketId) {
+        this.socketId = socketId;
     }
 
     public int getCardAmount() {
         return cardAmount;
-    }
-
-    public void setCardAmount(int cardAmount) {
-        this.cardAmount = cardAmount;
     }
 
     public List<Card> getCards() {
@@ -76,20 +117,22 @@ public class Player {
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+        this.cardAmount = cards.size();
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        boolean erg = false;
-        try {
-            Player otherPlayer = (Player) obj;
-            erg = otherPlayer.getName().equals(this.name);
-            erg &= otherPlayer.getWebSocketID().equals(this.webSocketID);
-            erg &= otherPlayer.getCardAmount() == this.cardAmount;
-            erg &= otherPlayer.getCards().equals(this.cards);
-        } catch (ClassCastException e) {
-            LOG.severe(e.getMessage());
-        }
-        return erg;
+    public int getRanking() {
+        return ranking;
+    }
+
+    public void setRanking(int ranking) {
+        this.ranking = ranking;
+    }
+
+    public boolean isDisqualified() {
+        return disqualified;
+    }
+
+    public void setDisqualified(boolean disqualified) {
+        this.disqualified = disqualified;
     }
 }

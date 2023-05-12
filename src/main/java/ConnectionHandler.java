@@ -1,52 +1,14 @@
-import io.socket.client.IO;
 import io.socket.client.Socket;
-import org.json.JSONException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
+
 import java.util.logging.Logger;
 
 public class ConnectionHandler {
-    private static final Logger LOG = Logger.getLogger(ConnectionHandler.class.getSimpleName());
-    private final UserdataFileReader udFileReader = new UserdataFileReader();
+    private static final Logger LOG = NopeLogger.getLogger(ConnectionHandler.class.getSimpleName());
 
     public ConnectionHandler(){
-        initLogger();
     }
 
-    private void initLogger() {
-        LOG.setUseParentHandlers(false);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new ClientFormatter());
-        LOG.addHandler(consoleHandler);
-    }
-
-    public TokenReceiver addUser(){
-        TokenReceiver tokenReceiver;
-        if(!udFileReader.isEmpty()) {
-            String[] userdata = udFileReader.getUserData();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
-            LOG.info("User " + username + " logged in.");
-
-        } else {
-            String[] userdata = udFileReader.addNewUser();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            tokenReceiver = new TokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
-            LOG.info("User " + username + " registered.");
-        }
-
-        return tokenReceiver;
-    }
-
-    public void connect(Socket mySocket) throws URISyntaxException, JSONException, IOException, InterruptedException {
+    public void connect(Socket mySocket) throws InterruptedException {
 
         // Verbindung zum Server herstellen
         mySocket.connect();
@@ -63,11 +25,6 @@ public class ConnectionHandler {
 
         mySocket.on(Socket.EVENT_DISCONNECT, args3 -> {
             LOG.info("Disconnected from the server.");
-        });
-
-        // Listener für das "chat message"-Event registrieren
-        mySocket.on("gameInvite", args4 -> {
-            LOG.info(Arrays.toString(args4));
         });
 
         // Warten bis die Verbindung hergestellt wurde

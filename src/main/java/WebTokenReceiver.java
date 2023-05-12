@@ -7,33 +7,45 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class TokenReceiver {
+public class WebTokenReceiver {
 
-    private static final Logger LOG = Logger.getLogger(TokenReceiver.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(WebTokenReceiver.class.getSimpleName());
+    private static final UserdataFileReader udFileReader = new UserdataFileReader();
     private final String username;
     private final String password;
     private final String urlString;
 
-    public TokenReceiver(String urlString, String userName, String password){
+    public WebTokenReceiver(String urlString, String userName, String password){
         this.urlString = urlString;
         this.username = userName;
         this.password = password;
-        initLogger();
     }
 
-    private void initLogger() {
-        LOG.setUseParentHandlers(false);
-        ConsoleHandler consoleHandler = new ConsoleHandler();
-        consoleHandler.setLevel(Level.INFO);
-        consoleHandler.setFormatter(new ClientFormatter());
-        LOG.addHandler(consoleHandler);
+    public static WebTokenReceiver addUserData(){
+        WebTokenReceiver webTokenReceiver;
+        if(!udFileReader.isEmpty()) {
+            String[] userdata = udFileReader.getUserData();
+            String username = userdata[0];
+            String password = userdata[1];
+
+            webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
+            LOG.info("User " + username + " logged in.");
+
+        } else {
+            String[] userdata = udFileReader.addNewUser();
+            String username = userdata[0];
+            String password = userdata[1];
+
+            webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
+            LOG.info("User " + username + " registered.");
+        }
+
+        return webTokenReceiver;
     }
 
-    public String getWebToken() throws IOException, JSONException {
+    public String createWebToken() throws IOException, JSONException {
 
         // This is the body we need to send for sign in and signup
         JSONObject userData = new JSONObject();
@@ -73,5 +85,4 @@ public class TokenReceiver {
         JSONObject object = new JSONObject(response.toString());
         return object.getString("jsonwebtoken");
     }
-
 }
