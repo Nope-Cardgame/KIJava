@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player implements Jsonable {
+public class Player implements IJsonable {
     private String username;
     private String socketId;
     private int cardAmount;

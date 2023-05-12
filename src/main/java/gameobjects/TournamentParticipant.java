@@ -2,7 +2,7 @@ package gameobjects;
 
 import com.google.gson.Gson;
 
-public class TournamentParticipant implements Jsonable {
+public class TournamentParticipant implements IJsonable {
     private String username;
     private int ranking;
     private boolean disqualified;

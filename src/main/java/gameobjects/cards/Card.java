@@ -1,11 +1,9 @@
 package gameobjects.cards;
 
 import com.google.gson.Gson;
-import gameobjects.Jsonable;
-import org.json.JSONException;
-import org.json.JSONObject;
+import gameobjects.IJsonable;
 
-public abstract class Card implements Jsonable {
+public abstract class Card implements IJsonable {
     private String type;
     private String name;
 

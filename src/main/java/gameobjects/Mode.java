@@ -1,9 +1,8 @@
 package gameobjects;
 
 import com.google.gson.Gson;
-import gameobjects.Jsonable;
 
-public class Mode implements Jsonable {
+public class Mode implements IJsonable {
     private String name;
     private int numberOfRounds;
 

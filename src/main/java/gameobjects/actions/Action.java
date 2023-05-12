@@ -1,10 +1,10 @@
 package gameobjects.actions;
 
-import gameobjects.Jsonable;
+import gameobjects.IJsonable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public abstract class Action implements Jsonable {
+public abstract class Action implements IJsonable {
     private String type;
     private String explanation;
 

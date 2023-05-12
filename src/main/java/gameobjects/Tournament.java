@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tournament implements Jsonable {
+public class Tournament implements IJsonable {
     private String id;
     private Mode mode;
     private List<TournamentParticipant> participants;

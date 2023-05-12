@@ -5,7 +5,6 @@ import gameobjects.actions.Action;
 import gameobjects.actions.ActionFactory;
 import gameobjects.cards.Card;
 import gameobjects.cards.CardFactory;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +12,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game implements Jsonable {
+public class Game implements IJsonable {
     private String id;
     private String state;
     private boolean noActionCards;
