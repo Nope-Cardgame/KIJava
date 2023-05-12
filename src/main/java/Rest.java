@@ -5,6 +5,9 @@ import java.util.logging.Logger;
 
 public class Rest {
 
+    /**
+     * Enum for the two types of requests
+     */
     enum RequestType {
         GET,
         POST
@@ -12,6 +15,14 @@ public class Rest {
 
     private static final Logger LOG = NopeLogger.getLogger(Rest.class.getSimpleName());
 
+    /**
+     * methode to communicate with post- or get-request with the server without additional id
+     *
+     * @param urlString
+     * @param token
+     * @param requestType
+     * @throws IOException
+     */
     public void request(String urlString, String token, RequestType requestType) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
@@ -42,6 +53,16 @@ public class Rest {
         }
     }
 
+    /**
+     * methode to communicate with post- or get-request with the server with additional id
+     * (used for displaying specific games or tournaments
+     *
+     * @param urlString
+     * @param token
+     * @param requestType
+     * @param id
+     * @throws IOException
+     */
     public void request(String urlString, String token, RequestType requestType, int id) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
