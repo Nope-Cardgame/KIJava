@@ -1,5 +1,7 @@
 package event_handling;
 
+import ai.AIFactory;
+import ai.IArtificialIntelligence;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -20,19 +22,22 @@ import org.json.JSONObject;
 public class ServerEventHandler {
     private Socket socketInstance;
     private String username;
+    private IArtificialIntelligence ai;
     private static final Logger LOG = NopeLogger.getLogger(ServerEventHandler.class.getSimpleName());
 
     public ServerEventHandler(Socket socket, String username) {
         this.socketInstance =  socket;
         this.username = username;
         LOG.setLevel(Level.ALL);
+        this.ai = AIFactory.getAI(this.username);
         addEventListeners();
     }
 
     private void addEventListeners() {
-        socketInstance.on("gameState", args1 -> {
-            // Update View and perform action if necessary
-            LOG.info("gameState: " +Arrays.toString(args1));
+        socketInstance.on("gameState", objects -> {
+            LOG.info("Received gamestate");
+            // TODO: 12.05.2023 update view
+            handleGameState(objects);
         });
 
         socketInstance.on("error", args1 -> {
@@ -61,6 +66,21 @@ public class ServerEventHandler {
             // Informationen auf der View ausgeben
             LOG.info("tournamentEnd: " + Arrays.toString(args1));
         });
+    }
+
+    private void handleGameState(Object[] objects) {
+        Game game = new Game((String) objects[0]);
+        if(game.getCurrentPlayer().getUsername().equals(this.username)) {
+            String move = this.ai.calculateNextMove(game);
+            Object[] message = new Object[1];
+            try {
+                JSONObject moveObject = new JSONObject(move);
+                message[0] = moveObject;
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            socketInstance.emit("playAction", message);
+        }
     }
 
     /**

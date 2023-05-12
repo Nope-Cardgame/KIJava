@@ -23,6 +23,7 @@ public class Main {
         options.forceNew = true;
 
         newInstance.connect(socket);
+        // TODO: 12.05.2023 make username more variable
         ServerEventHandler serverEventHandler = new ServerEventHandler(socket, "Aremju");
 
         //example

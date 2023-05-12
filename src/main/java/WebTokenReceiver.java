@@ -42,7 +42,6 @@ public class WebTokenReceiver {
             webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
             LOG.info("User " + username + " registered.");
         }
-
         return webTokenReceiver;
     }
 
