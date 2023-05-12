@@ -24,6 +24,5 @@ public class Main {
         newInstance.connect(socket);
         //example
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
-
     }
 }
