@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
@@ -14,19 +16,33 @@ public class Main {
 
         ConnectionHandler newInstance = new ConnectionHandler();
 
-        WebTokenReceiver webTokenReceiver = WebTokenReceiver.addUserData();
-        String token = webTokenReceiver.createWebToken();
-
+        // assume we all have an account
+        String token = null;
+        while(token == null) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Please log in");
+                System.out.print("Username: ");
+                String username = sc.nextLine();
+                System.out.print("Password: ");
+                String password = sc.nextLine();
+                System.out.println();
+                WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(),username,password);
+                token = webTokenReceiver.createWebToken();
+            } catch (IOException e) {
+                Logger.getLogger(Main.class.getSimpleName()).info("Invalid data, try again");
+            }
+        }
+        // set auth header with token for the socket
         Map<String, String> map = Collections.singletonMap("token", token);
         IO.Options options = IO.Options.builder().setAuth(map).build();
         Socket socket = IO.socket(Constants.DOMAIN.get(), options);
         options.forceNew = true;
-
+        // Connect the Socket
         newInstance.connect(socket);
-        // TODO: 12.05.2023 make username more variable
         ServerEventHandler serverEventHandler = new ServerEventHandler(socket, "Aremju");
 
-        //example
+        //example get-request for user connections
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
     }
 }
