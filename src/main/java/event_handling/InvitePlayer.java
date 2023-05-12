@@ -10,6 +10,18 @@ public class InvitePlayer implements IJsonable {
     private boolean accepted;
     private String username;
 
+    /**
+     * Standard Constructor for a InvitePlayer Object
+     *
+     * @param socketId the socketId of the player
+     * @param cardAmount the card amount of the player
+     * @param disqualified flag for being disqualified
+     * @param accepted flag for being accepted
+     * @param username username of the invited Player
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
+     */
     public InvitePlayer(String socketId, int cardAmount, boolean disqualified, boolean accepted, String username) {
         this.socketId = socketId;
         this.cardAmount = cardAmount;
@@ -18,6 +30,14 @@ public class InvitePlayer implements IJsonable {
         this.username = username;
     }
 
+    /**
+     * Creates a InvitePlayer instance using a jsonString
+     *
+     * @param jsonString the jsonString that must always be valid
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
+     */
     public InvitePlayer(String jsonString) {
         Gson gson = new Gson();
         this.socketId = gson.fromJson(jsonString,getClass()).getSocketId();

@@ -13,6 +13,19 @@ public class GameInvitation implements IJsonable {
     private boolean noActionCards;
     private boolean oneMoreStartCard;
 
+    /**
+     * Standard-Constructor for a GameInvitation instance
+     *
+     * @param noWildCards flag that determines whether wildcards are used or not
+     * @param players a list of invited players
+     * @param id the id of the game
+     * @param state the current state of the game
+     * @param noActionCards flag if action cards are used or not
+     * @param oneMoreStartCard flag if one more start card is used or not
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
+     */
     public GameInvitation(boolean noWildCards, List<InvitePlayer> players, String id, String state, boolean noActionCards, boolean oneMoreStartCard) {
         this.noWildCards = noWildCards;
         this.players = players;
@@ -22,6 +35,14 @@ public class GameInvitation implements IJsonable {
         this.oneMoreStartCard = oneMoreStartCard;
     }
 
+    /**
+     * Creates a GameInvitation using a jsonString
+     *
+     * @param jsonString a jsonString that must be valid
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
+     */
     public GameInvitation(String jsonString) {
         Gson gson = new Gson();
         this.players = gson.fromJson(jsonString,getClass()).getPlayers();

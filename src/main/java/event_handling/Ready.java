@@ -14,6 +14,9 @@ public class Ready implements IJsonable {
      * @param accept true if game or tournament accepted, false otherwise
      * @param type type of Ready (either "game" or "tournament")
      * @param inviteId the id of game or tournament
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
      */
     public Ready(boolean accept, String type, String inviteId) {
         this.accept = accept;
@@ -25,6 +28,10 @@ public class Ready implements IJsonable {
      * Creates a ready-object using a json-String
      *
      * @param jsonString jsonString that must be valid
+     *
+     * @see <a href="https://github.com/Nope-Cardgame/Doku/blob/main/Schnittstellen/Schnittstellen.md">
+     *      Schnittstellen Dokumentation</a>
+     *
      */
     public Ready(String jsonString) {
         Gson gson = new Gson();
