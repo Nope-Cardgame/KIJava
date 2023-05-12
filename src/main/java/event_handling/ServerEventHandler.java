@@ -71,8 +71,6 @@ public class ServerEventHandler {
         JsonElement gameObject = JsonParser.parseString(args1[0].toString());
 
         GameInvitation game = new GameInvitation(gson.toJson(gameObject));
-        LOG.info(gson.toJson(gameObject));
-
         LOG.info("You have been invited, do you want to accept?");
         LOG.info("Type 'yes' to do this, and 'no' to not do it...");
         LOG.info("NOTE: The invitation expires within 10 seconds exactly!");
