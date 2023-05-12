@@ -1,3 +1,4 @@
+import event_handling.ServerEventHandler;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.json.JSONException;
@@ -22,6 +23,8 @@ public class Main {
         options.forceNew = true;
 
         newInstance.connect(socket);
+        ServerEventHandler serverEventHandler = new ServerEventHandler(socket);
+
         //example
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
     }

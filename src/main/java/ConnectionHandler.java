@@ -1,4 +1,5 @@
 import io.socket.client.Socket;
+import logging.NopeLogger;
 
 import java.util.logging.Logger;
 
