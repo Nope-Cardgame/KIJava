@@ -31,6 +31,7 @@ public class ClientFormatter extends SimpleFormatter {
                 case "WebTokenReceiver" -> builder.append(ANSI_YELLOW);
             }
         }
+        builder.append(record.getLevel().getName() + "\n");
         builder.append(record.getLoggerName());
         builder.append(" -> ");
         builder.append(record.getMessage());
