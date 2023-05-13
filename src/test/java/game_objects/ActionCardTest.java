@@ -1,3 +1,5 @@
+package game_objects;
+
 import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
 import org.junit.jupiter.api.Test;

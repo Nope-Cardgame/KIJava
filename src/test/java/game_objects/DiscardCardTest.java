@@ -1,3 +1,5 @@
+package game_objects;
+
 import gameobjects.Player;
 import gameobjects.actions.DiscardCard;
 import gameobjects.actions.TakeCard;
