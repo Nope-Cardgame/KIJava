@@ -12,6 +12,8 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import io.socket.emitter.Emitter;
 import logging.NopeLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,8 +60,9 @@ public class ServerEventHandler {
             LOG.severe("eliminated: " +Arrays.toString(args1));
         });
 
+
         socketInstance.on("gameInvite", objects -> {
-            socketInstance.emit("ready",handleInvitation(objects));
+            socketInstance.emit("ready", handleInvitation(objects));
         });
 
         socketInstance.on("gameEnd", args1 -> {
@@ -112,14 +115,9 @@ public class ServerEventHandler {
         JsonElement gameObject = JsonParser.parseString(args1[0].toString());
         GameInvitation game = new GameInvitation(gson.toJson(gameObject));
         LOG.info("You have been invited, do you want to accept?");
-        LOG.info("Type 'yes' to do this, and 'no' to not do it...");
-        LOG.info("NOTE: The invitation expires within 10 seconds exactly!");
-        Scanner sc = new Scanner(System.in);
-        String indicator = sc.nextLine();
-        Ready ready = new Ready(false,"game",game.getId());
-        if (indicator.equals("yes")) {
-            ready.setAccept(true);
-        }
+        LOG.info("Accept by default!!!");
+        // accept by default
+        Ready ready = new Ready(true,"game",game.getId());
         Object [] message = new Object[1];
         try {
             JSONObject jsonObject = new JSONObject(ready.toJSON());
