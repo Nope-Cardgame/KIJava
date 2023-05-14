@@ -1,3 +1,5 @@
+package logging;
+
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
@@ -24,11 +26,12 @@ public class ClientFormatter extends SimpleFormatter {
             switch (classname) {
                 case "ConnectionHandler" -> builder.append(ANSI_GREEN);
                 case "Rest" -> builder.append(ANSI_BLUE);
-                case "ServerEventHandler" -> builder.append(ANSI_MAGENTA);
+                case "event_handling.ServerEventHandler" -> builder.append(ANSI_MAGENTA);
                 case "UserdataFileReader" -> builder.append(ANSI_CYAN);
                 case "WebTokenReceiver" -> builder.append(ANSI_YELLOW);
             }
         }
+        builder.append(record.getLevel().getName() + "\n");
         builder.append(record.getLoggerName());
         builder.append(" -> ");
         builder.append(record.getMessage());

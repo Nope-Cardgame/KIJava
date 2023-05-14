@@ -1,3 +1,5 @@
+package game_objects;
+
 import gameobjects.Player;
 import gameobjects.actions.TakeCard;
 import org.junit.jupiter.api.BeforeEach;
