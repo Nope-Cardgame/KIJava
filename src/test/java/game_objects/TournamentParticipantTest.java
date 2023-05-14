@@ -1,3 +1,5 @@
+package game_objects;
+
 import gameobjects.TournamentParticipant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

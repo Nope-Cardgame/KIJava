@@ -1,3 +1,5 @@
+package game_objects;
+
 import org.junit.jupiter.api.Test;
 
 public class TournamentTest {
