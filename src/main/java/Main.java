@@ -2,6 +2,7 @@ import event_handling.ServerEventHandler;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.json.JSONException;
+import view.Gui;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
         Rest rest = new Rest();
-
+        Gui.getInstance();
         ConnectionHandler newInstance = new ConnectionHandler();
 
         // assume we all have an account
