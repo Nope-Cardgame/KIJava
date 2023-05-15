@@ -11,10 +11,7 @@ public class UserdataFileReader {
 
     private static final Logger LOG = NopeLogger.getLogger(UserdataFileReader.class.getSimpleName());
 
-    public UserdataFileReader(){
-    }
-
-    public String[] getUserData(){
+    public static String[] getUserData(){
         String[] userData = new String[2];
         try {
             BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\userdata.txt"));
@@ -29,11 +26,11 @@ public class UserdataFileReader {
         return userData;
     }
 
-    public boolean isEmpty(){
+    public static boolean isEmpty(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\userdata.txt"));
             if(reader.readLine() == null) {
-                LOG.info("No userdata found in file, creating new account.");
+                LOG.info("No userdata found in file");
                 reader.close();
                 return true;
             } else {
@@ -44,28 +41,5 @@ public class UserdataFileReader {
             e.printStackTrace();
         }
         return false;
-    }
-
-    public String[] addNewUser(){
-        String[] userData = new String[2];
-        try {
-            FileWriter writer = new FileWriter("src\\main\\java\\userdata.txt");
-
-            LOG.info("Please enter your username: ");
-            Scanner sc = new Scanner(System.in);
-            String username = sc.nextLine();
-            writer.write(username + "\n");
-            userData[0] = username;
-
-            LOG.info("Please enter your password: ");
-            String password = sc.nextLine();
-            writer.write(password);
-            userData[1] = password;
-
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return userData;
     }
 }

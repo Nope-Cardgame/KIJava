@@ -64,4 +64,16 @@ public class NumberCard extends Card {
     public void setValue(int value) {
         this.value = value;
     }
+
+    public String getSpritePath(){
+        String output = "cardimages/number_card_" + color.get(0) + "_";
+
+        if(color.size() > 1){
+            output += color.get(1) + "_";
+        }
+
+        output += value + ".png";
+
+        return output;
+    }
 }

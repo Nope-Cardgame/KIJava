@@ -34,6 +34,8 @@ public class Main {
                 Logger.getLogger(Main.class.getSimpleName()).info("Invalid data, try again");
             }
         }
+
+
         // set auth header with token for the socket
         Map<String, String> map = Collections.singletonMap("token", token);
         IO.Options options = IO.Options.builder().setAuth(map).build();
@@ -46,4 +48,6 @@ public class Main {
         //example get-request for user connections
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
     }
+
+
 }

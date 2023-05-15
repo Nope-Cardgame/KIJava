@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 public class WebTokenReceiver {
 
     private static final Logger LOG = NopeLogger.getLogger(WebTokenReceiver.class.getSimpleName());
-    private static final UserdataFileReader udFileReader = new UserdataFileReader();
     private final String username;
     private final String password;
     private final String urlString;
@@ -22,27 +21,6 @@ public class WebTokenReceiver {
         this.urlString = urlString;
         this.username = userName;
         this.password = password;
-    }
-
-    public static WebTokenReceiver addUserData(){
-        WebTokenReceiver webTokenReceiver;
-        if(!udFileReader.isEmpty()) {
-            String[] userdata = udFileReader.getUserData();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
-            LOG.info("User " + username + " logged in.");
-
-        } else {
-            String[] userdata = udFileReader.addNewUser();
-            String username = userdata[0];
-            String password = userdata[1];
-
-            webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_UP.get(), username, password);
-            LOG.info("User " + username + " registered.");
-        }
-        return webTokenReceiver;
     }
 
     public String createWebToken() throws IOException, JSONException {
