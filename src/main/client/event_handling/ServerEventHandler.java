@@ -17,6 +17,7 @@ import io.socket.emitter.Emitter;
 import logging.NopeLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import view.Gui;
 
 public class ServerEventHandler {
     private final Socket socketInstance;

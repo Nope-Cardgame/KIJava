@@ -14,8 +14,8 @@ public class ShowCards extends JPanel{
        int start = 0;
        for (NumberCard card: Gui.getInstance().getOwnCards()){
        ImageLoader imageLoader = new ImageLoader(card);
-       g.drawImage(imageLoader.image, start,0,23,23,null);
-       start+=25;
+       g.drawImage(imageLoader.image, start,0,90,130,null);
+       start+=90;
        }
    }
 }
