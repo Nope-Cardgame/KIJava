@@ -4,7 +4,7 @@ import gameobjects.Game;
 import gameobjects.cards.Card;
 
 public class JGameAdapter {
-    private Game game;
+    private final Game game;
 
     /**
      * Standard-Constructor for a JGameAdapter
