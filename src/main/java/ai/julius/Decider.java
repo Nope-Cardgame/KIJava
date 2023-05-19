@@ -1,6 +1,8 @@
 package ai.julius;
 
+import ai.julius.adapters.JGameAdapter;
 import gameobjects.Game;
+import gameobjects.actions.Action;
 
 public interface Decider {
     /**
@@ -13,5 +15,6 @@ public interface Decider {
      * @return a String that indicates the next move
      */
     String decide(Game game);
-
+    Action actionBeforeTakeCard(Game game);
+    Action actionAfterTakeCard(Game game);
 }

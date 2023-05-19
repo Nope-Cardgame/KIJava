@@ -47,7 +47,7 @@ public class Player implements IJsonable {
             this.disqualified = jsonObject.getBoolean("disqualified");
             this.ranking = jsonObject.getInt("ranking");
         } catch (JSONException e) {
-            e.printStackTrace();
+
         } finally {
             initCardsJson(jsonString);
         }
@@ -71,7 +71,7 @@ public class Player implements IJsonable {
                 );
             }
         }catch(JSONException e) {
-            e.printStackTrace();
+            // do nothing
         }
     }
 

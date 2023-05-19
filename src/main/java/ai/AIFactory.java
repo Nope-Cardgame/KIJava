@@ -14,12 +14,11 @@ public class AIFactory {
      * @return the correct AI for that user
      */
     public static IArtificialIntelligence getAI(String username) {
-        IArtificialIntelligence correctAI = switch (username) {
+        return switch (username) {
             case "AlexanderLauruhn" -> new AIAlexander();
             case "Aremju" -> new AIJulius(new JAIValidOnly());
             case "MarianK99" -> new AIMarian();
             default -> throw new RuntimeException("No correct username");
         };
-        return correctAI;
     }
 }

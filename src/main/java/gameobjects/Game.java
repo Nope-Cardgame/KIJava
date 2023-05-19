@@ -17,7 +17,7 @@ public class Game implements IJsonable {
     private String state;
     private boolean noActionCards;
     private boolean noWildcards;
-    private boolean oneMoreStartCards;
+    private boolean oneMoreStartCard;
     private Tournament tournament;
     private String gameRole;
     private int encounterRound;
@@ -59,7 +59,7 @@ public class Game implements IJsonable {
         this.state = state;
         this.noActionCards = noActionCards;
         this.noWildcards = noWildcards;
-        this.oneMoreStartCards = oneMoreStartCards;
+        this.oneMoreStartCard = oneMoreStartCards;
         this.tournament = tournament;
         this.gameRole = gameRole;
         this.encounterRound = encounterRound;
@@ -86,8 +86,14 @@ public class Game implements IJsonable {
             this.state = gameObject.getString("state");
             this.noActionCards = gameObject.getBoolean("noActionCards");
             this.noWildcards = gameObject.getBoolean("noWildCards");
-            this.oneMoreStartCards = gameObject.getBoolean("oneMoreStartCards");
-            this.startTime = gameObject.getString("startTime");
+            this.oneMoreStartCard = gameObject.getBoolean("oneMoreStartCard");
+
+            try {
+                this.startTime = gameObject.getString("startTime");
+            } catch (JSONException e) {
+                this.startTime = null;
+            }
+
             // Init Player List
             this.players = new ArrayList<>();
             JSONArray playerArray = gameObject.getJSONArray("players");
@@ -113,6 +119,8 @@ public class Game implements IJsonable {
                 for (int iterator = 0; iterator < cardArray.length(); iterator++) {
                     this.discardPile.add(CardFactory.getCard(cardArray.getJSONObject(iterator).toString()));
                 }
+                this.currentPlayer = new Player(gameObject.getJSONObject("currentPlayer").toString());
+                this.lastAction = ActionFactory.getAction(gameObject.getJSONObject("lastAction").toString());
             } catch (JSONException e) {
                 // if not in progress, set values to null...
                 this.discardPile = null;
@@ -177,11 +185,11 @@ public class Game implements IJsonable {
     }
 
     public boolean isOneMoreStartCards() {
-        return oneMoreStartCards;
+        return oneMoreStartCard;
     }
 
-    public void setOneMoreStartCards(boolean oneMoreStartCards) {
-        this.oneMoreStartCards = oneMoreStartCards;
+    public void setOneMoreStartCards(boolean oneMoreStartCard) {
+        this.oneMoreStartCard = oneMoreStartCard;
     }
 
     public Tournament getTournament() {

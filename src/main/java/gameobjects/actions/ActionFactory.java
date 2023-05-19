@@ -28,7 +28,6 @@ public class ActionFactory {
                 action = new NominateCard(jsonString);
             }
         } catch (JSONException e) {
-            e.printStackTrace();
         }
         return action;
     }
