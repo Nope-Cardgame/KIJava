@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CardFactoryTest {
     @Test
     void actionCardFactory() {
-        Card card = CardFactory.getCard("{\"type\":\"nominate\",\"color\":[\"red\"],\"name\":\"red nominate\"}");
+        Card card = CardFactory.getCard("{\"type\":\"nominate\",\"colors\":[\"red\"],\"name\":\"red nominate\"}");
         assertTrue(card instanceof ActionCard);
     }
 
     @Test
     void numberCardFactory() {
-        Card card = CardFactory.getCard("{\"type\":\"number\",\"value\":1,\"color\":[\"red\",\"green\",\"blue\",\"yellow\"],\"name\":\"wildcard\"}");
+        Card card = CardFactory.getCard("{\"type\":\"number\",\"value\":1,\"colors\":[\"red\",\"green\",\"blue\",\"yellow\"],\"name\":\"wildcard\"}");
         assertTrue(card instanceof NumberCard);
     }
 }
