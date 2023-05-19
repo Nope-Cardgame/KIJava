@@ -9,9 +9,9 @@ public class ActionHandler implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         JButton src = (JButton) e.getSource();
-        /**
-         String password = Gui.getInstance().getPasswortInput().getText();
-         String username = Gui.getInstance().getUsernameInput().getText();
+
+         String password = Gui.getInstance().getPasswort();
+         String username = Gui.getInstance().getUsername();
          if(src == Gui.getInstance().getJButtonLogin()) {
 
 
@@ -21,6 +21,6 @@ public class ActionHandler implements ActionListener {
          }
          if(src == Gui.getInstance().getjButtonRegister()) {
 
-         }**/
+         }
     }
 }
