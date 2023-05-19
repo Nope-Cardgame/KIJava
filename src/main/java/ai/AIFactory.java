@@ -2,6 +2,7 @@ package ai;
 
 import ai.alexander.AIAlexander;
 import ai.julius.AIJulius;
+import ai.julius.valid.JAIValidOnly;
 import ai.marian.AIMarian;
 
 public class AIFactory {
@@ -13,16 +14,12 @@ public class AIFactory {
      * @return the correct AI for that user
      */
     public static IArtificialIntelligence getAI(String username) {
-        IArtificialIntelligence correctAI = null;
-        if(username.equals("AlexanderLauruhn")) {
-            correctAI = new AIAlexander();
-        } else if (username.equals("Aremju")) {
-            correctAI = new AIJulius();
-        } else if (username.equals("MarianK99")){
-            correctAI = new AIMarian();
-        } else {
-            throw new RuntimeException("No correct username");
-        }
+        IArtificialIntelligence correctAI = switch (username) {
+            case "AlexanderLauruhn" -> new AIAlexander();
+            case "Aremju" -> new AIJulius(new JAIValidOnly());
+            case "MarianK99" -> new AIMarian();
+            default -> throw new RuntimeException("No correct username");
+        };
         return correctAI;
     }
 }
