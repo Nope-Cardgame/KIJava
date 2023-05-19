@@ -44,7 +44,7 @@ public class PlayerTest {
                 "      \"name\":\"red nominate\"\n" +
                 "    },\n" +
                 "    {\"value\":1,\n" +
-                "      \"color\": [\n" +
+                "      \"colors\": [\n" +
                 "        \"red\",\n" +
                 "        \"green\",\n" +
                 "        \"blue\",\n" +
@@ -69,8 +69,8 @@ public class PlayerTest {
         String expectedJsonString = "{\"username\":\"Aremju\"," +
                 "\"socketId\":\"blablabla\"," +
                 "\"cardAmount\":2," +
-                "\"cards\":[{\"color\":[\"red\"],\"type\":\"nominate\",\"name\":\"red nominate\"}," +
-                "{\"value\":1,\"color\":[\"red\",\"green\",\"blue\",\"yellow\"],\"type\":\"number\",\"name\":\"wildcard\"}]," +
+                "\"cards\":[{\"colors\":[\"red\"],\"type\":\"nominate\",\"name\":\"red nominate\"}," +
+                "{\"value\":1,\"colors\":[\"red\",\"green\",\"blue\",\"yellow\"],\"type\":\"number\",\"name\":\"wildcard\"}]," +
                 "\"ranking\":1," +
                 "\"disqualified\":false}";
         assertEquals(expectedJsonString,this.player.toJSON());
