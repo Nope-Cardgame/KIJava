@@ -13,7 +13,7 @@ public class ImageLoader {
     BufferedImage image;
     public ImageLoader(NumberCard card)  {
         try {
-           image = ImageIO.read(new File(card.getSpritePath()));
+           image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
         }
         catch (IOException e){
             e.printStackTrace();
