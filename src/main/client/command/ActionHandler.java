@@ -19,7 +19,6 @@ public class ActionHandler implements ActionListener {
              Gui.getInstance().getPasswortLabel().setVisible(false);
              Gui.getInstance().getPasswordfield().setVisible(false);
              Gui.getInstance().getUsernameLabel().setVisible(false);
-
          }
          if(src == Gui.getInstance().getSavaLoginData()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {
