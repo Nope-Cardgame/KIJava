@@ -21,23 +21,23 @@ public class NumberCardTest {
         // necessary to test whether polymorphism works or not
         NumberCard numberCard = (NumberCard) card;
         NumberCard otherNumberCard = new NumberCard("{\"type\":\"number\",\"value\":1," +
-                "\"color\":[\"red\",\"green\",\"blue\",\"yellow\"],\"name\":\"wildcard\"}");
+                "\"colors\":[\"red\",\"green\",\"blue\",\"yellow\"],\"name\":\"wildcard\"}");
         assertEquals(numberCard.getCardType(), otherNumberCard.getCardType());
         assertEquals(numberCard.getValue(), otherNumberCard.getValue());
-        assertEquals(numberCard.getColor(), otherNumberCard.getColor());
+        assertEquals(numberCard.getColors(), otherNumberCard.getColors());
         assertEquals(numberCard.getName(), otherNumberCard.getName());
     }
 
     @Test
     void numberCardToJSON() {
-        List<String> color = new ArrayList<>();
-        color.add("red");
-        color.add("green");
-        color.add("blue");
-        color.add("yellow");
-        Card card = new NumberCard("number",1,color,"wildcard");
+        List<String> colors = new ArrayList<>();
+        colors.add("red");
+        colors.add("green");
+        colors.add("blue");
+        colors.add("yellow");
+        Card card = new NumberCard("number",1,colors,"wildcard");
         // sequence of json dictionaries doesn't matter
-        String expectedJson = "{\"value\":1,\"color\":[\"red\",\"green\",\"blue\",\"yellow\"],\"type\":\"number\",\"name\":\"wildcard\"}";
+        String expectedJson = "{\"value\":1,\"colors\":[\"red\",\"green\",\"blue\",\"yellow\"],\"type\":\"number\",\"name\":\"wildcard\"}";
         assertEquals(expectedJson,card.toJSON());
     }
 }

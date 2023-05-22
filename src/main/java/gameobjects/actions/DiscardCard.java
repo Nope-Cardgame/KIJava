@@ -55,7 +55,6 @@ public class DiscardCard extends Action{
             this.player = new Player(playerObject.toString());
 
         } catch (JSONException e) {
-            e.printStackTrace();
         }
 
     }

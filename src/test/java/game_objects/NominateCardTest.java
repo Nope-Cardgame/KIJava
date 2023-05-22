@@ -15,7 +15,7 @@ public class NominateCardTest {
     void setUp() {
         Player player = new Player("Aremju","blablabla",0,new ArrayList<>(), 1,false);
         Player nominatedPlayer = new Player("otherAremju","blablablu",0,new ArrayList<>(), 1,false);
-        this.nominateCard = new NominateCard("nominate","random pick",1,new ArrayList<>(),player,nominatedPlayer,"yellow");
+        this.nominateCard = new NominateCard("nominate","random pick",1,new ArrayList<>(),player,nominatedPlayer,"yellow",3);
     }
     @Test
     void nominateCardCreation() {
@@ -40,13 +40,15 @@ public class NominateCardTest {
                 "    \"ranking\": 1,\n" +
                 "    \"disqualified\": false\n" +
                 "  },\n" +
-                "  \"nominatedColor\": \"yellow\"\n" +
+                "  \"nominatedColor\": \"yellow\",\n" +
+                "  \"nominatedAmount\": 3\n" +
                 "}");
         assertEquals(this.nominateCard.getType(),otherNominateCard.getType());
         assertEquals(this.nominateCard.getExplanation(),otherNominateCard.getExplanation());
         assertEquals(this.nominateCard.getAmount(),otherNominateCard.getAmount());
         assertEquals(this.nominateCard.getNominatedColor(),otherNominateCard.getNominatedColor());
         assertEquals(this.nominateCard.getCards(),otherNominateCard.getCards());
+        assertEquals(this.nominateCard.getNominatedAmount(),otherNominateCard.getNominatedAmount());
         // Normal Player
         assertEquals(this.nominateCard.getPlayer().getUsername(),otherNominateCard.getPlayer().getUsername());
         assertEquals(this.nominateCard.getPlayer().getSocketId(),otherNominateCard.getPlayer().getSocketId());
@@ -65,7 +67,7 @@ public class NominateCardTest {
 
     @Test
     void nominateCardJSON() {
-        String expectedJson = "{\"amount\":1,\"cards\":[],\"player\":{\"username\":\"Aremju\",\"socketId\":\"blablabla\",\"cardAmount\":0,\"cards\":[],\"ranking\":1,\"disqualified\":false},\"nominatedPlayer\":{\"username\":\"otherAremju\",\"socketId\":\"blablablu\",\"cardAmount\":0,\"cards\":[],\"ranking\":1,\"disqualified\":false},\"nominatedColor\":\"yellow\",\"type\":\"nominate\",\"explanation\":\"random pick\"}";
+        String expectedJson = "{\"amount\":1,\"cards\":[],\"player\":{\"username\":\"Aremju\",\"socketId\":\"blablabla\",\"cardAmount\":0,\"cards\":[],\"ranking\":1,\"disqualified\":false},\"nominatedPlayer\":{\"username\":\"otherAremju\",\"socketId\":\"blablablu\",\"cardAmount\":0,\"cards\":[],\"ranking\":1,\"disqualified\":false},\"nominatedColor\":\"yellow\",\"nominatedAmount\":3,\"type\":\"nominate\",\"explanation\":\"random pick\"}";
         assertEquals(expectedJson,nominateCard.toJSON());
     }
 }

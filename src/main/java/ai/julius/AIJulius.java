@@ -4,9 +4,18 @@ import ai.IArtificialIntelligence;
 import gameobjects.Game;
 
 public class AIJulius implements IArtificialIntelligence {
+    private Decider decider;
+
+    /**
+     * Standard constructor for a AIJulius instance
+     * @param decider the decider indicates whether the AI is only making valid
+     *                moves, or whether the AI is gonna crush.
+     */
+    public AIJulius(Decider decider) {
+        this.decider = decider;
+    }
     @Override
     public String calculateNextMove(Game game) {
-        // TODO: 12.05.2023 Implement Strategy
-        return null;
+        return decider.decide(game);
     }
 }

@@ -15,7 +15,7 @@ public class Main {
         Rest rest = new Rest();
 
         ConnectionHandler newInstance = new ConnectionHandler();
-
+        String username = "";
         // assume we all have an account
         String token = null;
         while(token == null) {
@@ -23,7 +23,7 @@ public class Main {
                 Scanner sc = new Scanner(System.in);
                 System.out.println("Please log in");
                 System.out.print("Username: ");
-                String username = sc.nextLine();
+                username = sc.nextLine();
                 System.out.print("Password: ");
                 String password = sc.nextLine();
                 System.out.println();
@@ -40,7 +40,7 @@ public class Main {
         options.forceNew = true;
         // Connect the Socket
         newInstance.connect(socket);
-        ServerEventHandler serverEventHandler = new ServerEventHandler(socket, "Aremju");
+        ServerEventHandler serverEventHandler = new ServerEventHandler(socket, username);
 
         //example get-request for user connections
         rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
