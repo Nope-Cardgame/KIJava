@@ -76,10 +76,11 @@ public final class Gui extends JFrame {
         usernameLabel.setVisible(true);
         add(usernameLabel);
         add(new JLabel());
-        setSize(585,750); //square size
+        setSize(585,800); //square size
         setVisible(true);
         setResizable(false);
 
+        setIconImage(new ImageIcon("cardimages\\image_icon.png").getImage());
     }
 
     public List<Card> getDiscardPile() {
