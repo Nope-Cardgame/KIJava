@@ -40,4 +40,9 @@ public class ActionCard extends Card {
                 && other.getName().equals(this.getName())
                 && other.getCardType().equals(this.getCardType());
     }
+    public String getSpritePath(){
+        return  "cardimages/"+getName()+".png";
+
+
+    }
 }

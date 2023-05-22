@@ -34,7 +34,7 @@ public abstract class Card implements IJsonable {
         this.name = gson.fromJson(jsonString,getClass()).getName();
         this.colors = new Gson().fromJson(jsonString,getClass()).getColors();
     }
-
+    public abstract String getSpritePath();
     public String getCardType() {
         return this.type;
     }

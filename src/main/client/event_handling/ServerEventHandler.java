@@ -52,7 +52,7 @@ public class ServerEventHandler {
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
             LOG.info("Received gamestate");
-            // TODO: 12.05.2023 update view
+
             handleGameState(objects);
         });
 
@@ -92,6 +92,7 @@ public class ServerEventHandler {
     private void handleGameState(Object[] objects) {
         Game game = new Game(((JSONObject) objects[0]).toString());
         // method is only necessary if we are at turn
+        // TODO: 22.05.2023 refresh gui with cards and event information
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
                 // calculate the move with instance and emit

@@ -11,7 +11,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageLoader {
     BufferedImage image;
-    public ImageLoader(NumberCard card)  {
+    public ImageLoader(Card card)  {
         try {
            image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
         }

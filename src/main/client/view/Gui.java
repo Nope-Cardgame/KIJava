@@ -1,6 +1,8 @@
 package view;
 
 import command.ActionHandler;
+import gameobjects.Game;
+import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
 
@@ -14,8 +16,8 @@ import java.util.List;
 public final class Gui extends JFrame {
     private static Gui INSTANCE;
 
-    private NumberCard frontCard = new NumberCard("number", 1, Arrays.asList("red", "blue"), "card1");
-    private List<NumberCard> ownCards = new ArrayList<NumberCard>(); // the cards on the hand
+    private Card initialTopCard = new NumberCard("number", 1, Arrays.asList("red", "blue"), "card1");
+    private List<Card> discardPile = new ArrayList<Card>(); // the cards on the hand
     private JTextField usernameTextfield = new JTextField(); // the user can type in his name
     private JLabel usernameLabel = new JLabel("User name:"); // label to descibe
     private JLabel passwortLabel = new JLabel("Password:");// label to descibe
@@ -35,8 +37,8 @@ public final class Gui extends JFrame {
     }
 
     public Gui () {
-        getOwnCards().add(new NumberCard("number", 1, Arrays.asList("red", "blue"), "card1"));
-        getOwnCards().add(new NumberCard("number", 3, List.of("yellow"), "card2"));
+        getDiscardPile().add(new NumberCard("number", 1, Arrays.asList("red", "green", "yellow","blue"), "card1"));
+        getDiscardPile().add(new ActionCard("action",  List.of("red", "green", "yellow","blue"),"reset"));
 
         showCards.setBounds(20,240,550,300); //showing the cards
         showCards.setVisible(true);
@@ -80,19 +82,20 @@ public final class Gui extends JFrame {
 
     }
 
-    public List<NumberCard> getOwnCards() {
-        return ownCards;
+    public List<Card> getDiscardPile() {
+        return discardPile;
     }
 
     /**
      * update gui  with current cards
-     * @param ownCards
+     * @param game
      */
-    public void refresh(List<NumberCard> ownCards) {
-        ownCards = ownCards;
+    public void refresh(Game game) {
+        discardPile = game.getDiscardPile();
+        initialTopCard = game.getInitialTopCard();
         showCards.repaint();
     }
-    public NumberCard getFrontCard(){return frontCard;}
+    public Card getInitialTopCard(){return initialTopCard;}
     public String getPasswort(){return passwordfield.getText();}
     public String getUsername(){return usernameTextfield.getText();}
     public JPasswordField getPasswordfield(){return passwordfield;}

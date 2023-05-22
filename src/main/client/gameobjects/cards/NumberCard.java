@@ -56,8 +56,11 @@ public class NumberCard extends Card {
 
     public String getSpritePath(){
         String output = "cardimages/" + colors.get(0);
-        if(colors.size() > 1){
+        if(colors.size() == 2){
             output += colors.get(1);
+        }
+        if(colors.size() == 4){
+            output ="cardimages/wildcard";
         }
         output += value + ".png";
 
