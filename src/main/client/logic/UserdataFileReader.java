@@ -14,7 +14,7 @@ public class UserdataFileReader {
     public static String[] getUserData(){
         String[] userData = new String[2];
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\userdata.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("src\\main\\client\\userdata.txt"));
             userData[0] = reader.readLine();
             userData[1] = reader.readLine();
 
@@ -28,7 +28,7 @@ public class UserdataFileReader {
 
     public static boolean isEmpty(){
         try {
-            BufferedReader reader = new BufferedReader(new FileReader("src\\main\\java\\userdata.txt"));
+            BufferedReader reader = new BufferedReader(new FileReader("src\\main\\client\\userdata.txt"));
             if(reader.readLine() == null) {
                 LOG.info("No userdata found in file");
                 reader.close();

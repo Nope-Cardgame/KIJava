@@ -17,6 +17,12 @@ public class Main {
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
         Rest rest = new Rest();
         Gui.getInstance();
+
+        if(!UserdataFileReader.isEmpty()){
+            String[] userData = UserdataFileReader.getUserData();
+            Gui.getInstance().setUsernameTextfield(userData[0]);
+            Gui.getInstance().setPasswordfield(userData[1]);
+        }
     }
 
     public static boolean connect(String username, String password) {

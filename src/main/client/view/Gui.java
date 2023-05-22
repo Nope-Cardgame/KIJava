@@ -76,9 +76,9 @@ public final class Gui extends JFrame {
         usernameLabel.setVisible(true);
         add(usernameLabel);
         add(new JLabel());
-        setSize(700,700); //square size
+        setSize(585,750); //square size
         setVisible(true);
-
+        setResizable(false);
 
     }
 
@@ -95,6 +95,18 @@ public final class Gui extends JFrame {
         initialTopCard = game.getInitialTopCard();
         showCards.repaint();
     }
+
+
+
+
+    public void setUsernameTextfield(String userName){
+        getUsernameTextfield().setText(userName);
+    }
+
+    public void setPasswordfield(String password){
+        getPasswordfield().setText(password);
+    }
+
     public Card getInitialTopCard(){return initialTopCard;}
     public String getPasswort(){return passwordfield.getText();}
     public String getUsername(){return usernameTextfield.getText();}
