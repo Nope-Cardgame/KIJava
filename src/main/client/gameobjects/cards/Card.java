@@ -3,7 +3,11 @@ package gameobjects.cards;
 import com.google.gson.Gson;
 import gameobjects.IJsonable;
 
+import java.util.List;
+
 public abstract class Card implements IJsonable {
+    // Contains the colors that are used by this type of card
+    protected List<String> colors;
     private String type;
     private String name;
 
@@ -13,9 +17,10 @@ public abstract class Card implements IJsonable {
      * @param type the type of the card
      * @param name the name of the card
      */
-    public Card(String type, String name) {
+    public Card(String type, String name, List<String> color) {
         this.name = name;
         this.type = type;
+        this.colors = color;
     }
 
     /**
@@ -27,6 +32,7 @@ public abstract class Card implements IJsonable {
         Gson gson = new Gson();
         this.type = gson.fromJson(jsonString,getClass()).getCardType();
         this.name = gson.fromJson(jsonString,getClass()).getName();
+        this.colors = new Gson().fromJson(jsonString,getClass()).getColors();
     }
 
     public String getCardType() {
@@ -44,5 +50,13 @@ public abstract class Card implements IJsonable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<String> getColors() {
+        return colors;
+    }
+
+    public void setColor(List<String> color) {
+        this.colors = color;
     }
 }

@@ -54,7 +54,7 @@ public class TakeCard extends Action{
             this.player = new Player(playerObject.toString());
 
         } catch (JSONException e) {
-            e.printStackTrace();
+
         }
 
     }

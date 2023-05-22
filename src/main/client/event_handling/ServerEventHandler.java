@@ -2,6 +2,8 @@ package event_handling;
 
 import ai.AIFactory;
 import ai.IArtificialIntelligence;
+import ai.julius.AIJulius;
+import ai.julius.valid.JAIValidOnly;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -34,8 +36,9 @@ public class ServerEventHandler {
     public ServerEventHandler(Socket socket, String username) {
         this.socketInstance =  socket;
         this.username = username;
+        LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = AIFactory.getAI(this.username);
+        this.ai = new AIJulius(new JAIValidOnly());
         addEventListeners();
     }
 
@@ -87,19 +90,21 @@ public class ServerEventHandler {
      * @param objects the message that is provided by the EventListener
      */
     private void handleGameState(Object[] objects) {
-        Game game = new Game((String) objects[0]);
+        Game game = new Game(((JSONObject) objects[0]).toString());
         // method is only necessary if we are at turn
-        if(game.getCurrentPlayer().getUsername().equals(this.username)) {
-            // calculate the move with ai instance and emit
-            String move = this.ai.calculateNextMove(game);
-            Object[] message = new Object[1];
-            try {
-                JSONObject moveObject = new JSONObject(move);
-                message[0] = moveObject;
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+        if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
+            if(game.getCurrentPlayer().getUsername().equals(this.username)) {
+                // calculate the move with instance and emit
+                String move = this.ai.calculateNextMove(game);
+                Object[] message = new Object[1];
+                try {
+                    JSONObject moveObject = new JSONObject(move);
+                    message[0] = moveObject;
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                socketInstance.emit("playAction", message);
             }
-            socketInstance.emit("playAction", message);
         }
     }
 
