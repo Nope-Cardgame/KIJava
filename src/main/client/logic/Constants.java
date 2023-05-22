@@ -1,3 +1,5 @@
+package logic;
+
 public enum Constants {
     POST_SIGN_UP("http://nope.ddns.net/api/signup/"),
     POST_SIGN_IN("http://nope.ddns.net/api/signin/"),

@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URISyntaxException;
 
+import logic.Main;
+import org.json.JSONException;
 import view.Gui;
 
 public class ActionHandler implements ActionListener {
@@ -12,13 +15,17 @@ public class ActionHandler implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton src = (JButton) e.getSource();
          if(src == Gui.getInstance().getLoginButton()) {
-             Gui.getInstance().getScroll().setVisible(true);
-             Gui.getInstance().getLoginButton().setVisible(false);
-             Gui.getInstance().getSavaLoginData().setVisible(false);
-             Gui.getInstance().getUsernameTextfield().setVisible(false);
-             Gui.getInstance().getPasswortLabel().setVisible(false);
-             Gui.getInstance().getPasswordfield().setVisible(false);
-             Gui.getInstance().getUsernameLabel().setVisible(false);
+             boolean validLogin = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort());
+
+             if(validLogin) {
+                 Gui.getInstance().getScroll().setVisible(true);
+                 Gui.getInstance().getLoginButton().setVisible(false);
+                 Gui.getInstance().getSavaLoginData().setVisible(false);
+                 Gui.getInstance().getUsernameTextfield().setVisible(false);
+                 Gui.getInstance().getPasswortLabel().setVisible(false);
+                 Gui.getInstance().getPasswordfield().setVisible(false);
+                 Gui.getInstance().getUsernameLabel().setVisible(false);
+             }
          }
          if(src == Gui.getInstance().getSavaLoginData()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {

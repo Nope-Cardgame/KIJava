@@ -1,3 +1,5 @@
+package logic;
+
 import io.socket.client.Socket;
 import logging.NopeLogger;
 
