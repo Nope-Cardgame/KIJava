@@ -44,7 +44,6 @@ public final class Gui extends JFrame {
         getDiscardPile().add(new NumberCard("number", 1, Arrays.asList("red", "green", "yellow","blue"), "card1"));
         getDiscardPile().add(new ActionCard("action",  List.of("red", "green", "yellow","blue"),"reset"));
         getDiscardPile().add(new NumberCard("number", 3, List.of("red"), "card3"));
-        getDiscardPile().add(new NumberCard("number", 1, List.of("turquoise"), "card1"));
 
         paintGamePanel(false);
 
@@ -114,7 +113,7 @@ public final class Gui extends JFrame {
 
         background.setBounds(0,0,580,580);
 
-        showCards.setBounds(120,100,550,300); //showing the cards
+        showCards.setBounds(115,100,550,500); //showing the cards
         showCards.setOpaque(false);
 
         gamePanel = new JLayeredPane();

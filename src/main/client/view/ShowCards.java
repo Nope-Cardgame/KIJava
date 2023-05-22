@@ -11,27 +11,42 @@ public class ShowCards extends JPanel{
  * */
    public void paintComponent(Graphics g) {
        super.paintComponent(g);
-       Graphics2D g2d = (Graphics2D)g;
-       g.drawString("Your cards", 0,45);
+       g.drawString("Your cards:", 0,20);
        int start = 0; // the position of each card in a row
-       int xSize = 75;//width of card
-       int ySize = 100; // hight of card
-       int cardCount = Gui.getInstance().getDiscardPile().size();
-       if (cardCount>6){
-           xSize = 500/cardCount; // set the size according to card amount to not overfill row of cards
-           ySize = (int) (xSize*1.33); // each card with same frame
+       int xSize = 75;// width of card
+       int ySize = 100; // height of card
 
-       }
+       int cardCount = 0;
+
        for (Card card: Gui.getInstance().getDiscardPile()){
-           ImageLoader imageLoader = new ImageLoader(card); // load picture
-           g.drawImage(imageLoader.image, start,50 ,xSize,ySize,null); //show picture
-           g.drawRect(start,50 ,xSize,ySize); //black frame
-           start+=xSize; //update position of each card
+           //update position of each card
+           if(cardCount < 4) {
+               ImageLoader imageLoader = new ImageLoader(card); // load picture
+               g.drawImage(imageLoader.image, start, 25, xSize, ySize, null); //show picture
+               g.drawRect(start, 25, xSize, ySize); //black frame
+           } else {
+               if(cardCount == 4){
+                   start = 0;
+               }
+               ImageLoader imageLoader = new ImageLoader(card); // load picture
+               g.drawImage(imageLoader.image, start, 30 + ySize, xSize, ySize, null); //show picture
+               g.drawRect(start, 30 + ySize, xSize, ySize); //black frame
+           }
+           start += xSize + 5; //update position of each card
+           cardCount++;
+       }
+
+       int y_offset;
+
+       if(cardCount > 4){
+           y_offset = 2 * ySize + 50;
+       } else {
+           y_offset = ySize + 50;
        }
 
        ImageLoader imageLoader = new ImageLoader(Gui.getInstance().getInitialTopCard()); //show card
-       g.drawString("Front Cards", 0,175); //show the card on the stack top
-       g.drawImage(imageLoader.image, 0,180 ,100,130,null);
-       g.drawRect(0,180 ,100,130);//frame
+       g.drawString("Front card:", 0,y_offset - 5); //show the card on the stack top
+       g.drawImage(imageLoader.image, 0,y_offset ,xSize,ySize,null);
+       g.drawRect(0,y_offset ,xSize,ySize);//frame
    }
 }
