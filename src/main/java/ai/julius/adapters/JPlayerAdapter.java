@@ -107,4 +107,10 @@ public class JPlayerAdapter {
         }
         return cards;
     }
+
+    public List<Card> getStupidCard() {
+        List<Card> oneCard = new ArrayList<>();
+        oneCard.add(player.getCards().get(0));
+        return oneCard;
+    }
 }

@@ -17,6 +17,7 @@ public class NominateCard extends Action{
     private Player player;
     private Player nominatedPlayer;
     private String nominatedColor;
+    private int nominatedAmount;
 
     /**
      * Standard-Constructor for a NominateCardInstance
@@ -29,13 +30,15 @@ public class NominateCard extends Action{
      * @param nominatedPlayer the nominated Player
      * @param nominatedColor the nominated Color
      */
-    public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, String nominatedColor ) {
+    public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, String nominatedColor
+    ,int nominatedAmount) {
         super(type, explanation);
         this.amount = amount;
         this.nominatedColor = nominatedColor;
         this.cards = cards;
         this.nominatedPlayer = nominatedPlayer;
         this.player = player;
+        this.nominatedAmount = nominatedAmount;
     }
 
     /**
@@ -60,6 +63,7 @@ public class NominateCard extends Action{
             this.player = new Player(nominateCardObject.getJSONObject("player").toString());
             // nominatedPlayer
             this.nominatedPlayer = new Player(nominateCardObject.getJSONObject("nominatedPlayer").toString());
+            this.nominatedAmount = nominateCardObject.getInt("nominatedAmount");
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -108,5 +112,13 @@ public class NominateCard extends Action{
 
     public void setCards(List<Card> cards) {
         this.cards = cards;
+    }
+
+    public int getNominatedAmount() {
+        return nominatedAmount;
+    }
+
+    public void setNominatedAmount(int nominatedAmount) {
+        this.nominatedAmount = nominatedAmount;
     }
 }

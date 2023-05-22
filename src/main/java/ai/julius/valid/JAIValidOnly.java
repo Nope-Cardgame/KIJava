@@ -20,16 +20,8 @@ public class JAIValidOnly implements Decider {
         JGameAdapter gameAdapter = new JGameAdapter(game);
         if (gameAdapter.isLastAction("take") && !game.getState().equals("turn_start")) {
             action = actionAfterTakeCard(game);
-            Logger.getLogger(getClass().getSimpleName()).info("after take");
         } else {
             action = actionBeforeTakeCard(game);
-            Logger.getLogger(getClass().getSimpleName()).info("before take");
-        }
-        try {
-            action.toJSON();
-        } catch (NullPointerException e) {
-            Logger.getLogger(this.getClass().getSimpleName()).info("Caught some nasty NPException");
-            Logger.getLogger(this.getClass().getSimpleName()).info(game.toJSON());
         }
         return action.toJSON();
     }
@@ -66,6 +58,19 @@ public class JAIValidOnly implements Decider {
         Action action = null;
         JGameAdapter gameAdapter = new JGameAdapter(game);
         JPlayerAdapter playerAdapter = new JPlayerAdapter(game.getCurrentPlayer());
+        if (gameAdapter.getTopCard().getCardType().equals("reset") && game.getDiscardPile().size() == 1) {
+            List<Card> discardedCards = playerAdapter.getStupidCard();
+            if (discardedCards.get(0).getCardType().equals("nominate")) {
+                action = new NominateCard("nominate","found nominate",discardedCards.size(),discardedCards,game.getCurrentPlayer(),game.getCurrentPlayer(),discardedCards.get(0).getColors().get(0),1);
+            } else {
+                action = new DiscardCard("discard","had to discard :(",discardedCards.size(),discardedCards,game.getCurrentPlayer());
+            }
+        } else if (gameAdapter.getTopCard().getCardType().equals("nominate") && game.getDiscardPile().size() == 1) {
+            action = new NominateCard("nominate","nominate was first card",0,new ArrayList<>(),game.getCurrentPlayer(),game.getCurrentPlayer(),gameAdapter.getTopCard().getColors().get(0),1);
+        } else if (gameAdapter.getTopCard().getCardType().equals("invisible") && game.getDiscardPile().size() == 1) {
+            List<Card> discardedCards = playerAdapter.getStupidCard(gameAdapter.getTopCard().getColors().get(0));
+            
+        }
         if (gameAdapter.getTopCard().getCardType().equals("number")) {
             if (playerAdapter.hasCompleteSet(gameAdapter.getTopCard())) {
                 List<Card> discardCards = playerAdapter.getStupidSet(gameAdapter.getTopCard());
@@ -74,9 +79,6 @@ public class JAIValidOnly implements Decider {
                 action = new TakeCard("take","no cards to discard",1,new ArrayList<>(),game.getCurrentPlayer());
             }
         } else {
-            Logger.getLogger("IDK").info("Diesen Punkt kannst du aktuell nicht erreichen");
-            Logger.getLogger("IDK").info(game.toJSON());
-
             if (gameAdapter.getTopCard().getCardType().equals("nominate")) {
                 NominateCard nominateCard = (NominateCard) game.getLastAction();
                 List<Card> oneCardDiscard = playerAdapter.getStupidCard(nominateCard.getNominatedColor());
@@ -101,7 +103,7 @@ public class JAIValidOnly implements Decider {
                     oneCardDiscard,
                     game.getCurrentPlayer(),
                     game.getCurrentPlayer(),
-                    oneCardDiscard.get(0).getColors().get(0)
+                    oneCardDiscard.get(0).getColors().get(0),1
             );
         } else {
             action = new DiscardCard("discard","had to discard cards",oneCardDiscard.size(),oneCardDiscard,game.getCurrentPlayer());

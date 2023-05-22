@@ -29,6 +29,8 @@ public class Game implements IJsonable {
     private Card initialTopCard;
     private List<Action> actions;
     private String endTime;
+    private int lastNominateAmount;
+    private String lastNominateColor;
 
     /**
      * Standard Constructor for a game
@@ -54,7 +56,7 @@ public class Game implements IJsonable {
                 boolean oneMoreStartCards, Tournament tournament, String gameRole,
                 int encounterRound, List<Player> players, List<Card> discardPile,
                 Action lastAction, Player currentPlayer, String startTime, Card initialTopCard,
-                List<Action> actions, String endTime) {
+                List<Action> actions, String endTime, int lastNominateAmount, String lastNominateColor) {
         this.id = id;
         this.state = state;
         this.noActionCards = noActionCards;
@@ -71,6 +73,8 @@ public class Game implements IJsonable {
         this.initialTopCard = initialTopCard;
         this.actions = actions;
         this.endTime = endTime;
+        this.lastNominateAmount = lastNominateAmount;
+        this.lastNominateColor = lastNominateColor;
     }
 
     /**
@@ -87,6 +91,8 @@ public class Game implements IJsonable {
             this.noActionCards = gameObject.getBoolean("noActionCards");
             this.noWildcards = gameObject.getBoolean("noWildCards");
             this.oneMoreStartCard = gameObject.getBoolean("oneMoreStartCard");
+            this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
+            this.lastNominateColor = gameObject.getString("lastNominateColor");
 
             try {
                 this.startTime = gameObject.getString("startTime");
@@ -278,5 +284,21 @@ public class Game implements IJsonable {
 
     public void setActions(List<Action> actions) {
         this.actions = actions;
+    }
+
+    public int getLastNominateAmount() {
+        return lastNominateAmount;
+    }
+
+    public void setLastNominateAmount(int lastNominateAmount) {
+        this.lastNominateAmount = lastNominateAmount;
+    }
+
+    public String getLastNominateColor() {
+        return lastNominateColor;
+    }
+
+    public void setLastNominateColor(String lastNominateColor) {
+        this.lastNominateColor = lastNominateColor;
     }
 }
