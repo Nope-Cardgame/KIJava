@@ -17,11 +17,11 @@ public class ActionCardTest {
         Card actionCard = new ActionCard("nominate", color, "red nominate");
         // Necessary step to check whether polymorphism works or not
         ActionCard staticActionCard = (ActionCard) actionCard;
-        ActionCard anotherActionCard = new ActionCard("{\"type\":\"nominate\",\"color\":[\"red\"],\"name\":\"red nominate\"}");
+        ActionCard anotherActionCard = new ActionCard("{\"type\":\"nominate\",\"colors\":[\"red\"],\"name\":\"red nominate\"}");
         // Check if values are equal
         assertEquals(staticActionCard.getCardType(),anotherActionCard.getCardType());
         assertEquals(staticActionCard.getName(),anotherActionCard.getName());
-        assertEquals(staticActionCard.getColor(),anotherActionCard.getColor());
+        assertEquals(staticActionCard.getColors(),anotherActionCard.getColors());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class ActionCardTest {
         List<String> color = new ArrayList<>();
         color.add("red");
         Card actionCard = new ActionCard("nominate", color, "red nominate");
-        String expectedJSON = "{\"color\":[\"red\"],\"type\":\"nominate\",\"name\":\"red nominate\"}";
+        String expectedJSON = "{\"colors\":[\"red\"],\"type\":\"nominate\",\"name\":\"red nominate\"}";
         // sequence of json dictionaries doesn't matter
         assertEquals(expectedJSON,actionCard.toJSON());
     }
