@@ -6,9 +6,12 @@ import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +30,7 @@ public final class Gui extends JFrame {
     private ActionHandler act = new ActionHandler(); // for the buttons
     private JTable table = new JTable(); //shows all actions of game in a list
     private ShowCards showCards = new ShowCards();// jpanel showing the cards with picutes
+    private JLayeredPane gamePanel;
     DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
     JScrollPane scroll= new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     public static Gui getInstance() {
@@ -39,10 +43,11 @@ public final class Gui extends JFrame {
     public Gui () {
         getDiscardPile().add(new NumberCard("number", 1, Arrays.asList("red", "green", "yellow","blue"), "card1"));
         getDiscardPile().add(new ActionCard("action",  List.of("red", "green", "yellow","blue"),"reset"));
+        getDiscardPile().add(new NumberCard("number", 3, List.of("red"), "card3"));
+        getDiscardPile().add(new NumberCard("number", 1, List.of("turquoise"), "card1"));
 
-        showCards.setBounds(20,240,550,300); //showing the cards
-        showCards.setVisible(true);
-        add(showCards);
+        paintGamePanel(false);
+
         scroll.setVisible(false); //scroll bar for game table
         table.setModel(model);
         table.getColumnModel().getColumn(0).setPreferredWidth(5);
@@ -76,7 +81,7 @@ public final class Gui extends JFrame {
         usernameLabel.setVisible(true);
         add(usernameLabel);
         add(new JLabel());
-        setSize(585,800); //square size
+        setSize(585,805); //square size
         setVisible(true);
         setResizable(false);
 
@@ -94,11 +99,34 @@ public final class Gui extends JFrame {
     public void refresh(Game game) {
         discardPile = game.getDiscardPile();
         initialTopCard = game.getInitialTopCard();
+        paintGamePanel(true);
         showCards.repaint();
     }
 
+    public void paintGamePanel(boolean visibility){
+        BackgroundImagePanel background = new BackgroundImagePanel();
 
+        try {
+            Image backgroundImage = ImageIO.read(new File("cardimages\\background.png"));
+            background.setImage(backgroundImage);
+        } catch (IOException ignored){
+        }
 
+        background.setBounds(0,0,580,580);
+
+        showCards.setBounds(120,100,550,300); //showing the cards
+        showCards.setOpaque(false);
+
+        gamePanel = new JLayeredPane();
+        gamePanel.setBounds(0, 200, 580, 580);
+
+        gamePanel.add(background, 1);
+        gamePanel.add(showCards, 0);
+
+        gamePanel.setVisible(visibility);
+
+        add(gamePanel);
+    }
 
     public void setUsernameTextfield(String userName){
         getUsernameTextfield().setText(userName);
@@ -106,6 +134,10 @@ public final class Gui extends JFrame {
 
     public void setPasswordfield(String password){
         getPasswordfield().setText(password);
+    }
+
+    public JLayeredPane getGamePanel(){
+        return gamePanel;
     }
 
     public Card getInitialTopCard(){return initialTopCard;}

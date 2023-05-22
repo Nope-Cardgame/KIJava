@@ -25,6 +25,8 @@ public class ActionHandler implements ActionListener {
                  Gui.getInstance().getPasswortLabel().setVisible(false);
                  Gui.getInstance().getPasswordfield().setVisible(false);
                  Gui.getInstance().getUsernameLabel().setVisible(false);
+
+                 Gui.getInstance().getGamePanel().setVisible(true);
              }
          }
          if(src == Gui.getInstance().getSavaLoginData()) {

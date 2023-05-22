@@ -12,7 +12,7 @@ public class ShowCards extends JPanel{
    public void paintComponent(Graphics g) {
        super.paintComponent(g);
        Graphics2D g2d = (Graphics2D)g;
-       g.drawString("your cards", 0,45);
+       g.drawString("Your cards", 0,45);
        int start = 0; // the position of each card in a row
        int xSize = 75;//width of card
        int ySize = 100; // hight of card
@@ -33,6 +33,5 @@ public class ShowCards extends JPanel{
        g.drawString("Front Cards", 0,175); //show the card on the stack top
        g.drawImage(imageLoader.image, 0,180 ,100,130,null);
        g.drawRect(0,180 ,100,130);//frame
-
    }
 }
