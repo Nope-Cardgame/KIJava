@@ -32,4 +32,13 @@ public class CardAdapter {
         }
         return found;
     }
+
+    /**
+     * Checks if a card has two Colors or not
+     *
+     * @return true if that's so, false otherwise
+     */
+    public boolean hasTwoColors() {
+        return this.card.getColors().size() == 2;
+    }
 }
