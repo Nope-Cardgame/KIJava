@@ -8,7 +8,8 @@ Kurze Beschreibung des Repos und der übergriefenden Schnittstelle für die unte
 
 
 ## Mitglieder
-Mitglied | entwickelter Client |--- | --- |
+Mitglied | entwickelter Client |
+--- | --- |
 [Marian Koge](https://github.com/MarianK99) | Client1
 [Alexander Lauruhn](https://github.com/AlexanderLauruhn) | Client2
 [Julius Emil Arendt](https://github.com/Aremju) | Client3
@@ -34,8 +35,10 @@ Beschreibung der Bedienung für Client2 um ein NOPE Spiel zu spielen
 
 ### Client3
 
-Hier ist eine Pseudocode-Beschreibung des aktuellen KI-Clients,<br> 
-wie er in etwa funktionieren soll (er macht lediglich erstmal gültige Spielzüge)
+Ich habe mich dazu entschieden, meinen Algorithmus mit Pseudocode ein wenig zu <br>
+erklären,  er ist aktuell so konzipiert, dass mit allen Karten gültig spielbar ist,<br>
+daher ist dieser auch noch nicht besonders schlau:
+
 
     Algorithmus gueltigerSpielzug(game):
     Aktionsobjekt = null
@@ -51,8 +54,6 @@ wie er in etwa funktionieren soll (er macht lediglich erstmal gültige Spielzüg
                 ansonsten:
                     Aktionsobjekt = erstelle sayNope
             ansonsten wenn oberste Karte = numbercard:
-                wenn karte 2 farben hat:
-                    suche Farbe, für die Set vervollständigt
                 schaue, ob set vervollständigt
                     ja: Aktionsobjekt = erstelle discardCard mit diesem Set, bzw. nominate, wenn beim Set nominate oben ist
                     nein: Aktionsobjekt = erstelle sayNope
