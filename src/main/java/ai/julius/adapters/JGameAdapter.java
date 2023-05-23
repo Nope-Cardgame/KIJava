@@ -17,10 +17,21 @@ public class JGameAdapter {
     }
 
     /**
-     * @return the top card in the game's discard pile
+     * loops through the discard-Pile until there is no more invisible-card
+     *
+     * @implNote Only call this function if you can assume that
+     *           the top card is not the only card in the discard pile of the game
+     *
+     * @return the card value of that specific card, null if that card does not exist...
      */
     public Card getTopCard() {
-        return game.getDiscardPile().get(0);
+        Card returnValue = null;
+        for (int i = 0; i < game.getDiscardPile().size() && returnValue == null; i++) {
+            if (!game.getDiscardPile().get(i).getCardType().equals("invisible")) {
+                returnValue = game.getDiscardPile().get(i);
+            }
+        }
+        return returnValue;
     }
 
     /**
