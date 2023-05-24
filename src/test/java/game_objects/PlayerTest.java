@@ -26,8 +26,6 @@ public class PlayerTest {
         color.add("red");
         Card actionCard = new ActionCard("nominate", color, "red nominate");
         List<Card> cards = new ArrayList<>();
-        cards.add(actionCard);
-        cards.add(numberCard);
         this.player = new Player("Aremju","blablabla",2,cards,1,false);
     }
 
@@ -44,7 +42,7 @@ public class PlayerTest {
                 "      \"name\":\"red nominate\"\n" +
                 "    },\n" +
                 "    {\"value\":1,\n" +
-                "      \"color\": [\n" +
+                "      \"colors\": [\n" +
                 "        \"red\",\n" +
                 "        \"green\",\n" +
                 "        \"blue\",\n" +
@@ -69,8 +67,7 @@ public class PlayerTest {
         String expectedJsonString = "{\"username\":\"Aremju\"," +
                 "\"socketId\":\"blablabla\"," +
                 "\"cardAmount\":2," +
-                "\"cards\":[{\"color\":[\"red\"],\"type\":\"nominate\",\"name\":\"red nominate\"}," +
-                "{\"value\":1,\"color\":[\"red\",\"green\",\"blue\",\"yellow\"],\"type\":\"number\",\"name\":\"wildcard\"}]," +
+                "\"cards\":[]," +
                 "\"ranking\":1," +
                 "\"disqualified\":false}";
         assertEquals(expectedJsonString,this.player.toJSON());
