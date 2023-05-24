@@ -1,9 +1,7 @@
 package event_handling;
 
-import ai.AIFactory;
 import ai.IArtificialIntelligence;
-import ai.julius.AIJulius;
-import ai.julius.valid.JAIValidOnly;
+import ai.marian.AIMarian;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -11,13 +9,10 @@ import com.google.gson.JsonParser;
 import gameobjects.Game;
 import io.socket.client.Socket;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import io.socket.emitter.Emitter;
 import logging.NopeLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +35,7 @@ public class ServerEventHandler {
         this.username = username;
         LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = new AIJulius(new JAIValidOnly());
+        this.ai = new AIMarian();
         addEventListeners();
     }
 
@@ -55,7 +50,11 @@ public class ServerEventHandler {
         socketInstance.on("gameState", objects -> {
             LOG.info("Received gamestate" + Arrays.toString(objects));
 
-            handleGameState(objects);
+            try {
+                handleGameState(objects);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         socketInstance.on("error", args1 -> {
@@ -92,10 +91,11 @@ public class ServerEventHandler {
      *
      * @param objects the message that is provided by the EventListener
      */
-    private void handleGameState(Object[] objects) {
+    private void handleGameState(Object[] objects) throws InterruptedException {
         Game game = new Game(((JSONObject) objects[0]).toString());
         // method is only necessary if we are at turn
-        // TODO: 22.05.2023 refresh gui with cards and event information
+        Gui.getInstance().refresh(game);
+        Thread.sleep(2000);
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
                 // calculate the move with instance and emit

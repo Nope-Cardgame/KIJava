@@ -1,6 +1,8 @@
 package view;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +13,17 @@ import javax.imageio.ImageIO;
  */
 public class ImageLoader {
     BufferedImage image;
-    public ImageLoader(Card card)  {
-        try {
-           image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
-        }
-        catch (IOException e){
-            e.printStackTrace();
+    public ImageLoader(Card card) {
+        if(card == null){
+            try {
+                image = ImageIO.read(new File("cardimages\\background.png"));
+            } catch (IOException ignored){
+            }
+        } else {
+            try {
+                image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
+            } catch (IOException ignored) {
+            }
         }
     }
 }

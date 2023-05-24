@@ -1,2 +1,2 @@
-MarianK99
-safestPasswordInExistence
+Java
+123456

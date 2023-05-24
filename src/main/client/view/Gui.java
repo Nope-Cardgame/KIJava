@@ -5,30 +5,25 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import command.ActionHandler;
 import gameobjects.Game;
-import gameobjects.cards.ActionCard;
 import gameobjects.cards.Card;
-import gameobjects.cards.NumberCard;
 import logic.Constants;
 import logic.Main;
 import logic.RequestType;
 import logic.Rest;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public final class Gui extends JFrame {
     private static Gui INSTANCE;
     private final Rest rest = new Rest();
 
-    private Card initialTopCard = new NumberCard("number", 1, Arrays.asList("red", "blue"), "card1");
-    private List<Card> discardPile = new ArrayList<Card>(); // the cards on the hand
+    private Card initialTopCard = null;
+    private List<Card> playerHand = new ArrayList<Card>(); // the cards on the hand
     private JTextField usernameTextfield = new JTextField(); // the user can type in his name
     private JLabel usernameLabel = new JLabel("User name:"); // label to descibe
     private JLabel passwortLabel = new JLabel("Password:");// label to descibe
@@ -36,15 +31,23 @@ public final class Gui extends JFrame {
     private JButton loginButton = new JButton("Log in"); // button for login
     private JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
     private JButton reloadPlayerList = new JButton("Reload player list");
+    private JButton addPlayerToInvite = new JButton("Add marked player to list");
+    private JButton removePlayerToInvite = new JButton("Remove marked player to list");
+    private JButton inviteChosenPlayer = new JButton("Invite players to game");
     private ActionHandler act = new ActionHandler(); // for the buttons
     private JTable table = new JTable(); //shows all actions of game in a list
     private JTable playerListTable = new JTable();
+    private JTable addedPlayerToInviteTable = new JTable();
     private ShowCards showCards = new ShowCards();// jpanel showing the cards with picutes
     private JLayeredPane gamePanel;
     private DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
     private DefaultTableModel playerListModel = new DefaultTableModel(new Object[][]{}, new String[]{"Playername", "Socket-ID"});
+    private DefaultTableModel addedPlayerToInviteModel = new DefaultTableModel(new Object[][]{}, new String[]{"Added player to invite", "Socket-ID"});
+
     JScrollPane scroll= new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    JScrollPane playerListscroll= new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane playerListScroll = new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane addedPlayerToInviteScroll= new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
     public static Gui getInstance() {
         if(INSTANCE == null) {
             INSTANCE = new Gui();
@@ -53,24 +56,41 @@ public final class Gui extends JFrame {
     }
 
     public Gui () {
-        //getDiscardPile().add(new NumberCard("number", 1, Arrays.asList("red", "green", "yellow","blue"), "card1"));
-        //getDiscardPile().add(new ActionCard("action",  List.of("red", "green", "yellow","blue"),"reset"));
-        //getDiscardPile().add(new NumberCard("number", 3, List.of("red"), "card3"));
-
-        paintGamePanel(false);
+        showCards.setVisible(false);
+        showCards.setBounds(10,200,560,560); //showing the cards
+        showCards.setOpaque(false);
+        add(showCards);
 
         playerListTable.setModel(playerListModel);
         playerListTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         playerListTable.setEnabled(true);
-        playerListscroll.setBounds(565,0, 205, 200);
-        playerListscroll.setViewportView(playerListTable);
-        playerListscroll.setVisible(false);
-        add(playerListscroll);
+        playerListScroll.setVisible(false);
+        playerListScroll.setBounds(575,40, 505, 200);
+        playerListScroll.setViewportView(playerListTable);
+        add(playerListScroll);
 
-        reloadPlayerList.addActionListener(act);
-        reloadPlayerList.setBounds(620, 220, 120, 30);
         reloadPlayerList.setVisible(false);
+        reloadPlayerList.addActionListener(act);
+        reloadPlayerList.setBounds(575, 0, 520, 30);
         add(reloadPlayerList);
+
+        addPlayerToInvite.setVisible(false);
+        addPlayerToInvite.setBounds(575, 245, 250, 30);
+        addPlayerToInvite.addActionListener(act);
+        add(addPlayerToInvite);
+
+        removePlayerToInvite.setVisible(false);
+        removePlayerToInvite.setBounds(835, 245, 245, 30);
+        removePlayerToInvite.addActionListener(act);
+        add(removePlayerToInvite);
+
+        addedPlayerToInviteTable.setModel(addedPlayerToInviteModel);
+        addedPlayerToInviteTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+        addedPlayerToInviteTable.setEnabled(true);
+        addedPlayerToInviteScroll.setVisible(false);
+        addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
+        addedPlayerToInviteScroll.setViewportView(addedPlayerToInviteTable);
+        add(addedPlayerToInviteScroll);
 
         scroll.setVisible(false); //scroll bar for game table
         table.setModel(model);
@@ -79,7 +99,7 @@ public final class Gui extends JFrame {
         table.setPreferredScrollableViewportSize(new Dimension(450,63));
         table.setFillsViewportHeight(true);
         model = (DefaultTableModel) table.getModel();
-        scroll.setBounds(10,0,550,200);
+        scroll.setBounds(10,0,560,200);
         scroll.setViewportView(table);
         add(scroll);
 
@@ -110,7 +130,7 @@ public final class Gui extends JFrame {
         add(usernameLabel);
         add(new JLabel());
 
-        setSize(785,805); //square size
+        setSize(1100,805); //square size
         setVisible(true);
         setResizable(false);
 
@@ -119,51 +139,25 @@ public final class Gui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    public List<Card> getDiscardPile() {
-        return discardPile;
-    }
-
     /**
      * update gui  with current cards
      * @param game
      */
     public void refresh(Game game) {
-        discardPile = game.getDiscardPile();
-        initialTopCard = game.getInitialTopCard();
-        paintGamePanel(true);
+        playerHand = game.getPlayers().get(0).getCards();
+        initialTopCard = game.getDiscardPile().get(0);
         showCards.repaint();
     }
 
-    public void addDataToTable(Object... data){
+    public void addDataToPlayerListModel(Object... data){
         playerListModel.addRow(data);
     }
 
-    public void paintGamePanel(boolean visibility){
-        BackgroundImagePanel background = new BackgroundImagePanel();
-
-        try {
-            Image backgroundImage = ImageIO.read(new File("cardimages\\background.png"));
-            background.setImage(backgroundImage);
-        } catch (IOException ignored){
-        }
-
-        background.setBounds(0,0,580,580);
-
-        showCards.setBounds(115,100,550,500); //showing the cards
-        showCards.setOpaque(false);
-
-        gamePanel = new JLayeredPane();
-        gamePanel.setBounds(0, 200, 580, 580);
-
-        gamePanel.add(background, 1);
-        gamePanel.add(showCards, 0);
-
-        gamePanel.setVisible(visibility);
-
-        add(gamePanel);
+    public void addDataToAddedPlayerModel(Object... data){
+        addedPlayerToInviteModel.addRow(data);
     }
 
-    public void addUserDataToPlayerListModel(){
+    public void addUserData(){
         playerListModel.setRowCount(0);
 
         String userdata;
@@ -198,7 +192,7 @@ public final class Gui extends JFrame {
         }
 
         for(int i = 0; i < jsonNode.size(); i++){
-            Gui.getInstance().addDataToTable(usernames[i], socketIds[i]);
+            Gui.getInstance().addDataToPlayerListModel(usernames[i], socketIds[i]);
         }
     }
 
@@ -214,6 +208,10 @@ public final class Gui extends JFrame {
         return gamePanel;
     }
 
+    public List<Card> getPlayerHand() {
+        return playerHand;
+    }
+
     public Card getInitialTopCard(){return initialTopCard;}
     public String getPasswort(){return passwordfield.getText();}
     public String getUsername(){return usernameTextfield.getText();}
@@ -226,10 +224,38 @@ public final class Gui extends JFrame {
     public JTable getTable(){return table;}
 
     public JScrollPane getScroll(){return scroll;}
-    public JScrollPane getPlayerListscroll(){return playerListscroll;}
+    public JScrollPane getPlayerListScroll(){return playerListScroll;}
 
     public JButton getReloadPlayerList() {
         return reloadPlayerList;
+    }
+
+    public ShowCards getShowCards() {
+        return showCards;
+    }
+
+    public JButton getAddPlayerToInvite() {
+        return addPlayerToInvite;
+    }
+
+    public JButton getRemovePlayerToInvite() {
+        return removePlayerToInvite;
+    }
+
+    public JButton getInviteChosenPlayer() {
+        return inviteChosenPlayer;
+    }
+
+    public JScrollPane getAddedPlayerToInviteScroll() {
+        return addedPlayerToInviteScroll;
+    }
+
+    public JTable getPlayerListTable() {
+        return playerListTable;
+    }
+
+    public JTable getAddedPlayerToInviteTable() {
+        return addedPlayerToInviteTable;
     }
 }
 

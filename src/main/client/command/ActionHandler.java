@@ -4,20 +4,12 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.util.Arrays;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import logic.Constants;
 import logic.Main;
-import logic.RequestType;
 import logic.Rest;
 import view.Gui;
 
 public class ActionHandler implements ActionListener {
-
-    Rest rest = new Rest();
 
     public void actionPerformed(ActionEvent e) {
         JButton src = (JButton) e.getSource();
@@ -33,14 +25,28 @@ public class ActionHandler implements ActionListener {
                  Gui.getInstance().getPasswordfield().setVisible(false);
                  Gui.getInstance().getUsernameLabel().setVisible(false);
 
-                 Gui.getInstance().addUserDataToPlayerListModel();
-                 Gui.getInstance().getPlayerListscroll().setVisible(true);
-                 Gui.getInstance().getGamePanel().setVisible(true);
+                 Gui.getInstance().addUserData();
+                 Gui.getInstance().getPlayerListScroll().setVisible(true);
+                 Gui.getInstance().getShowCards().setVisible(true);
                  Gui.getInstance().getReloadPlayerList().setVisible(true);
+                 Gui.getInstance().getAddPlayerToInvite().setVisible(true);
+                 Gui.getInstance().getRemovePlayerToInvite().setVisible(true);
+                 Gui.getInstance().getInviteChosenPlayer().setVisible(true);
+                 Gui.getInstance().getAddedPlayerToInviteScroll().setVisible(true);
              }
          }
          if(src == Gui.getInstance().getReloadPlayerList()){
-             Gui.getInstance().addUserDataToPlayerListModel();
+             Gui.getInstance().addUserData();
+         }
+         if(src == Gui.getInstance().getAddPlayerToInvite()){
+             int[] row = Gui.getInstance().getPlayerListTable().getSelectedRows();
+             System.out.println(row);
+             for (int j = row[0]; j < row[row.length]; j++) {
+                 String addedPlayer = (String) Gui.getInstance().getPlayerListTable().getValueAt(j, 0);
+                 String addedSocketId = (String) Gui.getInstance().getPlayerListTable().getValueAt(j, 1);
+                 Gui.getInstance().addDataToAddedPlayerModel(addedPlayer, addedSocketId);
+                 Gui.getInstance().getPlayerListTable().remove(j);
+             }
          }
          if(src == Gui.getInstance().getSavaLoginData()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {
