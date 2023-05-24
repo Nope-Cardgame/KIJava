@@ -16,6 +16,7 @@ public class Main {
 
     private static Rest rest;
     private static String token;
+    private static String username_global;
 
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
         rest = new Rest();
@@ -31,6 +32,8 @@ public class Main {
     public static boolean connect(String username, String password) {
         ConnectionHandler newInstance = new ConnectionHandler();
         WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
+
+        username_global = username;
 
         try {
             token = webTokenReceiver.createWebToken();
@@ -71,5 +74,9 @@ public class Main {
 
     public static String getToken() {
         return token;
+    }
+
+    public static String getUsername_global() {
+        return username_global;
     }
 }

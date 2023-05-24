@@ -32,7 +32,7 @@ public final class Gui extends JFrame {
     private JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
     private JButton reloadPlayerList = new JButton("Reload player list");
     private JButton addPlayerToInvite = new JButton("Add marked player to list");
-    private JButton removePlayerToInvite = new JButton("Remove marked player to list");
+    private JButton removePlayerToInvite = new JButton("Remove marked player from list");
     private JButton inviteChosenPlayer = new JButton("Invite players to game");
     private ActionHandler act = new ActionHandler(); // for the buttons
     private JTable table = new JTable(); //shows all actions of game in a list
@@ -61,6 +61,7 @@ public final class Gui extends JFrame {
         showCards.setOpaque(false);
         add(showCards);
 
+        playerListTable.getTableHeader().setReorderingAllowed(false);
         playerListTable.setModel(playerListModel);
         playerListTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         playerListTable.setEnabled(true);
@@ -84,6 +85,7 @@ public final class Gui extends JFrame {
         removePlayerToInvite.addActionListener(act);
         add(removePlayerToInvite);
 
+        addedPlayerToInviteTable.getTableHeader().setReorderingAllowed(false);
         addedPlayerToInviteTable.setModel(addedPlayerToInviteModel);
         addedPlayerToInviteTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         addedPlayerToInviteTable.setEnabled(true);
@@ -91,6 +93,11 @@ public final class Gui extends JFrame {
         addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
         addedPlayerToInviteScroll.setViewportView(addedPlayerToInviteTable);
         add(addedPlayerToInviteScroll);
+
+        inviteChosenPlayer.setBounds(575, 485, 520, 30);
+        inviteChosenPlayer.setVisible(false);
+        inviteChosenPlayer.addActionListener(act);
+        add(inviteChosenPlayer);
 
         scroll.setVisible(false); //scroll bar for game table
         table.setModel(model);
