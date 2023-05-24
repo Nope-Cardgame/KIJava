@@ -10,6 +10,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import gameobjects.Game;
 import io.socket.client.Socket;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -51,7 +53,7 @@ public class ServerEventHandler {
      */
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
-            LOG.info("Received gamestate");
+            LOG.info("Received gamestate" + Arrays.toString(objects));
 
             handleGameState(objects);
         });
@@ -70,6 +72,7 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("gameEnd", args1 -> {
+            LOG.info("SPIEL ZU ENDE!!!!!!!!!!!!!!!!!!!!");
             LOG.info("gameEnd: " +Arrays.toString(args1));
         });
 

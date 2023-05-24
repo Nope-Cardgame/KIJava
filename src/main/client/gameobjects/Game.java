@@ -91,10 +91,18 @@ public class Game implements IJsonable {
             this.noActionCards = gameObject.getBoolean("noActionCards");
             this.noWildcards = gameObject.getBoolean("noWildCards");
             this.oneMoreStartCard = gameObject.getBoolean("oneMoreStartCard");
-            this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
-            this.lastNominateColor = gameObject.getString("lastNominateColor");
 
             try {
+                this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
+                this.lastNominateColor = gameObject.getString("lastNominateColor");
+            } catch (JSONException e){
+                this.lastNominateAmount = 0;
+                this.lastNominateColor = null;
+            }
+
+            try {
+                this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
+                this.lastNominateColor = gameObject.getString("lastNominateColor");
                 this.startTime = gameObject.getString("startTime");
             } catch (JSONException e) {
                 this.startTime = null;
@@ -147,8 +155,7 @@ public class Game implements IJsonable {
                 this.endTime = null;
                 this.actions = null;
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        } catch (JSONException ignored) {
         }
     }
 

@@ -14,8 +14,11 @@ import java.util.Map;
 
 public class Main {
 
+    private static Rest rest;
+    private static String token;
+
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
-        Rest rest = new Rest();
+        rest = new Rest();
         Gui.getInstance();
 
         if(!UserdataFileReader.isEmpty()){
@@ -28,7 +31,6 @@ public class Main {
     public static boolean connect(String username, String password) {
         ConnectionHandler newInstance = new ConnectionHandler();
         WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
-        String token = null;
 
         try {
             token = webTokenReceiver.createWebToken();
@@ -57,16 +59,17 @@ public class Main {
 
         ServerEventHandler serverEventHandler = new ServerEventHandler(socket, username);
 
-        /* example get-request for user connections
         try {
-            rest.request(Constants.GET_USER_CONNECTIONS.get(), token, Rest.RequestType.GET);
+            rest.request(Constants.GET_ALL_GAME_INFORMATION.get(), token, RequestType.GET);
+            rest.request(Constants.GET_USER_CONNECTIONS.get(), token, RequestType.GET);
         } catch (IOException exception){
             return false;
         }
-         */
 
         return true;
     }
 
-
+    public static String getToken() {
+        return token;
+    }
 }

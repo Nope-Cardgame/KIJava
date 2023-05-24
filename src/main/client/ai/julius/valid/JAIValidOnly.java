@@ -69,7 +69,7 @@ public class JAIValidOnly implements Decider {
             action = new NominateCard("nominate","nominate was first card",0,new ArrayList<>(),game.getCurrentPlayer(),game.getCurrentPlayer(),gameAdapter.getTopCard().getColors().get(0),1);
         } else if (gameAdapter.getTopCard().getCardType().equals("invisible") && game.getDiscardPile().size() == 1) {
             List<Card> discardedCards = playerAdapter.getStupidCard(gameAdapter.getTopCard().getColors().get(0));
-            
+
         }
         if (gameAdapter.getTopCard().getCardType().equals("number")) {
             if (playerAdapter.hasCompleteSet(gameAdapter.getTopCard())) {

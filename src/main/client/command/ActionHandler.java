@@ -4,13 +4,20 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.net.URISyntaxException;
+import java.util.Arrays;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import logic.Constants;
 import logic.Main;
-import org.json.JSONException;
+import logic.RequestType;
+import logic.Rest;
 import view.Gui;
 
 public class ActionHandler implements ActionListener {
+
+    Rest rest = new Rest();
 
     public void actionPerformed(ActionEvent e) {
         JButton src = (JButton) e.getSource();
@@ -26,8 +33,14 @@ public class ActionHandler implements ActionListener {
                  Gui.getInstance().getPasswordfield().setVisible(false);
                  Gui.getInstance().getUsernameLabel().setVisible(false);
 
+                 Gui.getInstance().addUserDataToPlayerListModel();
+                 Gui.getInstance().getPlayerListscroll().setVisible(true);
                  Gui.getInstance().getGamePanel().setVisible(true);
+                 Gui.getInstance().getReloadPlayerList().setVisible(true);
              }
+         }
+         if(src == Gui.getInstance().getReloadPlayerList()){
+             Gui.getInstance().addUserDataToPlayerListModel();
          }
          if(src == Gui.getInstance().getSavaLoginData()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {

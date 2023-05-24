@@ -67,7 +67,7 @@ public class Player implements IJsonable {
                         CardFactory.
                                 getCard(jsonArray.
                                         getJSONObject(iterator).
-                                toString())
+                                        toString())
                 );
             }
         }catch(JSONException e) {

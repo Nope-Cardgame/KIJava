@@ -31,7 +31,7 @@ public class NominateCard extends Action{
      * @param nominatedColor the nominated Color
      */
     public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, String nominatedColor
-    ,int nominatedAmount) {
+            ,int nominatedAmount) {
         super(type, explanation);
         this.amount = amount;
         this.nominatedColor = nominatedColor;
