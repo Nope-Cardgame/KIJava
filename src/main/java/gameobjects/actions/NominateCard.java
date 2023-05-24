@@ -65,7 +65,6 @@ public class NominateCard extends Action{
             this.nominatedPlayer = new Player(nominateCardObject.getJSONObject("nominatedPlayer").toString());
             this.nominatedAmount = nominateCardObject.getInt("nominatedAmount");
         } catch (JSONException e) {
-            throw new RuntimeException(e);
         }
     }
 

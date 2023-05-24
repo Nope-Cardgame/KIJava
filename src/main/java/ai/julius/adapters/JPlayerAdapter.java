@@ -3,12 +3,11 @@ package ai.julius.adapters;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class JPlayerAdapter {
-    private Player player;
+    private final Player player;
 
     public JPlayerAdapter(Player player) {
         this.player = player;
@@ -70,6 +69,11 @@ public class JPlayerAdapter {
                 break;
             }
         }
+        if(containsNominate(cardSet)) {
+            List<Card> newCardList = new ArrayList<>();
+            newCardList.add(findNominate(cardSet));
+            cardSet = newCardList;
+        }
         return cardSet;
     }
 
@@ -92,7 +96,48 @@ public class JPlayerAdapter {
                 break;
             }
         }
+        if(containsNominate(cardSet)) {
+            List<Card> newCardList = new ArrayList<>();
+            newCardList.add(findNominate(cardSet));
+            cardSet = newCardList;
+        }
         return cardSet;
+    }
+
+    private boolean containsNominate(List<Card> cards) {
+        boolean found = false;
+        for (Card card : cards) {
+            if (card.getCardType().equals("nominate")) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    private Card findNominate(List<Card> cards) {
+        Card card = null;
+        for(int iterator = 0; iterator < cards.size() && card == null; iterator++) {
+            if (cards.get(iterator).getCardType().equals("nominate")) {
+                card = cards.get(iterator);
+            }
+        }
+        return card;
+    }
+
+    private List<Card> sortNominatedFirst(List<Card> cardListToSort) {
+        cardListToSort.sort((o1, o2) -> {
+            int returnValue = 0;
+            if (o1.getCardType().equals("nominate") || o2.getCardType().equals("nominate")) {
+                returnValue = -1;
+            } else if (o1.getCardType().equals("nominate") && !o2.getCardType().equals("nominate")) {
+                returnValue = -1;
+            } else if (!o1.getCardType().equals("nominate") && o2.getCardType().equals("nominate")) {
+                returnValue = 1;
+            }
+            return returnValue;
+        });
+        return cardListToSort;
     }
 
     /**

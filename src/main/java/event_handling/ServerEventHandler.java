@@ -1,6 +1,5 @@
 package event_handling;
 
-import ai.AIFactory;
 import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
 import ai.julius.valid.JAIValidOnly;
@@ -11,11 +10,8 @@ import com.google.gson.JsonParser;
 import gameobjects.Game;
 import io.socket.client.Socket;
 import java.util.Arrays;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import io.socket.emitter.Emitter;
 import logging.NopeLogger;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,6 +86,7 @@ public class ServerEventHandler {
      */
     private void handleGameState(Object[] objects) {
         Game game = new Game(((JSONObject) objects[0]).toString());
+        LOG.info(game.toJSON());
         // method is only necessary if we are at turn
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
@@ -102,6 +99,7 @@ public class ServerEventHandler {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                LOG.info(move);
                 socketInstance.emit("playAction", message);
             }
         }

@@ -17,13 +17,14 @@ public class JAIValidOnly implements Decider {
 
     @Override
     public String decide(Game game) {
-        Action action;
+        Action action = null;
         JGameAdapter gameAdapter = new JGameAdapter(game);
         if (gameAdapter.isLastAction("take") && !game.getState().equals("turn_start")) {
             action = actionAfterTakeCard(game);
         } else {
             action = actionBeforeTakeCard(game);
         }
+        assert action != null;
         return action.toJSON();
     }
 
@@ -85,27 +86,7 @@ public class JAIValidOnly implements Decider {
                 if (validColor == null) {
                     action = new SayNope("nope","no cards to discard",game.getCurrentPlayer());
                 } else {
-                    List<Card> set = playerAdapter.getStupidSetColor(currentCard,validColor);
-                    if (topCardIsNominate(set)) {
-                        action = new NominateCard(
-                                "nominate",
-                                "first card was nominate",
-                                set.size(),
-                                set,
-                                game.getCurrentPlayer(),
-                                gameAdapter.getStupidPlayer(),
-                                set.get(0).getColors().get(0),
-                                2
-                        );
-                    } else {
-                        action = new DiscardCard(
-                                "discard",
-                                "had to discard",
-                                set.size(),
-                                set,
-                                game.getCurrentPlayer()
-                        );
-                    }
+                    action = getActionWhenNumberCardTop(game, gameAdapter, playerAdapter, currentCard, validColor);
                 }
             }
         } else {
@@ -113,27 +94,7 @@ public class JAIValidOnly implements Decider {
                 int nominatedAmount = game.getLastNominateAmount();
                 String nominateColor = game.getLastNominateColor();
                 if (playerAdapter.hasCompleteSetWithColor(nominatedAmount,nominateColor)) {
-                    List<Card> set = playerAdapter.getStupidSetColor(nominatedAmount,nominateColor);
-                    if (topCardIsNominate(set)) {
-                        action = new NominateCard(
-                                "nominate",
-                                "had to nominate",
-                                set.size(),
-                                set,
-                                game.getCurrentPlayer(),
-                                gameAdapter.getStupidPlayer(),
-                                set.get(0).getColors().get(0),
-                                2
-                        );
-                    } else {
-                        action = new DiscardCard(
-                                "discard",
-                                "had to discard",
-                                set.size(),
-                                set,
-                                game.getCurrentPlayer()
-                        );
-                    }
+                    action = getActionWhenNominateTop(game, gameAdapter, playerAdapter, nominatedAmount, nominateColor);
                 } else {
                     action = new SayNope(
                             "nope",
@@ -183,7 +144,7 @@ public class JAIValidOnly implements Decider {
      * @param cardsToDiscard the List of Cards that needs to be checked
      * @return true if top card is nominate, false otherwise
      */
-    private boolean topCardIsNominate(List<Card> cardsToDiscard) {
+    public static boolean topCardIsNominate(List<Card> cardsToDiscard) {
         Card currentCard = cardsToDiscard.get(0);
         // loop until the currentCard is not invisible
         for (int iterator = 1; iterator < cardsToDiscard.size() && currentCard.getCardType().equals("invisible"); iterator++) {}
@@ -239,7 +200,109 @@ public class JAIValidOnly implements Decider {
                 }
             }
         } else if (gameAdapter.getTopCard().getCardType().equals("number")) {
+            NumberCard currentCard = (NumberCard) gameAdapter.getTopCard();
+            CardAdapter cardAdapter = new CardAdapter(currentCard);
+            if (currentCard.getName().equals("wildcard")) {
+                action = getActionWildcardOrReset(game, gameAdapter, playerAdapter);
+            } else {
+                // Determination of Color of the set, if the color stays null, it means
+                // that there is no set with any color of the numbercard that is on top
+                // ==> takecard if color stays null, else another action (discard or nominate)
+                String validColor = null;
+                if (cardAdapter.hasTwoColors()) {
+                    if (playerAdapter.hasCompleteSetWithColor(currentCard,currentCard.getColors().get(0))) {
+                        validColor = currentCard.getColors().get(0);
+                    } else if (playerAdapter.hasCompleteSetWithColor(currentCard,currentCard.getColors().get(1))) {
+                        validColor = currentCard.getColors().get(1);
+                    }
+                } else {
+                    if (playerAdapter.hasCompleteSetWithColor(currentCard,currentCard.getColors().get(0))) {
+                        validColor = currentCard.getColors().get(0);
+                    }
+                }
+                if (validColor == null) {
+                    action = new TakeCard(
+                            "take",
+                            "no cards to discard",
+                            1,
+                            new ArrayList<>(),
+                            game.getCurrentPlayer());
+                } else {
+                    action = getActionWhenNumberCardTop(game, gameAdapter, playerAdapter, currentCard, validColor);
+                }
+            }
+        } else {
+            if (gameAdapter.getTopCard().getCardType().equals("nominate")) {
+                int nominatedAmount = game.getLastNominateAmount();
+                String nominateColor = game.getLastNominateColor();
+                if (playerAdapter.hasCompleteSetWithColor(nominatedAmount,nominateColor)) {
+                    action = getActionWhenNominateTop(game, gameAdapter, playerAdapter, nominatedAmount, nominateColor);
+                } else {
+                    action = new TakeCard(
+                            "take",
+                            "no cards to discard",
+                            1,
+                            new ArrayList<>(),
+                            game.getCurrentPlayer()
+                    );
+                }
+            } else if (gameAdapter.getTopCard().getCardType().equals("reset")) {
+                action = getActionWildcardOrReset(game, gameAdapter, playerAdapter);
+            }
+        }
+        return action;
+    }
 
+    @NotNull
+    private Action getActionWhenNominateTop(Game game, JGameAdapter gameAdapter, JPlayerAdapter playerAdapter, int nominatedAmount, String nominateColor) {
+        Action action;
+        List<Card> set = playerAdapter.getStupidSetColor(nominatedAmount,nominateColor);
+        if (topCardIsNominate(set)) {
+            action = new NominateCard(
+                    "nominate",
+                    "had to nominate",
+                    set.size(),
+                    set,
+                    game.getCurrentPlayer(),
+                    gameAdapter.getStupidPlayer(),
+                    set.get(0).getColors().get(0),
+                    2
+            );
+        } else {
+            action = new DiscardCard(
+                    "discard",
+                    "had to discard",
+                    set.size(),
+                    set,
+                    game.getCurrentPlayer()
+            );
+        }
+        return action;
+    }
+
+    @NotNull
+    private Action getActionWhenNumberCardTop(Game game, JGameAdapter gameAdapter, JPlayerAdapter playerAdapter, NumberCard currentCard, String validColor) {
+        Action action;
+        List<Card> set = playerAdapter.getStupidSetColor(currentCard,validColor);
+        if (topCardIsNominate(set)) {
+            action = new NominateCard(
+                    "nominate",
+                    "first card was nominate",
+                    set.size(),
+                    set,
+                    game.getCurrentPlayer(),
+                    gameAdapter.getStupidPlayer(),
+                    set.get(0).getColors().get(0),
+                    2
+            );
+        } else {
+            action = new DiscardCard(
+                    "discard",
+                    "had to discard",
+                    set.size(),
+                    set,
+                    game.getCurrentPlayer()
+            );
         }
         return action;
     }
