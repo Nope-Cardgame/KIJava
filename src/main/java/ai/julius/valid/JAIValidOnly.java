@@ -169,7 +169,7 @@ public class JAIValidOnly implements Decider {
                     2
             );
         } else if (gameAdapter.invisibleOnly()) {
-            List<Card> oneCard = playerAdapter.getStupidCard();
+            List<Card> oneCard = playerAdapter.getStupidCard(game.getDiscardPile().get(0).getColors().get(0));
             if (oneCard.isEmpty()) {
                 action = new TakeCard(
                         "take",
