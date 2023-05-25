@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import gameobjects.Game;
+import gameobjects.Tournament;
 import io.socket.client.Socket;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -65,7 +66,7 @@ public class ServerEventHandler {
 
 
         socketInstance.on("gameInvite", objects -> {
-            socketInstance.emit("ready", handleInvitation(objects));
+            socketInstance.emit("ready", handleInvitation(objects, "game"));
         });
 
         socketInstance.on("gameEnd", args1 -> {
@@ -73,8 +74,7 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("tournamentInvite", args1 -> {
-            // TODO: 12.05.2023 Implement Event: tournament invite
-            LOG.info("tournamentInvite: " +Arrays.toString(args1));
+            socketInstance.emit("ready", handleInvitation(args1, "tournament"));
         });
 
         socketInstance.on("tournamentEnd", args1 -> {
@@ -115,14 +115,40 @@ public class ServerEventHandler {
      * @return a new message of type Object[] which will be emitted by
      * the socket instance later on
      */
-    private static Object[] handleInvitation(Object[] args1) {
+    private static Object[] handleInvitation(Object[] args1, String type) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement gameObject = JsonParser.parseString(args1[0].toString());
         GameInvitation game = new GameInvitation(gson.toJson(gameObject));
-        LOG.info("You have been invited, do you want to accept?");
+        LOG.info("You have been invited to " + type + ", do you want to accept?");
         LOG.info("Accept by default!!!");
         // accept by default
-        Ready ready = new Ready(true,"game",game.getId());
+        Ready ready = new Ready(true,type,game.getId());
+        Object [] message = new Object[1];
+        try {
+            JSONObject jsonObject = new JSONObject(ready.toJSON());
+            message[0] = jsonObject;
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return message;
+    }
+
+    /**
+     * handles the game Invitation. The Player
+     * can type on the Console whether 'yes' or 'no'
+     *
+     * @param args1 the message that is provided by the EventListener
+     * @return a new message of type Object[] which will be emitted by
+     * the socket instance later on
+     */
+    private static Object[] handleTournamentInvitation(Object[] args1, String type) {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonElement gameObject = JsonParser.parseString(args1[0].toString());
+        Tournament game = new Tournament(gson.toJson(gameObject));
+        LOG.info("You have been invited to " + type + ", do you want to accept?");
+        LOG.info("Accept by default!!!");
+        // accept by default
+        Ready ready = new Ready(true,type,game.getId());
         Object [] message = new Object[1];
         try {
             JSONObject jsonObject = new JSONObject(ready.toJSON());
