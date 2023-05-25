@@ -61,7 +61,7 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("eliminated", args1 -> {
-            LOG.severe("eliminated: " +Arrays.toString(args1));
+            LOG.info("eliminated: " +Arrays.toString(args1));
         });
 
 
@@ -74,7 +74,7 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("tournamentInvite", args1 -> {
-            socketInstance.emit("ready", handleInvitation(args1, "tournament"));
+            handleTournamentInvitation(args1,"tournament");
         });
 
         socketInstance.on("tournamentEnd", args1 -> {
@@ -141,21 +141,24 @@ public class ServerEventHandler {
      * @return a new message of type Object[] which will be emitted by
      * the socket instance later on
      */
-    private static Object[] handleTournamentInvitation(Object[] args1, String type) {
+    private void handleTournamentInvitation(Object[] args1, String type) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonElement gameObject = JsonParser.parseString(args1[0].toString());
-        Tournament game = new Tournament(gson.toJson(gameObject));
+        JSONObject jsonObject = (JSONObject) args1[0];
+        JsonElement jsonElement = JsonParser.parseString(jsonObject.toString());
+        Tournament tournament = new Tournament(jsonObject.toString());
+        LOG.info(gson.toJson(jsonElement));
         LOG.info("You have been invited to " + type + ", do you want to accept?");
         LOG.info("Accept by default!!!");
         // accept by default
-        Ready ready = new Ready(true,type,game.getId());
+        Ready ready = new Ready(true,type,tournament.getId());
         Object [] message = new Object[1];
         try {
-            JSONObject jsonObject = new JSONObject(ready.toJSON());
+            jsonObject = new JSONObject(ready.toJSON());
             message[0] = jsonObject;
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-        return message;
+        LOG.info("Everying successful with tournament");
+        this.socketInstance.emit("ready",message);
     }
 }
