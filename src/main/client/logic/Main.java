@@ -4,7 +4,9 @@ import event_handling.ServerEventHandler;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import logic.Constants;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import view.Gui;
 
 import java.io.IOException;
@@ -62,13 +64,6 @@ public class Main {
 
         ServerEventHandler serverEventHandler = new ServerEventHandler(socket, username);
 
-        try {
-            rest.request(Constants.GET_ALL_GAME_INFORMATION.get(), token, RequestType.GET);
-            rest.request(Constants.GET_USER_CONNECTIONS.get(), token, RequestType.GET);
-        } catch (IOException exception){
-            return false;
-        }
-
         return true;
     }
 
@@ -78,5 +73,31 @@ public class Main {
 
     public static String getUsername_global() {
         return username_global;
+    }
+
+    public static String findMySocketID() throws JSONException {
+
+        String output = null;
+
+        try {
+            output = rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), token, RequestType.GET);
+        } catch (IOException ignored){
+        }
+
+        assert output != null;
+        JSONArray jsonArray = new JSONArray(output);
+
+        String socketId = null;
+
+        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONObject player = jsonArray.getJSONObject(i);
+            String usernameTemp = player.getString("username");
+
+            if (usernameTemp.equals(username_global)) {
+                socketId = player.getString("socketId");
+                break;
+            }
+        }
+        return socketId;
     }
 }

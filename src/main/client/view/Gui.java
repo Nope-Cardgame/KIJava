@@ -24,25 +24,22 @@ public final class Gui extends JFrame {
 
     private Card initialTopCard = null;
     private List<Card> playerHand = new ArrayList<Card>(); // the cards on the hand
-    private JTextField usernameTextfield = new JTextField(); // the user can type in his name
-    private JLabel usernameLabel = new JLabel("User name:"); // label to descibe
-    private JLabel passwortLabel = new JLabel("Password:");// label to descibe
-    private JPasswordField passwordfield = new JPasswordField(); //passwordfield to not show pw
-    private JButton loginButton = new JButton("Log in"); // button for login
-    private JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
-    private JButton reloadPlayerList = new JButton("Reload player list");
-    private JButton addPlayerToInvite = new JButton("Add marked player to list");
-    private JButton removePlayerToInvite = new JButton("Remove marked player from list");
-    private JButton inviteChosenPlayer = new JButton("Invite players to game");
-    private ActionHandler act = new ActionHandler(); // for the buttons
-    private JTable table = new JTable(); //shows all actions of game in a list
-    private JTable playerListTable = new JTable();
-    private JTable addedPlayerToInviteTable = new JTable();
-    private ShowCards showCards = new ShowCards();// jpanel showing the cards with picutes
-    private JLayeredPane gamePanel;
-    private DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
-    private DefaultTableModel playerListModel = new DefaultTableModel(new Object[][]{}, new String[]{"Playername", "Socket-ID"});
-    private DefaultTableModel addedPlayerToInviteModel = new DefaultTableModel(new Object[][]{}, new String[]{"Added player to invite", "Socket-ID"});
+    private final JTextField usernameTextfield = new JTextField(); // the user can type in his name
+    private final JLabel usernameLabel = new JLabel("User name:"); // label to descibe
+    private final JLabel passwortLabel = new JLabel("Password:");// label to descibe
+    private final JPasswordField passwordfield = new JPasswordField(); //passwordfield to not show pw
+    private final JButton loginButton = new JButton("Log in"); // button for login
+    private final JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
+    private final JButton reloadPlayerList = new JButton("Reload player list");
+    private final JButton addPlayerToInvite = new JButton("Add marked player to list");
+    private final JButton removePlayerToInvite = new JButton("Remove marked player from list");
+    private final JButton inviteChosenPlayer = new JButton("Invite players to game");
+    private final JTable table = new JTable(); //shows all actions of game in a list
+    private final JTable playerListTable = new JTable();
+    private final JTable addedPlayerToInviteTable = new JTable();
+    private final ComponentPainter componentPainter = new ComponentPainter();// jpanel showing the cards with picutes
+    private final DefaultTableModel playerListModel = new DefaultTableModel(new Object[][]{}, new String[]{"Playername", "Socket-ID"});
+    private final DefaultTableModel addedPlayerToInviteModel = new DefaultTableModel(new Object[][]{}, new String[]{"Added player to invite", "Socket-ID"});
 
     JScrollPane scroll= new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     JScrollPane playerListScroll = new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -56,10 +53,10 @@ public final class Gui extends JFrame {
     }
 
     public Gui () {
-        showCards.setVisible(false);
-        showCards.setBounds(10,200,560,560); //showing the cards
-        showCards.setOpaque(false);
-        add(showCards);
+        componentPainter.setVisible(false);
+        componentPainter.setBounds(10,200,560,560); //showing the cards
+        componentPainter.setOpaque(false);
+        add(componentPainter);
 
         playerListTable.getTableHeader().setReorderingAllowed(false);
         playerListTable.setModel(playerListModel);
@@ -71,6 +68,8 @@ public final class Gui extends JFrame {
         add(playerListScroll);
 
         reloadPlayerList.setVisible(false);
+        // for the buttons
+        ActionHandler act = new ActionHandler();
         reloadPlayerList.addActionListener(act);
         reloadPlayerList.setBounds(575, 0, 520, 30);
         add(reloadPlayerList);
@@ -100,6 +99,7 @@ public final class Gui extends JFrame {
         add(inviteChosenPlayer);
 
         scroll.setVisible(false); //scroll bar for game table
+        DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
         table.setModel(model);
         table.getColumnModel().getColumn(0).setPreferredWidth(5);
         table.setEnabled(true);
@@ -151,9 +151,13 @@ public final class Gui extends JFrame {
      * @param game
      */
     public void refresh(Game game) {
-        playerHand = game.getPlayers().get(0).getCards();
-        initialTopCard = game.getDiscardPile().get(0);
-        showCards.repaint();
+        if(game != null) {
+            if (game.getCurrentPlayer().getUsername().equals(Main.getUsername_global())) {
+                playerHand = game.getCurrentPlayer().getCards();
+            }
+            initialTopCard = game.getDiscardPile().get(0);
+            componentPainter.repaint();
+        }
     }
 
     public void addDataToPlayerListModel(Object... data){
@@ -211,10 +215,6 @@ public final class Gui extends JFrame {
         getPasswordfield().setText(password);
     }
 
-    public JLayeredPane getGamePanel(){
-        return gamePanel;
-    }
-
     public List<Card> getPlayerHand() {
         return playerHand;
     }
@@ -237,8 +237,8 @@ public final class Gui extends JFrame {
         return reloadPlayerList;
     }
 
-    public ShowCards getShowCards() {
-        return showCards;
+    public ComponentPainter getShowCards() {
+        return componentPainter;
     }
 
     public JButton getAddPlayerToInvite() {

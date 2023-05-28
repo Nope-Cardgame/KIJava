@@ -65,10 +65,11 @@ public class ActionHandler implements ActionListener {
              Rest rest = new Rest();
              String[] playernames = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
              String[] socketIDs = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
-             for(int i = 0; i < playernames.length-1; i++) {
+             for(int i = 0; i <= playernames.length-1; i++) {
                 playernames[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 0);
                 socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
              }
+
              try {
                  rest.invitePlayer(playernames, socketIDs);
              }catch (IOException | JSONException ex) {

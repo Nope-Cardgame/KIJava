@@ -133,7 +133,7 @@ public class Rest {
     }
 
     public void invitePlayer(String[] players, String[] socketIDs) throws IOException, JSONException {
-        LOG.info("current Connection: \n " + Constants.POST_CREATE_GAME);
+        LOG.info("current Connection: \n" + Constants.POST_CREATE_GAME);
 
         URL obj = new URL(Constants.POST_CREATE_GAME.get());
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -142,13 +142,18 @@ public class Rest {
         con.setRequestMethod(RequestType.POST.toString());
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "Bearer " + Main.getToken());
+        con.setRequestProperty("Authorization", "bearer " + Main.getToken());
 
         con.setDoOutput(true);
 
         JSONArray playersArray = new JSONArray();
 
-        for (int i = 0; i < players.length; i++) {
+        JSONObject player = new JSONObject();
+        player.put("username", Main.getUsername_global());
+        player.put("socketId", Main.findMySocketID());
+        playersArray.put(player);
+
+        for (int i = 0; i < players.length-1; i++) {
             JSONObject playerObject = new JSONObject();
             playerObject.put("username", players[i]);
             playerObject.put("socketId", socketIDs[i]);
@@ -157,6 +162,8 @@ public class Rest {
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("players", playersArray);
+
+        System.out.println(jsonObject);
 
         // Send request to the server with its stream
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());

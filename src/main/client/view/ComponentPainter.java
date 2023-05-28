@@ -1,14 +1,14 @@
 package view;
 
+import event_handling.ServerEventHandler;
 import gameobjects.cards.Card;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
-public class ShowCards extends JPanel{
+public class ComponentPainter extends JPanel{
+
+    private static boolean eliminated = false;
 
     /**
     * this JPanel shows the pictures  of all hand cards and the top cards of the stack
@@ -16,16 +16,16 @@ public class ShowCards extends JPanel{
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawString("Your cards:", 115,135);
+        g.drawString("Your cards:", 115,130);
         int start = 115; // the position of each card in a row
         int xSize = 75;// width of card
         int ySize = 100; // height of card
 
         int cardCount = 0;
 
-        ImageLoader backgroundImage = new ImageLoader(null);
+        ImageLoader background = new ImageLoader("background.png");
 
-        g.drawImage(backgroundImage.image, 0, 0, 565, 565, null);
+        g.drawImage(background.image, 0, 0, 565, 565, null);
 
         for (Card card: Gui.getInstance().getPlayerHand()){
             //update position of each card
@@ -49,5 +49,17 @@ public class ShowCards extends JPanel{
         g.drawString("Front card:", 115,350); //show the card on the stack top
         g.drawImage(imageLoader.image, 115,355 ,xSize,ySize,null);
         g.drawRect(115,355 ,xSize,ySize);//frame
+
+        g.drawString("Round: " + ServerEventHandler.getRoundCounter() / ServerEventHandler.getPlayerCount(),350,400);
+        g.drawString("Current player: " + ServerEventHandler.getCurrentPlayer(), 300, 425);
+
+        if(eliminated) {
+            ImageLoader eliminatedImage = new ImageLoader("eliminated.png");
+            g.drawImage(eliminatedImage.image, 180, 488, 200, 60, null);
+        }
    }
+
+    public static void setEliminated(boolean eliminatedBoolean) {
+        eliminated = eliminatedBoolean;
+    }
 }

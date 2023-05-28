@@ -16,13 +16,22 @@ public class ImageLoader {
     public ImageLoader(Card card) {
         if(card == null){
             try {
-                image = ImageIO.read(new File("cardimages\\background.png"));
+                image = ImageIO.read(new File("cardimages\\error.png"));
             } catch (IOException ignored){
             }
         } else {
             try {
                 image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
             } catch (IOException ignored) {
+            }
+        }
+    }
+
+    public ImageLoader(String relativePath){
+        if(!relativePath.equals("")){
+            try {
+                image = ImageIO.read(new File("cardimages\\" + relativePath));
+            } catch (IOException ignored){
             }
         }
     }
