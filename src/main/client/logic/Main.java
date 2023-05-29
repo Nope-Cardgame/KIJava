@@ -3,7 +3,6 @@ package logic;
 import event_handling.ServerEventHandler;
 import io.socket.client.IO;
 import io.socket.client.Socket;
-import logic.Constants;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

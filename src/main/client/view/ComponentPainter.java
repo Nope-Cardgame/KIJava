@@ -55,7 +55,7 @@ public class ComponentPainter extends JPanel{
 
         if(eliminated) {
             ImageLoader eliminatedImage = new ImageLoader("eliminated.png");
-            g.drawImage(eliminatedImage.image, 180, 488, 200, 60, null);
+            g.drawImage(eliminatedImage.image, 96, 460, 370, 90, null);
         }
    }
 

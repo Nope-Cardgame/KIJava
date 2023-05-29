@@ -16,7 +16,7 @@ public class ImageLoader {
     public ImageLoader(Card card) {
         if(card == null){
             try {
-                image = ImageIO.read(new File("cardimages\\error.png"));
+                image = ImageIO.read(new File("sprites\\error.png"));
             } catch (IOException ignored){
             }
         } else {
@@ -30,7 +30,7 @@ public class ImageLoader {
     public ImageLoader(String relativePath){
         if(!relativePath.equals("")){
             try {
-                image = ImageIO.read(new File("cardimages\\" + relativePath));
+                image = ImageIO.read(new File("sprites\\" + relativePath));
             } catch (IOException ignored){
             }
         }
