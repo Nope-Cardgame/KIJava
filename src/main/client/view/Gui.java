@@ -17,6 +17,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public final class Gui extends JFrame {
     private static Gui INSTANCE;
@@ -27,6 +28,7 @@ public final class Gui extends JFrame {
     private final JTextField usernameTextfield = new JTextField(); // the user can type in his name
     private final JLabel usernameLabel = new JLabel("User name:"); // label to descibe
     private final JLabel passwortLabel = new JLabel("Password:");// label to descibe
+    private final JLabel yourConnectionLabel = new JLabel();
     private final JPasswordField passwordfield = new JPasswordField(); //passwordfield to not show pw
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
@@ -98,6 +100,10 @@ public final class Gui extends JFrame {
         inviteChosenPlayer.setVisible(false);
         inviteChosenPlayer.addActionListener(act);
         add(inviteChosenPlayer);
+
+        yourConnectionLabel.setVisible(false);
+        yourConnectionLabel.setBounds(575, 735, 520,30);
+        add(yourConnectionLabel);
 
         scroll.setVisible(false); //scroll bar for game table
         DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
@@ -176,26 +182,24 @@ public final class Gui extends JFrame {
 
         try {
             userdata = rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), Main.getToken(), RequestType.GET);
-            System.out.println(userdata);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
 
-        String[] usernames = new String[0];
-        String[] socketIds = new String[0];
+        ArrayList<String> usernames = new ArrayList<>();
+        ArrayList<String> socketIds = new ArrayList<>();
         JsonNode jsonNode = null;
 
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             jsonNode = objectMapper.readTree(userdata);
 
-            usernames = new String[jsonNode.size()];
-            socketIds = new String[jsonNode.size()];
-
             for (int i = 0; i < jsonNode.size(); i++) {
                 JsonNode node = jsonNode.get(i);
-                usernames[i] = node.get("username").asText();
-                socketIds[i] = node.get("socketId").asText();
+                if(!node.get("username").asText().equals(Main.getUsername_global())){
+                    usernames.add(node.get("username").asText());
+                    socketIds.add(node.get("socketId").asText());
+                }
             }
         } catch (JsonProcessingException ex) {
             ex.printStackTrace();
@@ -203,8 +207,8 @@ public final class Gui extends JFrame {
             throw new RuntimeException(ex);
         }
 
-        for(int i = 0; i < jsonNode.size(); i++){
-            Gui.getInstance().addDataToPlayerListModel(usernames[i], socketIds[i]);
+        for(int i = 0; i < Objects.requireNonNull(jsonNode).size()-1; i++){
+            Gui.getInstance().addDataToPlayerListModel(usernames.get(i), socketIds.get(i));
         }
     }
 
@@ -264,6 +268,10 @@ public final class Gui extends JFrame {
 
     public JTable getAddedPlayerToInviteTable() {
         return addedPlayerToInviteTable;
+    }
+
+    public JLabel getYourConnectionLabel() {
+        return yourConnectionLabel;
     }
 }
 

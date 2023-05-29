@@ -36,6 +36,13 @@ public class ActionHandler implements ActionListener {
                  Gui.getInstance().getInviteChosenPlayer().setVisible(true);
                  Gui.getInstance().getAddedPlayerToInviteScroll().setVisible(true);
                  Gui.getInstance().getInviteChosenPlayer().setVisible(true);
+
+                 try {
+                     Gui.getInstance().getYourConnectionLabel().setText("Own Connection: Username: " + Main.getUsername_global() + "; SocketID: " + Main.findMySocketID());
+                 } catch (JSONException ex) {
+                     throw new RuntimeException(ex);
+                 }
+                 Gui.getInstance().getYourConnectionLabel().setVisible(true);
              }
          }
          if(src == Gui.getInstance().getReloadPlayerList()){
@@ -44,20 +51,11 @@ public class ActionHandler implements ActionListener {
          if(src == Gui.getInstance().getAddPlayerToInvite()){
              int[] row = Gui.getInstance().getPlayerListTable().getSelectedRows();
 
-             if(row[row.length - 1] - row[0] <= 1){
-                 return;
-             }
-
              for (int j = row[0]; j <= row[row.length-1]; j++) {
                  String addedPlayer = (String) Gui.getInstance().getPlayerListTable().getValueAt(j, 0);
                  String addedSocketId = (String) Gui.getInstance().getPlayerListTable().getValueAt(j, 1);
                  if(!isInTable(Gui.getInstance().getAddedPlayerToInviteTable(), addedPlayer, addedSocketId)) {
-                     if(!addedPlayer.equals(Main.getUsername_global())) {
-                         Gui.getInstance().addDataToAddedPlayerModel(addedPlayer, addedSocketId);
-                     } else {
-                         // TODO grafisch noch darstellen
-                         System.out.println("You can't invite yourself.");
-                     }
+                     Gui.getInstance().addDataToAddedPlayerModel(addedPlayer, addedSocketId);
                  }
              }
          }
@@ -69,9 +67,8 @@ public class ActionHandler implements ActionListener {
                 playernames[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 0);
                 socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
              }
-
              try {
-                 rest.invitePlayer(playernames, socketIDs);
+                 if(playernames.length > 0) rest.invitePlayer(playernames, socketIDs);
              }catch (IOException | JSONException ex) {
                  throw new RuntimeException(ex);
             }
@@ -88,7 +85,7 @@ public class ActionHandler implements ActionListener {
 
          if(src == Gui.getInstance().getSavaLoginData()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {
-                 writer.write(Gui.getInstance().getPasswort()+"\n"+Gui.getInstance().getUsername());
+                 writer.write(Gui.getInstance().getUsername()+"\n"+Gui.getInstance().getPasswort());
                  System.out.println("Der String wurde erfolgreich in die Datei geschrieben.");
              } catch (IOException ioException) {
                  System.out.println("Fehler beim Schreiben der Datei: " + ioException.getMessage());

@@ -142,7 +142,7 @@ public class Rest {
         con.setRequestMethod(RequestType.POST.toString());
         con.setRequestProperty("Content-Type", "application/json");
         con.setRequestProperty("Accept", "application/json");
-        con.setRequestProperty("Authorization", "bearer " + Main.getToken());
+        con.setRequestProperty("Authorization", "Bearer " + Main.getToken());
 
         con.setDoOutput(true);
 
@@ -153,7 +153,7 @@ public class Rest {
         player.put("socketId", Main.findMySocketID());
         playersArray.put(player);
 
-        for (int i = 0; i < players.length-1; i++) {
+        for (int i = 0; i < players.length; i++) {
             JSONObject playerObject = new JSONObject();
             playerObject.put("username", players[i]);
             playerObject.put("socketId", socketIDs[i]);
@@ -161,13 +161,17 @@ public class Rest {
         }
 
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("noActionCards", true);
+        jsonObject.put("noWildCards", true);
+        jsonObject.put("oneMoreStartCards", false);
+
         jsonObject.put("players", playersArray);
 
         System.out.println(jsonObject);
 
         // Send request to the server with its stream
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(String.valueOf(playersArray));
+        wr.writeBytes(String.valueOf(jsonObject));
         wr.close();
 
         int responseCode = con.getResponseCode();
