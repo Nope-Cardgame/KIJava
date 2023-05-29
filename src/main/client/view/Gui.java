@@ -53,6 +53,9 @@ public final class Gui extends JFrame {
     }
 
     public Gui () {
+        // for the buttons
+        ActionHandler act = new ActionHandler();
+
         componentPainter.setVisible(false);
         componentPainter.setBounds(10,200,560,560); //showing the cards
         componentPainter.setOpaque(false);
@@ -68,8 +71,6 @@ public final class Gui extends JFrame {
         add(playerListScroll);
 
         reloadPlayerList.setVisible(false);
-        // for the buttons
-        ActionHandler act = new ActionHandler();
         reloadPlayerList.addActionListener(act);
         reloadPlayerList.setBounds(575, 0, 520, 30);
         add(reloadPlayerList);

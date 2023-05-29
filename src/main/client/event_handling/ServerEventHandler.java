@@ -58,8 +58,8 @@ public class ServerEventHandler {
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
             if(game != null) {
-                if (game.getState().equals("turn_start")) {
-                    roundCounter++;
+                if(game.getState().equals("game_start")){
+                    roundCounter = 0;
                 }
                 Gui.getInstance().refresh(game);
             }
@@ -86,7 +86,8 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("gameEnd", args1 -> {
-            roundCounter = getPlayerCount();
+            roundCounter = 0;
+            ComponentPainter.setEliminated(false);
             Gui.getInstance().refresh(game);
             LOG.info("gameEnd: " +Arrays.toString(args1));
         });
@@ -112,10 +113,12 @@ public class ServerEventHandler {
         // method is only necessary if we are at turn
         currentPlayer = game.getCurrentPlayer().getUsername();
         Gui.getInstance().refresh(game);
-        Thread.sleep(1000);
 
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
+                if(game.getState().equals("turn_start")){
+                    roundCounter++;
+                }
                 Gui.getInstance().refresh(game);
                 Thread.sleep(1000);
                 // calculate the move with instance and emit
