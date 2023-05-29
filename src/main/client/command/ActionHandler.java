@@ -68,7 +68,7 @@ public class ActionHandler implements ActionListener {
                 socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
              }
              try {
-                 if(playernames.length > 0) rest.invitePlayer(playernames, socketIDs);
+                 if(playernames.length > 0 && playernames.length < 7) rest.invitePlayer(playernames, socketIDs);
              }catch (IOException | JSONException ex) {
                  throw new RuntimeException(ex);
             }
