@@ -16,23 +16,40 @@ public class Tournament implements IJsonable {
     private String startTime;
     private String endTime;
 
+    // new Attributes for that object
+    private int actionTimeout;
+    private boolean sendGameInvite;
+    private int invitationTimeout;
+    private boolean startWithRejection;
+    private int participantAmount;
+
     /**
-     * Standard Constructor for Tournament
      *
-     * @param id the id of the tournament (not null)
-     * @param mode the mode of the tournament (not null)
-     * @param participants the participants of the tournament
-     * @param games the games of the tournament (null for invitation)
-     * @param startTime start time of tournament (not null)
-     * @param endTime the end time of this tournament (do not know whether null or not)
+     *
+     * @param id
+     * @param mode
+     * @param participants
+     * @param games
+     * @param startTime
+     * @param endTime
+     * @param actionTimeout
+     * @param invitationTimeout
+     * @param participantAmount
+     * @param startWithRejection
+     * @param sendGameInvite
      */
-    public Tournament(String id, Mode mode, List<TournamentParticipant> participants, List<Game> games, String startTime, String endTime) {
+    public Tournament(String id, Mode mode, List<TournamentParticipant> participants, List<Game> games, String startTime, String endTime, int actionTimeout,int invitationTimeout, int participantAmount, boolean startWithRejection, boolean sendGameInvite) {
         this.id = id;
         this.mode = mode;
         this.participants = participants;
         this.games = games;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.actionTimeout = actionTimeout;
+        this.invitationTimeout = invitationTimeout;
+        this.participantAmount = participantAmount;
+        this.startWithRejection = startWithRejection;
+        this.sendGameInvite = sendGameInvite;
     }
 
     /**
@@ -62,7 +79,14 @@ public class Tournament implements IJsonable {
             // times
             this.startTime = tournamentObject.getString("startTime");
             this.endTime = tournamentObject.getString("endTime");
-        } catch (JSONException e) {
+
+
+            this.actionTimeout = tournamentObject.getInt("actionTimeout");
+            this.invitationTimeout = tournamentObject.getInt("invitationTimeout");
+            this.startWithRejection = tournamentObject.getBoolean("startWithRejection");
+            this.sendGameInvite = tournamentObject.getBoolean("sendGameInvite");
+            this.participantAmount = tournamentObject.getInt("participantAmount");
+        } catch (JSONException ignored) {
         }
     }
 
@@ -117,5 +141,45 @@ public class Tournament implements IJsonable {
 
     public void setEndTime(String endTime) {
         this.endTime = endTime;
+    }
+
+    public boolean isSendGameInvitation() {
+        return sendGameInvite;
+    }
+
+    public void setSendGameInvitation(boolean sendGameInvitation) {
+        this.sendGameInvite = sendGameInvitation;
+    }
+
+    public int getActionTimeout() {
+        return actionTimeout;
+    }
+
+    public void setActionTimeout(int actionTimeout) {
+        this.actionTimeout = actionTimeout;
+    }
+
+    public int getInvitationTimeout() {
+        return invitationTimeout;
+    }
+
+    public void setInvitationTimeout(int invitationTimeout) {
+        this.invitationTimeout = invitationTimeout;
+    }
+
+    public boolean isStartWithRejection() {
+        return startWithRejection;
+    }
+
+    public void setStartWithRejection(boolean startWithRejection) {
+        this.startWithRejection = startWithRejection;
+    }
+
+    public int getParticipantAmount() {
+        return participantAmount;
+    }
+
+    public void setParticipantAmount(int participantAmount) {
+        this.participantAmount = participantAmount;
     }
 }
