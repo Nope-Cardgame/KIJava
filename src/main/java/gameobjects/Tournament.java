@@ -15,8 +15,10 @@ public class Tournament implements IJsonable {
     private List<Game> games;
     private String startTime;
     private String endTime;
-
-    // new Attributes for that object
+    private String state;
+    private boolean noActionCards;
+    private boolean noWildCards;
+    private boolean oneMoreStartCards;
     private int actionTimeout;
     private boolean sendGameInvite;
     private int invitationTimeout;
@@ -38,7 +40,8 @@ public class Tournament implements IJsonable {
      * @param startWithRejection
      * @param sendGameInvite
      */
-    public Tournament(String id, Mode mode, List<TournamentParticipant> participants, List<Game> games, String startTime, String endTime, int actionTimeout,int invitationTimeout, int participantAmount, boolean startWithRejection, boolean sendGameInvite) {
+    public Tournament(String id, Mode mode, List<TournamentParticipant> participants, List<Game> games, String startTime, String endTime, int actionTimeout,int invitationTimeout, int participantAmount, boolean startWithRejection, boolean sendGameInvite
+                        , String state, boolean noActionCards, boolean noWildCards, boolean oneMoreStartCards) {
         this.id = id;
         this.mode = mode;
         this.participants = participants;
@@ -50,6 +53,10 @@ public class Tournament implements IJsonable {
         this.participantAmount = participantAmount;
         this.startWithRejection = startWithRejection;
         this.sendGameInvite = sendGameInvite;
+        this.noActionCards = noActionCards;
+        this.noWildCards = noWildCards;
+        this.state = state;
+        this.oneMoreStartCards = oneMoreStartCards;
     }
 
     /**
@@ -80,6 +87,10 @@ public class Tournament implements IJsonable {
             this.startTime = tournamentObject.getString("startTime");
             this.endTime = tournamentObject.getString("endTime");
 
+            this.state = tournamentObject.getString("state");
+            this.noWildCards = tournamentObject.getBoolean("noWildCards");
+            this.noActionCards = tournamentObject.getBoolean("noActionCards");
+            this.oneMoreStartCards = tournamentObject.getBoolean("oneMoreStartCards");
 
             this.actionTimeout = tournamentObject.getInt("actionTimeout");
             this.invitationTimeout = tournamentObject.getInt("invitationTimeout");
@@ -181,5 +192,45 @@ public class Tournament implements IJsonable {
 
     public void setParticipantAmount(int participantAmount) {
         this.participantAmount = participantAmount;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public boolean isNoActionCards() {
+        return noActionCards;
+    }
+
+    public void setNoActionCards(boolean noActionCards) {
+        this.noActionCards = noActionCards;
+    }
+
+    public boolean isNoWildCards() {
+        return noWildCards;
+    }
+
+    public void setNoWildCards(boolean noWildCards) {
+        this.noWildCards = noWildCards;
+    }
+
+    public boolean isOneMoreStartCards() {
+        return oneMoreStartCards;
+    }
+
+    public void setOneMoreStartCards(boolean oneMoreStartCards) {
+        this.oneMoreStartCards = oneMoreStartCards;
+    }
+
+    public boolean isSendGameInvite() {
+        return sendGameInvite;
+    }
+
+    public void setSendGameInvite(boolean sendGameInvite) {
+        this.sendGameInvite = sendGameInvite;
     }
 }
