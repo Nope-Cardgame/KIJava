@@ -16,7 +16,7 @@ public class Game implements IJsonable {
     private String id;
     private String state;
     private boolean noActionCards;
-    private boolean noWildcards;
+    private boolean noWildCards;
     private boolean oneMoreStartCard;
     private Tournament tournament;
     private String gameRole;
@@ -31,6 +31,11 @@ public class Game implements IJsonable {
     private String endTime;
     private int lastNominateAmount;
     private String lastNominateColor;
+    private int actionTimeout;
+    private int invitationTimeout;
+    private boolean startWithRejection;
+    private int playerAmount;
+
 
     /**
      * Standard Constructor for a game
@@ -56,11 +61,12 @@ public class Game implements IJsonable {
                 boolean oneMoreStartCards, Tournament tournament, String gameRole,
                 int encounterRound, List<Player> players, List<Card> discardPile,
                 Action lastAction, Player currentPlayer, String startTime, Card initialTopCard,
-                List<Action> actions, String endTime, int lastNominateAmount, String lastNominateColor) {
+                List<Action> actions, String endTime, int lastNominateAmount, String lastNominateColor,
+                int actionTimeout, int invitationTimeout, boolean startWithRejection, int playerAmount) {
         this.id = id;
         this.state = state;
         this.noActionCards = noActionCards;
-        this.noWildcards = noWildcards;
+        this.noWildCards = noWildcards;
         this.oneMoreStartCard = oneMoreStartCards;
         this.tournament = tournament;
         this.gameRole = gameRole;
@@ -75,6 +81,10 @@ public class Game implements IJsonable {
         this.endTime = endTime;
         this.lastNominateAmount = lastNominateAmount;
         this.lastNominateColor = lastNominateColor;
+        this.actionTimeout = actionTimeout;
+        this.invitationTimeout = invitationTimeout;
+        this.startWithRejection = startWithRejection;
+        this.playerAmount = playerAmount;
     }
 
     /**
@@ -89,8 +99,10 @@ public class Game implements IJsonable {
             this.id = gameObject.getString("id");
             this.state = gameObject.getString("state");
             this.noActionCards = gameObject.getBoolean("noActionCards");
-            this.noWildcards = gameObject.getBoolean("noWildCards");
+            this.noWildCards = gameObject.getBoolean("noWildCards");
             this.oneMoreStartCard = gameObject.getBoolean("oneMoreStartCard");
+            this.actionTimeout = gameObject.getInt("actionTimeout");
+            this.invitationTimeout = gameObject.getInt("invitationTimeout");
 
             try {
                 this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
@@ -153,6 +165,8 @@ public class Game implements IJsonable {
                 this.endTime = null;
                 this.actions = null;
             }
+
+            this.startWithRejection = gameObject.getBoolean("startWithRejection");
         } catch (JSONException ignored) {
         }
     }
@@ -187,12 +201,12 @@ public class Game implements IJsonable {
         this.noActionCards = noActionCards;
     }
 
-    public boolean isNoWildcards() {
-        return noWildcards;
+    public boolean isNoWildCards() {
+        return noWildCards;
     }
 
-    public void setNoWildcards(boolean noWildcards) {
-        this.noWildcards = noWildcards;
+    public void setNoWildCards(boolean noWildCards) {
+        this.noWildCards = noWildCards;
     }
 
     public boolean isOneMoreStartCards() {

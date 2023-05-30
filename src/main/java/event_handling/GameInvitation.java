@@ -13,6 +13,7 @@ public class GameInvitation implements IJsonable {
     private boolean noActionCards;
     private boolean oneMoreStartCard;
 
+
     /**
      * Standard-Constructor for a GameInvitation instance
      *
