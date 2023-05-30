@@ -12,6 +12,7 @@ public class ClientFormatter extends SimpleFormatter {
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_MAGENTA = "\u001B[35m";
     private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_RED = "\u001B[31m";
 
     private final String classname;
 
@@ -26,9 +27,10 @@ public class ClientFormatter extends SimpleFormatter {
             switch (classname) {
                 case "ConnectionHandler" -> builder.append(ANSI_GREEN);
                 case "Rest" -> builder.append(ANSI_BLUE);
-                case "event_handling.ServerEventHandler" -> builder.append(ANSI_MAGENTA);
+                case "ServerEventHandler" -> builder.append(ANSI_MAGENTA);
                 case "UserdataFileReader" -> builder.append(ANSI_CYAN);
                 case "WebTokenReceiver" -> builder.append(ANSI_YELLOW);
+                case "Gui" -> builder.append(ANSI_RED);
             }
         }
         builder.append(record.getLevel().getName() + "\n");

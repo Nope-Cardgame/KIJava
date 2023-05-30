@@ -51,7 +51,7 @@ public class ComponentPainter extends JPanel{
         g.drawRect(115,355 ,xSize,ySize);//frame
 
         g.drawString("Round: " + ServerEventHandler.getRoundCounter(),350,400);
-        g.drawString("Current player: " + ServerEventHandler.getCurrentPlayer(), 300, 425);
+        g.drawString("Current player: " + ServerEventHandler.getCurrentPlayer(), 270, 425);
 
         if(eliminated) {
             ImageLoader eliminatedImage = new ImageLoader("eliminated.png");

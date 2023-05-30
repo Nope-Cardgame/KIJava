@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import command.ActionHandler;
 import gameobjects.Game;
 import gameobjects.cards.Card;
+import logging.NopeLogger;
 import logic.Constants;
 import logic.Main;
 import logic.RequestType;
@@ -14,12 +15,21 @@ import logic.Rest;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public final class Gui extends JFrame {
+
+    public enum ComponentType {
+        LOGIN,
+        GAME
+    }
+
+    private static final Logger LOG = NopeLogger.getLogger(Gui.class.getSimpleName());
     private static Gui INSTANCE;
     private final Rest rest = new Rest();
 
@@ -29,7 +39,7 @@ public final class Gui extends JFrame {
     private final JLabel usernameLabel = new JLabel("User name:"); // label to descibe
     private final JLabel passwortLabel = new JLabel("Password:");// label to descibe
     private final JLabel yourConnectionLabel = new JLabel();
-    private final JPasswordField passwordfield = new JPasswordField(); //passwordfield to not show pw
+    private final JPasswordField passwordTextfield = new JPasswordField(); //passwordfield to not show pw
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
     private final JButton reloadPlayerList = new JButton("Reload player list");
@@ -47,65 +57,43 @@ public final class Gui extends JFrame {
     JScrollPane playerListScroll = new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     JScrollPane addedPlayerToInviteScroll= new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
+    private final ArrayList<JComponent> loginComponents = new ArrayList<>();
+    private final ArrayList<JComponent> gameComponents = new ArrayList<>();
+
+    /**
+     * Singleton-pattern for creating only one instance of the gui
+     * @return
+     */
     public static Gui getInstance() {
         if(INSTANCE == null) {
             INSTANCE = new Gui();
+            LOG.info("Creating Gui instance.");
         }
         return INSTANCE;
     }
 
+    /**
+     * Constructor of the class
+     * sets up the gui for displaying
+     */
     public Gui () {
         // for the buttons
         ActionHandler act = new ActionHandler();
 
-        componentPainter.setVisible(false);
-        componentPainter.setBounds(10,200,560,560); //showing the cards
         componentPainter.setOpaque(false);
-        add(componentPainter);
 
         playerListTable.getTableHeader().setReorderingAllowed(false);
         playerListTable.setModel(playerListModel);
         playerListTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         playerListTable.setEnabled(true);
-        playerListScroll.setVisible(false);
-        playerListScroll.setBounds(575,40, 505, 200);
         playerListScroll.setViewportView(playerListTable);
-        add(playerListScroll);
-
-        reloadPlayerList.setVisible(false);
-        reloadPlayerList.addActionListener(act);
-        reloadPlayerList.setBounds(575, 0, 520, 30);
-        add(reloadPlayerList);
-
-        addPlayerToInvite.setVisible(false);
-        addPlayerToInvite.setBounds(575, 245, 250, 30);
-        addPlayerToInvite.addActionListener(act);
-        add(addPlayerToInvite);
-
-        removePlayerToInvite.setVisible(false);
-        removePlayerToInvite.setBounds(835, 245, 245, 30);
-        removePlayerToInvite.addActionListener(act);
-        add(removePlayerToInvite);
 
         addedPlayerToInviteTable.getTableHeader().setReorderingAllowed(false);
         addedPlayerToInviteTable.setModel(addedPlayerToInviteModel);
         addedPlayerToInviteTable.getColumnModel().getColumn(0).setPreferredWidth(50);
         addedPlayerToInviteTable.setEnabled(true);
-        addedPlayerToInviteScroll.setVisible(false);
-        addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
         addedPlayerToInviteScroll.setViewportView(addedPlayerToInviteTable);
-        add(addedPlayerToInviteScroll);
 
-        inviteChosenPlayer.setBounds(575, 485, 520, 30);
-        inviteChosenPlayer.setVisible(false);
-        inviteChosenPlayer.addActionListener(act);
-        add(inviteChosenPlayer);
-
-        yourConnectionLabel.setVisible(false);
-        yourConnectionLabel.setBounds(575, 735, 520,30);
-        add(yourConnectionLabel);
-
-        scroll.setVisible(false); //scroll bar for game table
         DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
         table.setModel(model);
         table.getColumnModel().getColumn(0).setPreferredWidth(5);
@@ -113,44 +101,13 @@ public final class Gui extends JFrame {
         table.setPreferredScrollableViewportSize(new Dimension(450,63));
         table.setFillsViewportHeight(true);
         model = (DefaultTableModel) table.getModel();
-        scroll.setBounds(10,0,560,200);
         scroll.setViewportView(table);
-        add(scroll);
 
-        loginButton.setBounds(250,30,120,30);
-        loginButton.setVisible(true); // to log in
-        loginButton.addActionListener(act);
-        add(loginButton); // button for login
+        setupLoginComponents(act);
 
-        savaLoginData.setBounds(250,70,120,30);
-        savaLoginData.setVisible(true); // to save the username and passwort
-        savaLoginData.addActionListener(act);
-        add(savaLoginData); // button to save date in txt
+        setupGameComponents(act);
 
-        usernameTextfield.setBounds(120,30,120,30);
-        usernameTextfield.setVisible(true);
-        add(usernameTextfield);
-
-        passwordfield.setBounds(120,70,120,30);
-        passwordfield.setVisible(true);
-        add(passwordfield); // pw is not visible for user
-
-        passwortLabel.setBounds(10,70,120,30);
-        passwortLabel.setVisible(true);
-        add(passwortLabel);
-
-        usernameLabel.setBounds(10,30,120,30);
-        usernameLabel.setVisible(true);
-        add(usernameLabel);
-        add(new JLabel());
-
-        setSize(1100,805); //square size
-        setVisible(true);
-        setResizable(false);
-
-        setIconImage(new ImageIcon("cardimages\\image_icon.png").getImage());
-
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setupGUI();
     }
 
     /**
@@ -167,15 +124,27 @@ public final class Gui extends JFrame {
         }
     }
 
+    /**
+     * adds the given data to the Model playerListModel
+     * @param data
+     */
     public void addDataToPlayerListModel(Object... data){
         playerListModel.addRow(data);
     }
 
+    /**
+     * adds the given data to the Model addedPlayerToInviteModel
+     * @param data
+     */
     public void addDataToAddedPlayerModel(Object... data){
         addedPlayerToInviteModel.addRow(data);
     }
 
-    public void addUserData(){
+    /**
+     * does a POST-request to the server and asks for the currently connected clients
+     * adds them (except your connection) to the table for displaying
+     */
+    public void getConnectUserData(){
         playerListModel.setRowCount(0);
 
         String userdata;
@@ -203,73 +172,199 @@ public final class Gui extends JFrame {
             }
         } catch (JsonProcessingException ex) {
             ex.printStackTrace();
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        } catch (IOException ignored) {
         }
 
-        for(int i = 0; i < Objects.requireNonNull(jsonNode).size()-1; i++){
-            Gui.getInstance().addDataToPlayerListModel(usernames.get(i), socketIds.get(i));
+        assert jsonNode != null;
+        if(jsonNode.size() != 0) {
+            for (int i = 0; i < Objects.requireNonNull(jsonNode).size() - 1; i++) {
+                Gui.getInstance().addDataToPlayerListModel(usernames.get(i), socketIds.get(i));
+            }
         }
+    }
+
+    /**
+     * adds all component needed for the login or for (dis)playing the game depending on the parameter to the list
+     * @param componentType
+     */
+    public void ComponentsToList(ComponentType componentType){
+        if(componentType.toString().equals("LOGIN")){
+            loginComponents.add(loginButton);
+            loginComponents.add(savaLoginData);
+            loginComponents.add(usernameTextfield);
+            loginComponents.add(usernameLabel);
+            loginComponents.add(passwordTextfield);
+            loginComponents.add(passwortLabel);
+        } else if(componentType.toString().equals("GAME")) {
+            gameComponents.add(componentPainter);
+            gameComponents.add(playerListScroll);
+            gameComponents.add(reloadPlayerList);
+            gameComponents.add(addPlayerToInvite);
+            gameComponents.add(removePlayerToInvite);
+            gameComponents.add(addedPlayerToInviteTable);
+            gameComponents.add(inviteChosenPlayer);
+            gameComponents.add(yourConnectionLabel);
+            gameComponents.add(scroll);
+        }
+    }
+
+    /**
+     * sets the visibility of the components needed for the login or for playing the game depending on the parameter
+     * to visible (true)
+     * or not visible (false)
+     * @param componentType
+     * @param bool
+     */
+    public void setVisabilityComponents(ComponentType componentType, boolean bool){
+        if(componentType.toString().equals("LOGIN")){
+            for (JComponent loginComponent : loginComponents) {
+                loginComponent.setVisible(bool);
+            }
+        } else if(componentType.toString().equals("GAME")) {
+            for (JComponent gameComponent : gameComponents) {
+                gameComponent.setVisible(bool);
+            }
+        }
+    }
+
+    /**
+     * add a listener to the components needed for the login or for playing the game depending on the parameter
+     * @param componentType
+     * @param act
+     */
+    public void addComponentsActionListeners(ComponentType componentType, ActionListener act){
+            if(componentType.toString().equals("LOGIN")){
+                loginButton.addActionListener(act);
+                savaLoginData.addActionListener(act);
+            } else if(componentType.toString().equals("GAME")){
+                reloadPlayerList.addActionListener(act);
+                addPlayerToInvite.addActionListener(act);
+                removePlayerToInvite.addActionListener(act);
+                inviteChosenPlayer.addActionListener(act);
+            }
+    }
+
+    /**
+     * sets the bounds of the components needed for the login or for (dis)playing the game depending on the parameter
+     * @param componentType
+     */
+    public void setComponentsBounds(ComponentType componentType){
+        if(componentType.toString().equals("LOGIN")){
+            loginButton.setBounds(250,30,120,30);
+            savaLoginData.setBounds(250,70,120,30);
+            usernameTextfield.setBounds(120,30,120,30);
+            passwordTextfield.setBounds(120,70,120,30);
+            passwortLabel.setBounds(10,70,120,30);
+            usernameLabel.setBounds(10,30,120,30);
+        } else if(componentType.toString().equals("GAME")){
+            componentPainter.setBounds(10,200,560,560); //showing the cards
+            playerListScroll.setBounds(575,40, 505, 200);
+            reloadPlayerList.setBounds(575, 0, 520, 30);
+            addPlayerToInvite.setBounds(575, 245, 250, 30);
+            removePlayerToInvite.setBounds(835, 245, 245, 30);
+            inviteChosenPlayer.setBounds(575, 485, 520, 30);
+            yourConnectionLabel.setBounds(575, 735, 520,30);
+            scroll.setBounds(10,0,560,200);
+        }
+    }
+
+    /**
+     * adds all components to the JFrame
+     */
+    public void addComponents(){
+        for(JComponent loginComponent : loginComponents) {
+            add(loginComponent);
+        }
+
+        for(JComponent gameComponent : gameComponents){
+            add(gameComponent);
+        }
+    }
+
+    /**
+     * sets up the components needed for the login
+     * sets the visibility to false
+     * adds a listener
+     * sets the bounds
+     * @param act
+     */
+    public void setupLoginComponents(ActionListener act){
+        ComponentsToList(ComponentType.LOGIN);
+        setVisabilityComponents(ComponentType.LOGIN,true);
+        addComponentsActionListeners(ComponentType.LOGIN, act);
+        setComponentsBounds(ComponentType.LOGIN);
+
+        LOG.info("Finished setting up the components for the login.");
+    }
+
+    /**
+     * * sets up the components needed for (dis)playing the game
+     * * sets the visibility to false
+     * * adds a listener
+     * * sets the bounds
+     * @param act
+     */
+    public void setupGameComponents(ActionListener act){
+        ComponentsToList(ComponentType.GAME);
+        setVisabilityComponents(ComponentType.GAME, false);
+        addComponentsActionListeners(ComponentType.GAME, act);
+        setComponentsBounds(ComponentType.GAME);
+
+        LOG.info("Finished setting up the components for the game.");
+    }
+
+    /**
+     * * sets up the gui for displaying
+     */
+    public void setupGUI(){
+
+        addComponents();
+
+        setSize(1100,805);
+        setVisible(true);
+        setResizable(false);
+
+        setIconImage(new ImageIcon("sprites\\image_icon.png").getImage());
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        LOG.info("Setting up the GUI is done.");
     }
 
     public void setUsernameTextfield(String userName){
         getUsernameTextfield().setText(userName);
     }
-
-    public void setPasswordfield(String password){
-        getPasswordfield().setText(password);
+    public void setPasswordTextfield(String password){
+        getPasswordTextfield().setText(password);
     }
-
     public List<Card> getPlayerHand() {
         return playerHand;
     }
-
     public Card getInitialTopCard(){return initialTopCard;}
-    public String getPasswort(){return passwordfield.getText();}
+    public String getPasswort(){return passwordTextfield.getText();}
     public String getUsername(){return usernameTextfield.getText();}
-    public JPasswordField getPasswordfield(){return passwordfield;}
+    public JPasswordField getPasswordTextfield(){return passwordTextfield;}
     public JTextField getUsernameTextfield(){return usernameTextfield;}
-    public JLabel getUsernameLabel(){return usernameLabel;}
-    public  JLabel getPasswortLabel(){return passwortLabel;}
     public JButton getLoginButton(){return loginButton;}
     public JButton getSavaLoginData(){return savaLoginData;}
-    public JTable getTable(){return table;}
-
-    public JScrollPane getScroll(){return scroll;}
-    public JScrollPane getPlayerListScroll(){return playerListScroll;}
-
     public JButton getReloadPlayerList() {
         return reloadPlayerList;
     }
-
-    public ComponentPainter getShowCards() {
-        return componentPainter;
-    }
-
     public JButton getAddPlayerToInvite() {
         return addPlayerToInvite;
     }
-
     public JButton getRemovePlayerToInvite() {
         return removePlayerToInvite;
     }
-
     public JButton getInviteChosenPlayer() {
         return inviteChosenPlayer;
     }
-
-    public JScrollPane getAddedPlayerToInviteScroll() {
-        return addedPlayerToInviteScroll;
-    }
-
     public JTable getPlayerListTable() {
         return playerListTable;
     }
-
     public JTable getAddedPlayerToInviteTable() {
         return addedPlayerToInviteTable;
     }
-
     public JLabel getYourConnectionLabel() {
         return yourConnectionLabel;
     }

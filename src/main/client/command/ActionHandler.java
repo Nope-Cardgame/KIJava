@@ -19,34 +19,20 @@ public class ActionHandler implements ActionListener {
              boolean validLogin = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort());
 
              if(validLogin) {
-                 Gui.getInstance().getScroll().setVisible(true);
-                 Gui.getInstance().getLoginButton().setVisible(false);
-                 Gui.getInstance().getSavaLoginData().setVisible(false);
-                 Gui.getInstance().getUsernameTextfield().setVisible(false);
-                 Gui.getInstance().getPasswortLabel().setVisible(false);
-                 Gui.getInstance().getPasswordfield().setVisible(false);
-                 Gui.getInstance().getUsernameLabel().setVisible(false);
+                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.LOGIN, false);
 
-                 Gui.getInstance().addUserData();
-                 Gui.getInstance().getPlayerListScroll().setVisible(true);
-                 Gui.getInstance().getShowCards().setVisible(true);
-                 Gui.getInstance().getReloadPlayerList().setVisible(true);
-                 Gui.getInstance().getAddPlayerToInvite().setVisible(true);
-                 Gui.getInstance().getRemovePlayerToInvite().setVisible(true);
-                 Gui.getInstance().getInviteChosenPlayer().setVisible(true);
-                 Gui.getInstance().getAddedPlayerToInviteScroll().setVisible(true);
-                 Gui.getInstance().getInviteChosenPlayer().setVisible(true);
+                 Gui.getInstance().getConnectUserData();
+                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.GAME, true);
 
                  try {
                      Gui.getInstance().getYourConnectionLabel().setText("Own Connection: Username: " + Main.getUsername_global() + "; SocketID: " + Main.findMySocketID());
                  } catch (JSONException ex) {
                      throw new RuntimeException(ex);
                  }
-                 Gui.getInstance().getYourConnectionLabel().setVisible(true);
              }
          }
          if(src == Gui.getInstance().getReloadPlayerList()){
-             Gui.getInstance().addUserData();
+             Gui.getInstance().getConnectUserData();
          }
          if(src == Gui.getInstance().getAddPlayerToInvite()){
              int[] row = Gui.getInstance().getPlayerListTable().getSelectedRows();
@@ -68,7 +54,7 @@ public class ActionHandler implements ActionListener {
                 socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
              }
              try {
-                 if(playernames.length > 0 && playernames.length < 7) rest.invitePlayer(playernames, socketIDs);
+                 if(playernames.length > 0) rest.invitePlayer(playernames, socketIDs);
              }catch (IOException | JSONException ex) {
                  throw new RuntimeException(ex);
             }

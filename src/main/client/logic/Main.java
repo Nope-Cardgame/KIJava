@@ -26,7 +26,7 @@ public class Main {
         if(!UserdataFileReader.isEmpty()){
             String[] userData = UserdataFileReader.getUserData();
             Gui.getInstance().setUsernameTextfield(userData[0]);
-            Gui.getInstance().setPasswordfield(userData[1]);
+            Gui.getInstance().setPasswordTextfield(userData[1]);
         }
     }
 
