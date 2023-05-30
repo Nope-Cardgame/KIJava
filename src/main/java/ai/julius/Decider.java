@@ -14,7 +14,32 @@ public interface Decider {
      * @param game the game state the decider needs to decide on that strategy
      * @return a String that indicates the next move
      */
-    String decide(Game game);
+    default String decide(Game game){
+        Action action = null;
+        JGameAdapter gameAdapter = new JGameAdapter(game);
+        if (gameAdapter.isLastAction("take") && !game.getState().equals("turn_start")) {
+            action = actionAfterTakeCard(game);
+        } else {
+            action = actionBeforeTakeCard(game);
+        }
+        assert action != null;
+        return action.toJSON();
+    }
+
+    /**
+     * Calculates an action String when you haven't drawn
+     * a card yet
+     *
+     * @param game the game that you need to calculate your next move
+     * @return an Action-Object as JSON-String (must be valid)
+     */
     Action actionBeforeTakeCard(Game game);
+
+    /**
+     * Calculates an action String when you have drawn a card
+     *
+     * @param game the game that you need to calculate your next move
+     * @return an Action-Object as JSON-String (must be valid)
+     */
     Action actionAfterTakeCard(Game game);
 }

@@ -14,20 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JAIValidOnly implements Decider {
-
-    @Override
-    public String decide(Game game) {
-        Action action = null;
-        JGameAdapter gameAdapter = new JGameAdapter(game);
-        if (gameAdapter.isLastAction("take") && !game.getState().equals("turn_start")) {
-            action = actionAfterTakeCard(game);
-        } else {
-            action = actionBeforeTakeCard(game);
-        }
-        assert action != null;
-        return action.toJSON();
-    }
-
     @Override
     public Action actionAfterTakeCard(Game game) {
         Action action = null;

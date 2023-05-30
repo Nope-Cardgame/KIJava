@@ -8,9 +8,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import gameobjects.Game;
+import gameobjects.Player;
 import gameobjects.Tournament;
 import io.socket.client.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import logging.NopeLogger;
@@ -86,6 +88,8 @@ public class ServerEventHandler {
      */
     private void handleGameState(Object[] objects) {
         Game game = new Game(((JSONObject) objects[0]).toString());
+        List<Player> playerList = game.getPlayers();
+        LOG.info("Current Players: " + playerList.get(0).getUsername() + " and " + playerList.get(1).getUsername());
         LOG.info(game.toJSON());
         // method is only necessary if we are at turn
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {

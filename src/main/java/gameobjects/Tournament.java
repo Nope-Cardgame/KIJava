@@ -63,7 +63,6 @@ public class Tournament implements IJsonable {
             this.startTime = tournamentObject.getString("startTime");
             this.endTime = tournamentObject.getString("endTime");
         } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
