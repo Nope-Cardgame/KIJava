@@ -9,6 +9,7 @@ import java.io.*;
 import logic.Main;
 import logic.Rest;
 import org.json.JSONException;
+import view.ComponentPainter;
 import view.Gui;
 
 public class ActionHandler implements ActionListener {
@@ -19,20 +20,21 @@ public class ActionHandler implements ActionListener {
              boolean validLogin = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort());
 
              if(validLogin) {
-                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.LOGIN, false);
+                     Gui.getInstance().setVisabilityComponents(Gui.ComponentType.LOGIN, false);
 
-                 Gui.getInstance().getConnectUserData();
-                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.GAME, true);
+                 Gui.getInstance().getConnectedUserData();
 
                  try {
                      Gui.getInstance().getYourConnectionLabel().setText("Own Connection: Username: " + Main.getUsername_global() + "; SocketID: " + Main.findMySocketID());
                  } catch (JSONException ex) {
                      throw new RuntimeException(ex);
                  }
+
+                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.GAME, true);
              }
          }
          if(src == Gui.getInstance().getReloadPlayerList()){
-             Gui.getInstance().getConnectUserData();
+             Gui.getInstance().getConnectedUserData();
          }
          if(src == Gui.getInstance().getAddPlayerToInvite()){
              int[] row = Gui.getInstance().getPlayerListTable().getSelectedRows();
@@ -47,6 +49,8 @@ public class ActionHandler implements ActionListener {
          }
          if(src == Gui.getInstance().getInviteChosenPlayer()){
              Rest rest = new Rest();
+             Gui.getInstance().resetGameTable();
+             ComponentPainter.setEliminated(false);
              String[] playernames = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
              String[] socketIDs = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
              for(int i = 0; i <= playernames.length-1; i++) {

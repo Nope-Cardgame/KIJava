@@ -13,6 +13,7 @@ import logic.RequestType;
 import logic.Rest;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -35,27 +36,43 @@ public final class Gui extends JFrame {
 
     private Card initialTopCard = null;
     private List<Card> playerHand = new ArrayList<Card>(); // the cards on the hand
+
     private final JTextField usernameTextfield = new JTextField(); // the user can type in his name
+    private final JPasswordField passwordTextfield = new JPasswordField(); //passwordfield to not show pw
+
     private final JLabel usernameLabel = new JLabel("User name:"); // label to descibe
     private final JLabel passwortLabel = new JLabel("Password:");// label to descibe
     private final JLabel yourConnectionLabel = new JLabel();
-    private final JPasswordField passwordTextfield = new JPasswordField(); //passwordfield to not show pw
+    private final JLabel noActionCardsLabel = new JLabel("Do you want to deactivate actioncards?");
+    private final JLabel noWildCardsLabel = new JLabel("Do you want to deactivate wildcards??");
+    private final JLabel oneMoreStartCardLabel = new JLabel("Do you want to start with one extra card?");
+
+    private final JComboBox<Boolean> noActionCardsComboBox = new JComboBox<>(new Boolean[]{ true, false });
+    private final JComboBox<Boolean> noWildCardsComboBox = new JComboBox<>(new Boolean[]{ true, false });
+    private final JComboBox<Boolean> oneMoreStartCardComboBox = new JComboBox<>(new Boolean[]{ true, false });
+
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton savaLoginData = new JButton("Save Data"); //button to save login data in txt document
     private final JButton reloadPlayerList = new JButton("Reload player list");
     private final JButton addPlayerToInvite = new JButton("Add marked player to list");
     private final JButton removePlayerToInvite = new JButton("Remove marked player from list");
     private final JButton inviteChosenPlayer = new JButton("Invite players to game");
+
     private final JTable table = new JTable(); //shows all actions of game in a list
     private final JTable playerListTable = new JTable();
     private final JTable addedPlayerToInviteTable = new JTable();
+
     private final ComponentPainter componentPainter = new ComponentPainter();// jpanel showing the cards with picutes
+
+    private DefaultTableModel gameModel = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action", "Cards"});
     private final DefaultTableModel playerListModel = new DefaultTableModel(new Object[][]{}, new String[]{"Playername", "Socket-ID"});
     private final DefaultTableModel addedPlayerToInviteModel = new DefaultTableModel(new Object[][]{}, new String[]{"Added player to invite", "Socket-ID"});
 
     JScrollPane scroll= new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     JScrollPane playerListScroll = new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    JScrollPane addedPlayerToInviteScroll= new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane addedPlayerToInviteScroll= new JScrollPane(addedPlayerToInviteTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+    private int counter = 1;
 
     private final ArrayList<JComponent> loginComponents = new ArrayList<>();
     private final ArrayList<JComponent> gameComponents = new ArrayList<>();
@@ -94,14 +111,24 @@ public final class Gui extends JFrame {
         addedPlayerToInviteTable.setEnabled(true);
         addedPlayerToInviteScroll.setViewportView(addedPlayerToInviteTable);
 
-        DefaultTableModel model = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action"});
-        table.setModel(model);
+        scroll.setVisible(false); //scroll bar for game table
+        table.setModel(gameModel);
         table.getColumnModel().getColumn(0).setPreferredWidth(5);
         table.setEnabled(true);
         table.setPreferredScrollableViewportSize(new Dimension(450,63));
         table.setFillsViewportHeight(true);
-        model = (DefaultTableModel) table.getModel();
+        table.setEnabled(false);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment( JLabel.CENTER );
+        table.setDefaultRenderer(String.class, centerRenderer);
+        table.getColumnModel().getColumn(0).setWidth(50);
+        table.getColumnModel().getColumn(1).setWidth(100);
+        table.getColumnModel().getColumn(2).setMinWidth(250);
+        table.getColumnModel().getColumn(3).setMaxWidth(50);
+        gameModel = (DefaultTableModel) table.getModel();
+        scroll.setBounds(10,0,560,200);
         scroll.setViewportView(table);
+        add(scroll);
 
         setupLoginComponents(act);
 
@@ -121,6 +148,7 @@ public final class Gui extends JFrame {
             }
             initialTopCard = game.getDiscardPile().get(0);
             componentPainter.repaint();
+            refreshGameTable(game);
         }
     }
 
@@ -144,7 +172,7 @@ public final class Gui extends JFrame {
      * does a POST-request to the server and asks for the currently connected clients
      * adds them (except your connection) to the table for displaying
      */
-    public void getConnectUserData(){
+    public void getConnectedUserData(){
         playerListModel.setRowCount(0);
 
         String userdata;
@@ -178,7 +206,7 @@ public final class Gui extends JFrame {
         assert jsonNode != null;
         if(jsonNode.size() != 0) {
             for (int i = 0; i < Objects.requireNonNull(jsonNode).size() - 1; i++) {
-                Gui.getInstance().addDataToPlayerListModel(usernames.get(i), socketIds.get(i));
+                addDataToPlayerListModel(usernames.get(i), socketIds.get(i));
             }
         }
     }
@@ -187,7 +215,7 @@ public final class Gui extends JFrame {
      * adds all component needed for the login or for (dis)playing the game depending on the parameter to the list
      * @param componentType
      */
-    public void ComponentsToList(ComponentType componentType){
+    public void componentsToList(ComponentType componentType){
         if(componentType.toString().equals("LOGIN")){
             loginComponents.add(loginButton);
             loginComponents.add(savaLoginData);
@@ -197,14 +225,21 @@ public final class Gui extends JFrame {
             loginComponents.add(passwortLabel);
         } else if(componentType.toString().equals("GAME")) {
             gameComponents.add(componentPainter);
+            gameComponents.add(addedPlayerToInviteScroll);
             gameComponents.add(playerListScroll);
             gameComponents.add(reloadPlayerList);
             gameComponents.add(addPlayerToInvite);
             gameComponents.add(removePlayerToInvite);
-            gameComponents.add(addedPlayerToInviteTable);
             gameComponents.add(inviteChosenPlayer);
             gameComponents.add(yourConnectionLabel);
             gameComponents.add(scroll);
+            gameComponents.add(noActionCardsLabel);
+            gameComponents.add(noActionCardsComboBox);
+            gameComponents.add(noWildCardsLabel);
+            gameComponents.add(noWildCardsComboBox);
+            gameComponents.add(oneMoreStartCardLabel);
+            gameComponents.add(oneMoreStartCardComboBox);
+            gameComponents.add(new JPanel());
         }
     }
 
@@ -228,11 +263,11 @@ public final class Gui extends JFrame {
     }
 
     /**
-     * add a listener to the components needed for the login or for playing the game depending on the parameter
+     * add a actionhandler to the components needed for the login or for playing the game depending on the parameter
      * @param componentType
      * @param act
      */
-    public void addComponentsActionListeners(ComponentType componentType, ActionListener act){
+    public void addComponentsActionHandler(ComponentType componentType, ActionListener act){
             if(componentType.toString().equals("LOGIN")){
                 loginButton.addActionListener(act);
                 savaLoginData.addActionListener(act);
@@ -257,14 +292,21 @@ public final class Gui extends JFrame {
             passwortLabel.setBounds(10,70,120,30);
             usernameLabel.setBounds(10,30,120,30);
         } else if(componentType.toString().equals("GAME")){
-            componentPainter.setBounds(10,200,560,560); //showing the cards
+            noWildCardsComboBox.setBounds(830, 555, 100, 30);
+            componentPainter.setBounds(10,200,560,560);
             playerListScroll.setBounds(575,40, 505, 200);
-            reloadPlayerList.setBounds(575, 0, 520, 30);
+            addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
+            reloadPlayerList.setBounds(575, 0, 525, 30);
             addPlayerToInvite.setBounds(575, 245, 250, 30);
             removePlayerToInvite.setBounds(835, 245, 245, 30);
             inviteChosenPlayer.setBounds(575, 485, 520, 30);
             yourConnectionLabel.setBounds(575, 735, 520,30);
             scroll.setBounds(10,0,560,200);
+            noActionCardsLabel.setBounds(575, 520, 250, 30);
+            noActionCardsComboBox.setBounds(830, 520, 100, 30);
+            noWildCardsLabel.setBounds(575, 555, 250, 30);
+            oneMoreStartCardLabel.setBounds(575, 590, 250, 30);
+            oneMoreStartCardComboBox.setBounds(830, 590, 100, 30);
         }
     }
 
@@ -289,9 +331,9 @@ public final class Gui extends JFrame {
      * @param act
      */
     public void setupLoginComponents(ActionListener act){
-        ComponentsToList(ComponentType.LOGIN);
+        componentsToList(ComponentType.LOGIN);
         setVisabilityComponents(ComponentType.LOGIN,true);
-        addComponentsActionListeners(ComponentType.LOGIN, act);
+        addComponentsActionHandler(ComponentType.LOGIN, act);
         setComponentsBounds(ComponentType.LOGIN);
 
         LOG.info("Finished setting up the components for the login.");
@@ -305,9 +347,9 @@ public final class Gui extends JFrame {
      * @param act
      */
     public void setupGameComponents(ActionListener act){
-        ComponentsToList(ComponentType.GAME);
+        componentsToList(ComponentType.GAME);
         setVisabilityComponents(ComponentType.GAME, false);
-        addComponentsActionListeners(ComponentType.GAME, act);
+        addComponentsActionHandler(ComponentType.GAME, act);
         setComponentsBounds(ComponentType.GAME);
 
         LOG.info("Finished setting up the components for the game.");
@@ -329,6 +371,20 @@ public final class Gui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         LOG.info("Setting up the GUI is done.");
+    }
+
+    public void refreshGameTable(Game game) {
+        gameModel.addRow(new Object[]{
+                String.valueOf(counter),
+                game.getCurrentPlayer().getUsername(),
+                game.getLastAction().getType(),
+                String.valueOf(game.getCurrentPlayer().getCardAmount())});
+        counter++;
+    }
+
+    public void resetGameTable(){
+        while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
+        counter = 1;
     }
 
     public void setUsernameTextfield(String userName){
@@ -367,6 +423,16 @@ public final class Gui extends JFrame {
     }
     public JLabel getYourConnectionLabel() {
         return yourConnectionLabel;
+    }
+    public JComboBox<Boolean> getNoActionCardsComboBox() {
+        return noActionCardsComboBox;
+    }
+    public JComboBox<Boolean> getNoWildCardsComboBox() {
+        return noWildCardsComboBox;
+    }
+
+    public JComboBox<Boolean> getOneMoreStartCardComboBox() {
+        return oneMoreStartCardComboBox;
     }
 }
 

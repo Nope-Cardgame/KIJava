@@ -4,6 +4,7 @@ import logging.NopeLogger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import view.Gui;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -161,9 +162,9 @@ public class Rest {
         }
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("noActionCards", true);
-        jsonObject.put("noWildCards", true);
-        jsonObject.put("oneMoreStartCards", false);
+        jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());
+        jsonObject.put("noWildCards", Gui.getInstance().getNoWildCardsComboBox().getSelectedItem());
+        jsonObject.put("oneMoreStartCards", Gui.getInstance().getOneMoreStartCardComboBox());
 
         jsonObject.put("players", playersArray);
 

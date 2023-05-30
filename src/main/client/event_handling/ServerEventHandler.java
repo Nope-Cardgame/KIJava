@@ -149,6 +149,7 @@ public class ServerEventHandler {
         GameInvitation game = new GameInvitation(gson.toJson(gameObject));
         LOG.info("You have been invited to " + type + ", do you want to accept?");
         LOG.info("Accept by default!!!");
+        Gui.getInstance().resetGameTable();
         ComponentPainter.setEliminated(false);
         // accept by default
         Ready ready = new Ready(true,type,game.getId());
@@ -178,6 +179,8 @@ public class ServerEventHandler {
         LOG.info(gson.toJson(jsonElement));
         LOG.info("You have been invited to " + type + ", do you want to accept?");
         LOG.info("Accept by default!!!");
+        Gui.getInstance().resetGameTable();
+        ComponentPainter.setEliminated(false);
         // accept by default
         Ready ready = new Ready(true,type,tournament.getId());
         Object [] message = new Object[1];
