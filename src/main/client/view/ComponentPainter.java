@@ -22,19 +22,24 @@ public class ComponentPainter extends JPanel{
         int ySize = 100; // height of card
 
         int cardCount = 0;
-
+        int rowSeparator = 4; //usually new row after 4 cards
+        if (Gui.getInstance().getPlayerHand().size() > 8){
+            xSize = 300/((int)((Gui.getInstance().getPlayerHand().size()+1)/2));
+            ySize = (int)(xSize/0.75);
+            rowSeparator = (Gui.getInstance().getPlayerHand().size()+1)/2;
+        }
         ImageLoader background = new ImageLoader("background.png");
 
         g.drawImage(background.image, 0, 0, 565, 565, null);
 
         for (Card card: Gui.getInstance().getPlayerHand()){
             //update position of each card
-            if(cardCount < 4) {
+            if(cardCount < rowSeparator) {
                 ImageLoader imageLoader = new ImageLoader(card); // load picture
                 g.drawImage(imageLoader.image, start, 140, xSize, ySize, null); //show picture
                 g.drawRect(start, 140, xSize, ySize); //black frame
             } else {
-                if(cardCount == 4){
+                if(cardCount == rowSeparator){
                     start = 115;
                 }
                 ImageLoader imageLoader = new ImageLoader(card); // load picture
