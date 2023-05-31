@@ -3,35 +3,14 @@ package ai.julius.adapters;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class JPlayerAdapter {
-    private Player player;
+    private final Player player;
 
     public JPlayerAdapter(Player player) {
         this.player = player;
-    }
-
-    /**
-     * checks if a Player has a complete Set of a certain Card
-     * on his hand.
-     *
-     * @param topCard the Card that is on top of the discardPile which
-     *                is actually a numberCard
-     *
-     * @return true if the player has an actual set of Cards acc.
-     *         to the Game rules, false otherwise
-     */
-    public boolean hasCompleteSet(Card topCard) {
-        NumberCard numberCard = (NumberCard) topCard;
-        List<String> colors = topCard.getColors();
-        boolean erg = false;
-        for (int iterator = 0; iterator < colors.size() && !erg; iterator++) {
-            erg = hasSetWithColor(numberCard,colors.get(iterator));
-        }
-        return erg;
     }
 
     /**
@@ -41,7 +20,7 @@ public class JPlayerAdapter {
      * @param color the color we're looking in that card
      * @return true if a set is completed, false otherwise
      */
-    private boolean hasSetWithColor(NumberCard topCard, String color) {
+    public boolean hasCompleteSetWithColor(NumberCard topCard, String color) {
         int amountCards = 0;
         for(Card card: player.getCards()) {
             CardAdapter cardAdapter = new CardAdapter(card);
@@ -53,19 +32,22 @@ public class JPlayerAdapter {
     }
 
     /**
-     * Creates a "stupid" set of Cards which the Player can use later on
+     * Checks if a Player has a complete set
      *
-     * @param topCard the color of the set
-     * @return a random and stupid set only for valid moves
+     * @param amount the amount of Cards the set needs to have at least
+     * @param color the color of the Set
+     *
+     * @return true, if player has a complete Set, false otherwise
      */
-    public List<Card> getStupidSet(Card topCard) {
-        NumberCard topAsNumber = (NumberCard) topCard;
-        List<Card> set = new ArrayList<>();
-        List<String> colors = topCard.getColors();
-        for(int iterator = 0; iterator < colors.size() && set.size() != topAsNumber.getValue(); iterator++) {
-            set = getStupidSetColor(topCard, colors.get(iterator));
+    public boolean hasCompleteSetWithColor(int amount, String color) {
+        int amountCards = 0;
+        for(Card card: player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (cardAdapter.hasColor(color)) {
+                amountCards++;
+            }
         }
-        return set;
+        return amountCards >= amount;
     }
 
     /**
@@ -75,7 +57,7 @@ public class JPlayerAdapter {
      * @param color the color that needs to be created with
      * @return the stupidest list ever
      */
-    private List<Card> getStupidSetColor(Card topCard, String color) {
+    public List<Card> getStupidSetColor(Card topCard, String color) {
         List<Card> cardSet = new ArrayList<>();
         for (Card card : player.getCards()) {
             CardAdapter cardAdapter = new CardAdapter(card);
@@ -87,14 +69,83 @@ public class JPlayerAdapter {
                 break;
             }
         }
+        if(containsNominate(cardSet)) {
+            List<Card> newCardList = new ArrayList<>();
+            newCardList.add(findNominate(cardSet));
+            cardSet = newCardList;
+        }
         return cardSet;
+    }
+
+    /**
+     * Creates a Stupid Set of Colors
+     *
+     * @param amount the amount of Cards the Set needs to obtain
+     * @param color the Color the Set need to provide
+     *
+     * @return a list of Cards that has the Amount of Cards in it
+     */
+    public List<Card> getStupidSetColor(int amount, String color) {
+        List<Card> cardSet = new ArrayList<>();
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if(cardAdapter.hasColor(color)) {
+                cardSet.add(card);
+            }
+            if (cardSet.size() == amount) {
+                break;
+            }
+        }
+        if(containsNominate(cardSet)) {
+            List<Card> newCardList = new ArrayList<>();
+            newCardList.add(findNominate(cardSet));
+            cardSet = newCardList;
+        }
+        return cardSet;
+    }
+
+    private boolean containsNominate(List<Card> cards) {
+        boolean found = false;
+        for (Card card : cards) {
+            if (card.getCardType().equals("nominate")) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
+    private Card findNominate(List<Card> cards) {
+        Card card = null;
+        for(int iterator = 0; iterator < cards.size() && card == null; iterator++) {
+            if (cards.get(iterator).getCardType().equals("nominate")) {
+                card = cards.get(iterator);
+            }
+        }
+        return card;
+    }
+
+    private List<Card> sortNominatedFirst(List<Card> cardListToSort) {
+        cardListToSort.sort((o1, o2) -> {
+            int returnValue = 0;
+            if (o1.getCardType().equals("nominate") || o2.getCardType().equals("nominate")) {
+                returnValue = -1;
+            } else if (o1.getCardType().equals("nominate") && !o2.getCardType().equals("nominate")) {
+                returnValue = -1;
+            } else if (!o1.getCardType().equals("nominate") && o2.getCardType().equals("nominate")) {
+                returnValue = 1;
+            }
+            return returnValue;
+        });
+        return cardListToSort;
     }
 
     /**
      * Looks for the first card with a given Color in a specific Set
      *
      * @param nominatedColor the Color we're looking for in that specific card
-     * @return a List with only one Card containing
+     * @return a List with only one Card containing, list is empty
+     *         if there is no card with that nominatedColor!
      */
     public List<Card> getStupidCard(String nominatedColor) {
         List<Card> cards = new ArrayList<>();

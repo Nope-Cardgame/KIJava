@@ -16,7 +16,7 @@ public class Game implements IJsonable {
     private String id;
     private String state;
     private boolean noActionCards;
-    private boolean noWildcards;
+    private boolean noWildCards;
     private boolean oneMoreStartCard;
     private Tournament tournament;
     private String gameRole;
@@ -31,36 +31,42 @@ public class Game implements IJsonable {
     private String endTime;
     private int lastNominateAmount;
     private String lastNominateColor;
+    private int actionTimeout;
+    private int invitationTimeout;
+    private boolean startWithRejection;
+    private int playerAmount;
+
 
     /**
      * Standard Constructor for a game
      *
-     * @param id the id of the game (not null)
-     * @param state the game state (game_start for invitation, nominate_flipped, turn_start, card_draw) (not null)
-     * @param noActionCards determines whether ActionCards are used or not (not null)
-     * @param noWildcards determines whether Wildcards are used or not (not null)
+     * @param id                the id of the game (not null)
+     * @param state             the game state (game_start for invitation, nominate_flipped, turn_start, card_draw) (not null)
+     * @param noActionCards     determines whether ActionCards are used or not (not null)
+     * @param noWildcards       determines whether Wildcards are used or not (not null)
      * @param oneMoreStartCards determines whether there is one more starting card or not (not null)
-     * @param tournament the tournament this game belongs to (null when no tournament)
-     * @param gameRole the role of the game (only when tournament, null else)
-     * @param encounterRound the encounterRound of the game (only when tournament, else -1)
-     * @param players the players of this game (not null)
-     * @param discardPile the discardPile (null if created for invitation)
-     * @param lastAction the last Action of this game (null if created for invitation)
-     * @param currentPlayer the current Player that can make an Action (null if created for invitation)
-     * @param startTime the start time of this game (not null)
-     * @param initialTopCard the initial top card of this game (null if created for invitation)
-     * @param actions the actions of this game (null if created for invitation)
-     * @param endTime the endTime of this game (null if created for invitation)
+     * @param tournament        the tournament this game belongs to (null when no tournament)
+     * @param gameRole          the role of the game (only when tournament, null else)
+     * @param encounterRound    the encounterRound of the game (only when tournament, else -1)
+     * @param players           the players of this game (not null)
+     * @param discardPile       the discardPile (null if created for invitation)
+     * @param lastAction        the last Action of this game (null if created for invitation)
+     * @param currentPlayer     the current Player that can make an Action (null if created for invitation)
+     * @param startTime         the start time of this game (not null)
+     * @param initialTopCard    the initial top card of this game (null if created for invitation)
+     * @param actions           the actions of this game (null if created for invitation)
+     * @param endTime           the endTime of this game (null if created for invitation)
      */
     public Game(String id, String state, boolean noActionCards, boolean noWildcards,
                 boolean oneMoreStartCards, Tournament tournament, String gameRole,
                 int encounterRound, List<Player> players, List<Card> discardPile,
                 Action lastAction, Player currentPlayer, String startTime, Card initialTopCard,
-                List<Action> actions, String endTime, int lastNominateAmount, String lastNominateColor) {
+                List<Action> actions, String endTime, int lastNominateAmount, String lastNominateColor,
+                int actionTimeout, int invitationTimeout, boolean startWithRejection, int playerAmount) {
         this.id = id;
         this.state = state;
         this.noActionCards = noActionCards;
-        this.noWildcards = noWildcards;
+        this.noWildCards = noWildcards;
         this.oneMoreStartCard = oneMoreStartCards;
         this.tournament = tournament;
         this.gameRole = gameRole;
@@ -75,6 +81,10 @@ public class Game implements IJsonable {
         this.endTime = endTime;
         this.lastNominateAmount = lastNominateAmount;
         this.lastNominateColor = lastNominateColor;
+        this.actionTimeout = actionTimeout;
+        this.invitationTimeout = invitationTimeout;
+        this.startWithRejection = startWithRejection;
+        this.playerAmount = playerAmount;
     }
 
     /**
@@ -89,20 +99,20 @@ public class Game implements IJsonable {
             this.id = gameObject.getString("id");
             this.state = gameObject.getString("state");
             this.noActionCards = gameObject.getBoolean("noActionCards");
-            this.noWildcards = gameObject.getBoolean("noWildCards");
+            this.noWildCards = gameObject.getBoolean("noWildCards");
             this.oneMoreStartCard = gameObject.getBoolean("oneMoreStartCard");
+            this.actionTimeout = gameObject.getInt("actionTimeout");
+            this.invitationTimeout = gameObject.getInt("invitationTimeout");
 
             try {
                 this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
                 this.lastNominateColor = gameObject.getString("lastNominateColor");
-            } catch (JSONException e){
+            } catch (JSONException e) {
                 this.lastNominateAmount = 0;
                 this.lastNominateColor = null;
             }
 
             try {
-                this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
-                this.lastNominateColor = gameObject.getString("lastNominateColor");
                 this.startTime = gameObject.getString("startTime");
             } catch (JSONException e) {
                 this.startTime = null;
@@ -155,6 +165,8 @@ public class Game implements IJsonable {
                 this.endTime = null;
                 this.actions = null;
             }
+
+            this.startWithRejection = gameObject.getBoolean("startWithRejection");
         } catch (JSONException ignored) {
         }
     }
@@ -189,12 +201,12 @@ public class Game implements IJsonable {
         this.noActionCards = noActionCards;
     }
 
-    public boolean isNoWildcards() {
-        return noWildcards;
+    public boolean isNoWildCards() {
+        return noWildCards;
     }
 
-    public void setNoWildcards(boolean noWildcards) {
-        this.noWildcards = noWildcards;
+    public void setNoWildCards(boolean noWildCards) {
+        this.noWildCards = noWildCards;
     }
 
     public boolean isOneMoreStartCards() {
