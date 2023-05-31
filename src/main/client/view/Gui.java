@@ -373,6 +373,7 @@ public final class Gui extends JFrame {
         setIconImage(new ImageIcon("sprites\\image_icon.png").getImage());
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Nope-Client Java (disconnected)");
 
         LOG.info("Setting up the GUI is done.");
     }
