@@ -23,6 +23,7 @@ public class ConnectionHandler {
         mySocket.on(Socket.EVENT_CONNECT_ERROR, args2 -> {
             LOG.severe("An issue appeared during the connection to the server.");
             System.out.println(args2[0]);
+            Gui.getInstance().setTitle("Nope-Client Java (disconnected)");
         });
 
         mySocket.on(Socket.EVENT_DISCONNECT, args3 -> {
