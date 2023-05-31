@@ -61,7 +61,7 @@ public class ServerEventHandler {
                 if(game.getState().equals("game_start")){
                     roundCounter = 0;
                 }
-                Gui.getInstance().refresh(game);
+                Gui.getInstance().refresh(game, false);
             }
             LOG.info("Received gamestate");
             try {
@@ -76,7 +76,6 @@ public class ServerEventHandler {
 
         socketInstance.on("eliminated", args1 -> {
             ComponentPainter.setEliminated(true);
-            Gui.getInstance().refresh(game);
             LOG.info("eliminated: " +Arrays.toString(args1));
         });
 
@@ -87,8 +86,6 @@ public class ServerEventHandler {
 
         socketInstance.on("gameEnd", args1 -> {
             roundCounter = 0;
-            ComponentPainter.setEliminated(false);
-            Gui.getInstance().refresh(game);
             LOG.info("gameEnd: " +Arrays.toString(args1));
         });
 
@@ -112,15 +109,15 @@ public class ServerEventHandler {
         game = new Game(((JSONObject) objects[0]).toString());
         // method is only necessary if we are at turn
         currentPlayer = game.getCurrentPlayer().getUsername();
-        Gui.getInstance().refresh(game);
+
+        Gui.getInstance().refresh(game, true);
+        Thread.sleep(Gui.getInstance().getDelay());
 
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
                 if(game.getState().equals("turn_start")){
                     roundCounter++;
                 }
-                Gui.getInstance().refresh(game);
-                Thread.sleep(1000);
                 // calculate the move with instance and emit
                 String move = this.ai.calculateNextMove(game);
                 Object[] message = new Object[1];

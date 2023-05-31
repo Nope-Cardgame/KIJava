@@ -50,10 +50,12 @@ public final class Gui extends JFrame {
     private final JLabel noActionCardsLabel = new JLabel("Do you want to deactivate actioncards?"); // label added to the combobox noActionCardsComboBox
     private final JLabel noWildCardsLabel = new JLabel("Do you want to deactivate wildcards??"); // label added to the combobox noWildCardsComboBox
     private final JLabel oneMoreStartCardLabel = new JLabel("Do you want to start with one extra card?"); // label added to the combobox oneMoreStartCardComboBox
+    private final JLabel delayLabel = new JLabel("DELAY:"); // label added to the combobox delayComboBox
 
     private final JComboBox<Boolean> noActionCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noActionCards
     private final JComboBox<Boolean> noWildCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noWildCards
     private final JComboBox<Boolean> oneMoreStartCardComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting oneMoreStartCard
+    private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "0.25", "0.5", "1", "1.5","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
 
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton savaLoginDataButton = new JButton("Save Data"); // button to save login data in .txt document userdata.txt
@@ -145,14 +147,14 @@ public final class Gui extends JFrame {
      * update gui with current cards
      * @param game
      */
-    public void refresh(Game game) {
+    public void refresh(Game game, boolean refreshTable) {
         if(game != null) {
             if (game.getCurrentPlayer().getUsername().equals(Main.getUsername_global())) {
                 playerHand = game.getCurrentPlayer().getCards();
             }
             initialTopCard = game.getDiscardPile().get(0);
             componentPainter.repaint();
-            refreshGameTable(game);
+            if(refreshTable) refreshGameTable(game);
         }
     }
 
@@ -243,6 +245,8 @@ public final class Gui extends JFrame {
             gameComponents.add(noWildCardsComboBox);
             gameComponents.add(oneMoreStartCardLabel);
             gameComponents.add(oneMoreStartCardComboBox);
+            gameComponents.add(delayDisplayCombobox);
+            gameComponents.add(delayLabel);
             gameComponents.add(new JPanel());
         }
     }
@@ -311,6 +315,8 @@ public final class Gui extends JFrame {
             noWildCardsLabel.setBounds(575, 555, 250, 30);
             oneMoreStartCardLabel.setBounds(575, 590, 250, 30);
             oneMoreStartCardComboBox.setBounds(830, 590, 100, 30);
+            delayDisplayCombobox.setBounds(950, 555, 100, 30);
+            delayLabel.setBounds(950, 520, 70, 30);
         }
     }
 
@@ -386,7 +392,7 @@ public final class Gui extends JFrame {
         gameModel.addRow(new Object[]{
                 String.valueOf(counter),
                 game.getCurrentPlayer().getUsername(),
-                game.getLastAction().getType(),
+                game.getState(),
                 String.valueOf(game.getCurrentPlayer().getCardAmount())});
         counter++;
     }
@@ -418,6 +424,10 @@ public final class Gui extends JFrame {
             }
         }
         return output;
+    }
+
+    public int getDelay(){
+        return Integer.parseInt((String) Objects.requireNonNull(delayDisplayCombobox.getSelectedItem())) * 1000;
     }
 
     // GETTER AND SETTER
