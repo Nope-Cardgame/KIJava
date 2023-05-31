@@ -33,10 +33,10 @@ public class ActionHandler implements ActionListener {
                  Gui.getInstance().setVisabilityComponents(Gui.ComponentType.GAME, true);
              }
          }
-         if(src == Gui.getInstance().getReloadPlayerList()){
+         if(src == Gui.getInstance().getReloadPlayerListButton()){
              Gui.getInstance().getConnectedUserData();
          }
-         if(src == Gui.getInstance().getAddPlayerToInvite()){
+         if(src == Gui.getInstance().getAddPlayerToInviteButton()){
              int[] row = Gui.getInstance().getPlayerListTable().getSelectedRows();
 
              for (int j = row[0]; j <= row[row.length-1]; j++) {
@@ -47,7 +47,7 @@ public class ActionHandler implements ActionListener {
                  }
              }
          }
-         if(src == Gui.getInstance().getInviteChosenPlayer()){
+         if(src == Gui.getInstance().getInviteChosenPlayerButton()){
              Rest rest = new Rest();
              Gui.getInstance().resetGameTable();
              ComponentPainter.setEliminated(false);
@@ -63,7 +63,7 @@ public class ActionHandler implements ActionListener {
                  throw new RuntimeException(ex);
             }
          }
-         if(src == Gui.getInstance().getRemovePlayerToInvite()){
+         if(src == Gui.getInstance().getRemovePlayerToInviteButton()){
              int[] row = Gui.getInstance().getAddedPlayerToInviteTable().getSelectedRows();
              try {
                  for (int j = row[0]; j <= row[row.length - 1]; j++) {
@@ -73,7 +73,7 @@ public class ActionHandler implements ActionListener {
              }
          }
 
-         if(src == Gui.getInstance().getSavaLoginData()) {
+         if(src == Gui.getInstance().getSavaLoginDataButton()) {
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {
                  writer.write(Gui.getInstance().getUsername()+"\n"+Gui.getInstance().getPasswort());
                  System.out.println("Der String wurde erfolgreich in die Datei geschrieben.");
