@@ -13,6 +13,12 @@ import javax.imageio.ImageIO;
  */
 public class ImageLoader {
     BufferedImage image;
+
+    /**
+     * constructor of the class with an object of the class Card as parameter
+     *
+     * @param card
+     */
     public ImageLoader(Card card) {
         if(card == null){
             try {
@@ -27,6 +33,11 @@ public class ImageLoader {
         }
     }
 
+    /**
+     * constructor of the class with string parameter as path
+     *
+     * @param relativePath
+     */
     public ImageLoader(String relativePath){
         if(!relativePath.equals("")){
             try {

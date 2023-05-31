@@ -155,7 +155,7 @@ public class Rest {
 
         con.setDoOutput(true);
 
-        // creates a json-file with the settings, your connect and the selected players
+        // creates a json-file with the settings, your connection and the selected players
         JSONArray playersArray = new JSONArray();
 
         JSONObject player = new JSONObject();

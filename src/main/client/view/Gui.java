@@ -399,7 +399,28 @@ public final class Gui extends JFrame {
         counter = 1;
     }
 
-    //GETTER AND SETTER
+    /**
+     *  checks if the given addedPlayer and the addedSocketId are already in the given table
+     *
+     * @param table
+     * @param addedPlayer
+     * @param addedSocketId
+     * @return false (if not in table), true (if in list)
+     */
+    public boolean isInTable(JTable table, String addedPlayer, String addedSocketId) {
+        boolean output = false;
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            String addedPlayerTemp = (String) table.getValueAt(i, 0);
+            String addedSocketIdTemp = (String) table.getValueAt(i, 0);
+            if(addedPlayerTemp.equals(addedPlayer) || addedSocketIdTemp.equals(addedSocketId)){
+                output = true;
+            }
+        }
+        return output;
+    }
+
+    // GETTER AND SETTER
     public List<Card> getPlayerHand() {
         return playerHand;
     }

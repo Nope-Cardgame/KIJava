@@ -35,7 +35,7 @@ public class WebTokenReceiver {
     /**
      * method to create a webtoken with the username, password and the url
      *
-     * @return
+     * @return webtoken
      * @throws IOException
      * @throws JSONException
      */

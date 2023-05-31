@@ -28,7 +28,7 @@ public class ServerEventHandler {
     private final Socket socketInstance;
     private final String username;
     private final IArtificialIntelligence ai;
-    private static final Logger LOG = NopeLogger.getLogger(ServerEventHandler.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(ServerEventHandler.class.getSimpleName()); // logger of the class
     private static int roundCounter;
     private static String currentPlayer;
     private static Game game;

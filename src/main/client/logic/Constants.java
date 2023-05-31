@@ -1,5 +1,8 @@
 package logic;
 
+/**
+ * enum for the given urls to use them as constants
+ */
 public enum Constants {
     POST_SIGN_UP("http://nope.ddns.net/api/signup/"),
     POST_SIGN_IN("http://nope.ddns.net/api/signin/"),
@@ -17,7 +20,7 @@ public enum Constants {
 
     DOMAIN("http://nope.ddns.net/");
 
-    private final String content;
+    private final String content; // contains the url
 
     Constants(String content){
         this.content = content;
