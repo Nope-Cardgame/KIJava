@@ -9,19 +9,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
- * this class is needed to load an images showing a card on the gui
+ * this class is needed to load an images on the gui
  */
 public class ImageLoader {
     BufferedImage image;
     public ImageLoader(Card card) {
         if(card == null){
             try {
-                image = ImageIO.read(new File("sprites\\error.png"));
+                image = ImageIO.read(new File("sprites\\error.png")); // loads error card
             } catch (IOException ignored){
             }
         } else {
             try {
-                image = ImageIO.read(new File(card.getSpritePath())); //load by url from card
+                image = ImageIO.read(new File(card.getSpritePath())); // loads card by return value of the method
             } catch (IOException ignored) {
             }
         }
@@ -30,7 +30,7 @@ public class ImageLoader {
     public ImageLoader(String relativePath){
         if(!relativePath.equals("")){
             try {
-                image = ImageIO.read(new File("sprites\\" + relativePath));
+                image = ImageIO.read(new File("sprites\\" + relativePath)); // load card by given path
             } catch (IOException ignored){
             }
         }

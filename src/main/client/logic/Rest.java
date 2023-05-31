@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class Rest {
 
-    private static final Logger LOG = NopeLogger.getLogger(Rest.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(Rest.class.getSimpleName()); // logger of the class
 
     /**
      * methode to communicate with post- or get-request with the server without additional id
@@ -24,7 +24,7 @@ public class Rest {
      * @param requestType
      * @throws IOException
      */
-    public void request(String urlString, String token, RequestType requestType) throws IOException {
+    public static void request(String urlString, String token, RequestType requestType) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
@@ -64,7 +64,7 @@ public class Rest {
      * @param id
      * @throws IOException
      */
-    public void request(String urlString, String token, RequestType requestType, int id) throws IOException {
+    public static void request(String urlString, String token, RequestType requestType, int id) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
@@ -102,7 +102,7 @@ public class Rest {
      * @param requestType
      * @throws IOException
      */
-    public String requestWithReturn(String urlString, String token, RequestType requestType) throws IOException {
+    public static String requestWithReturn(String urlString, String token, RequestType requestType) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
@@ -133,7 +133,15 @@ public class Rest {
         return String.valueOf(response);
     }
 
-    public void invitePlayer(String[] players, String[] socketIDs) throws IOException, JSONException {
+    /**
+     * method to invite the selected players to a new game
+     *
+     * @param players
+     * @param socketIDs
+     * @throws IOException
+     * @throws JSONException
+     */
+    public static void invitePlayer(String[] players, String[] socketIDs) throws IOException, JSONException {
         LOG.info("current Connection: \n" + Constants.POST_CREATE_GAME);
 
         URL obj = new URL(Constants.POST_CREATE_GAME.get());
@@ -147,6 +155,7 @@ public class Rest {
 
         con.setDoOutput(true);
 
+        // creates a json-file with the settings, your connect and the selected players
         JSONArray playersArray = new JSONArray();
 
         JSONObject player = new JSONObject();
@@ -167,8 +176,6 @@ public class Rest {
         jsonObject.put("oneMoreStartCards", Gui.getInstance().getOneMoreStartCardComboBox());
 
         jsonObject.put("players", playersArray);
-
-        System.out.println(jsonObject);
 
         // Send request to the server with its stream
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());

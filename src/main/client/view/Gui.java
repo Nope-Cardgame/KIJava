@@ -35,12 +35,11 @@ public final class Gui extends JFrame {
 
     private static final Logger LOG = NopeLogger.getLogger(Gui.class.getSimpleName()); // logger of the class
     private static Gui INSTANCE; // stores the instance of the gui
-    private final Rest rest = new Rest(); // object of the class Rest
 
     private final ComponentPainter componentPainter = new ComponentPainter();// jpanel showing the cards with pictures
 
-    private Card initialTopCard = null; // stores the card on top of the discard pile
-    private List<Card> playerHand = new ArrayList<Card>(); // the cards on the hand of the player
+    private Card initialTopCard; // stores the card on top of the discard pile
+    private List<Card> playerHand = new ArrayList<>(); // the cards on the hand of the player
 
     private final JTextField usernameTextfield = new JTextField(); // the user can type in his name
     private final JPasswordField passwordTextfield = new JPasswordField(); //passwordfield to not show pw
@@ -183,7 +182,7 @@ public final class Gui extends JFrame {
         String userdata;
 
         try {
-            userdata = rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), Main.getToken(), RequestType.GET);
+            userdata = Rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), Main.getToken(), RequestType.GET);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

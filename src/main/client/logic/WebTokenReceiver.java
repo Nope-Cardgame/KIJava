@@ -14,17 +14,31 @@ import java.util.logging.Logger;
 
 public class WebTokenReceiver {
 
-    private static final Logger LOG = NopeLogger.getLogger(WebTokenReceiver.class.getSimpleName());
-    private final String username;
-    private final String password;
-    private final String urlString;
+    private static final Logger LOG = NopeLogger.getLogger(WebTokenReceiver.class.getSimpleName()); // logger of the class
+    private final String username; // stores the given name of the connected client
+    private final String password; // stores the password of the connected client
+    private final String urlString; // stores the url the client is connecting to
 
+    /**
+     * constructor of the class WebtokenReceiver
+     *
+     * @param urlString
+     * @param userName
+     * @param password
+     */
     public WebTokenReceiver(String urlString, String userName, String password){
         this.urlString = urlString;
         this.username = userName;
         this.password = password;
     }
 
+    /**
+     * method to create a webtoken with the username, password and the url
+     *
+     * @return
+     * @throws IOException
+     * @throws JSONException
+     */
     public String createWebToken() throws IOException, JSONException {
 
         // This is the body we need to send for sign in and signup

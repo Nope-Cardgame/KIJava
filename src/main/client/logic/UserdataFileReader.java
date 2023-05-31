@@ -9,8 +9,13 @@ import java.util.logging.Logger;
 
 public class UserdataFileReader {
 
-    private static final Logger LOG = NopeLogger.getLogger(UserdataFileReader.class.getSimpleName());
+    private static final Logger LOG = NopeLogger.getLogger(UserdataFileReader.class.getSimpleName()); // logger of the class
 
+    /**
+     * method to read the username and password from the file userdata.txt
+     *
+     * @return userData
+     */
     public static String[] getUserData(){
         String[] userData = new String[2];
         try {
@@ -26,6 +31,11 @@ public class UserdataFileReader {
         return userData;
     }
 
+    /**
+     * checks if the file userdata.txt is empty
+     *
+     * @return true (userdata.txt = empty), false (userdata.txt != empty)
+     */
     public static boolean isEmpty(){
         try {
             BufferedReader reader = new BufferedReader(new FileReader("src\\main\\client\\userdata.txt"));

@@ -6,17 +6,14 @@ import logging.NopeLogger;
 import java.util.logging.Logger;
 
 public class ConnectionHandler {
-    private static final Logger LOG = NopeLogger.getLogger(ConnectionHandler.class.getSimpleName());
-
-    public ConnectionHandler(){
-    }
+    private static final Logger LOG = NopeLogger.getLogger(ConnectionHandler.class.getSimpleName()); // logger of the class
 
     public void connect(Socket mySocket) throws InterruptedException {
 
-        // Verbindung zum Server herstellen
+        // client connects to server
         mySocket.connect();
 
-        // Listener für das "connect"-Event registrieren
+        // prints out that the client is connected or disconnected or an error appeared
         mySocket.on(Socket.EVENT_CONNECT, args1 -> {
             LOG.info("Connection to server established.");
         });
@@ -30,7 +27,7 @@ public class ConnectionHandler {
             LOG.info("Disconnected from the server.");
         });
 
-        // Warten bis die Verbindung hergestellt wurde
+        // waits until the client is connected
         while (!mySocket.connected()) {
             Thread.sleep(100);
         }

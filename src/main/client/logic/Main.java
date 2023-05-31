@@ -15,21 +15,26 @@ import java.util.Map;
 
 public class Main {
 
-    private static Rest rest;
-    private static String token;
-    private static String username_global;
+    private static String token; // stores the Webtoken
+    private static String username_global; // stores the username of the player using this client
 
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
-        rest = new Rest();
-        Gui.getInstance();
+        Gui.getInstance(); // creates the only instance of thje gui
 
-        if(!UserdataFileReader.isEmpty()){
+        if(!UserdataFileReader.isEmpty()){ // loads the userdata (if file is not empty) into the textfields of the gui
             String[] userData = UserdataFileReader.getUserData();
             Gui.getInstance().setUsernameTextfield(userData[0]);
             Gui.getInstance().setPasswordTextfield(userData[1]);
         }
     }
 
+    /**
+     * connects the client to the server
+     *
+     * @param username
+     * @param password
+     * @return true (if connection was successful), false (if an error happened)
+     */
     public static boolean connect(String username, String password) {
         ConnectionHandler newInstance = new ConnectionHandler();
         WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
@@ -66,20 +71,18 @@ public class Main {
         return true;
     }
 
-    public static String getToken() {
-        return token;
-    }
-
-    public static String getUsername_global() {
-        return username_global;
-    }
-
+    /**
+     * searches through the list of connected users and finds your socketId through checking your username
+     *
+     * @return socketId
+     * @throws JSONException
+     */
     public static String findMySocketID() throws JSONException {
 
         String output = null;
 
         try {
-            output = rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), token, RequestType.GET);
+            output = Rest.requestWithReturn(Constants.GET_USER_CONNECTIONS.get(), token, RequestType.GET);
         } catch (IOException ignored){
         }
 
@@ -98,5 +101,14 @@ public class Main {
             }
         }
         return socketId;
+    }
+
+    // GETTER AND SETTER
+    public static String getToken() {
+        return token;
+    }
+
+    public static String getUsername_global() {
+        return username_global;
     }
 }

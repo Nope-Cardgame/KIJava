@@ -2,6 +2,7 @@ package view;
 
 import event_handling.ServerEventHandler;
 import gameobjects.cards.Card;
+import logic.ConnectionHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,27 +45,28 @@ public class ComponentPainter extends JPanel{
                 }
                 ImageLoader imageLoader = new ImageLoader(card); // load picture
                 g.drawImage(imageLoader.image, start, 145 + ySize, xSize, ySize, null); //show picture
-                g.drawRect(start, 145 + ySize, xSize, ySize); //black frame
+                g.drawRect(start, 145 + ySize, xSize, ySize); // black frame
             }
-            start += xSize + 5; //update position of each card
+            start += xSize + 5; // update position of each card
             cardCount++;
         }
 
         ImageLoader imageLoader = new ImageLoader(Gui.getInstance().getInitialTopCard()); //show card
         g.drawString("Front card:", 115,350); //show the card on the stack top
         g.drawImage(imageLoader.image, 115,355 ,xSize,ySize,null);
-        g.drawRect(115,355 ,xSize,ySize);//frame
+        g.drawRect(115,355 ,xSize,ySize); // frame
 
         g.drawString("Round: " + ServerEventHandler.getRoundCounter(),350,400);
         g.drawString("Current player: " + ServerEventHandler.getCurrentPlayer(), 270, 425);
 
-        if(eliminated) {
+        if(eliminated) { // shows the image "eliminated" when the user of the client is eliminated
             ImageLoader eliminatedImage = new ImageLoader("eliminated.png");
             g.drawImage(eliminatedImage.image, 96, 460, 370, 90, null);
         }
    }
 
-    public static void setEliminated(boolean eliminatedBoolean) {
+   //GETTER AND SETTER
+   public static void setEliminated(boolean eliminatedBoolean) {
         eliminated = eliminatedBoolean;
     }
 }
