@@ -66,7 +66,7 @@ public class ActionHandler implements ActionListener {
             }
         }
 
-         if(src == Gui.getInstance().getInviteChosenPlayerButton()){ // invites the player from the addedPlayerToInviteModel to a new game
+         if(src == Gui.getInstance().getInviteChosenPlayerToGameButton()){ // invites the player from the addedPlayerToInviteModel to a new game
              Gui.getInstance().resetGameTable();
              ComponentPainter.setEliminated(false);
              String[] playernames = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];

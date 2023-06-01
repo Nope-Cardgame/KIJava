@@ -62,8 +62,8 @@ public final class Gui extends JFrame {
     private final JButton reloadPlayerListButton = new JButton("Reload player list"); // button to reload the displayed list of connected players
     private final JButton addPlayerToInviteButton = new JButton("Add marked player to list"); // button to add the marked player to a new table below
     private final JButton removePlayerToInviteButton = new JButton("Remove marked player from list"); // button to remove the marked player(s) from the table
-    private final JButton inviteChosenPlayerButton = new JButton("Invite players to game"); // button to invite the chosen player
-    private final JButton inviteChosenPlayerToTournamentButton = new JButton("Invite players to tournament");
+    private final JButton inviteChosenPlayerToGameButton = new JButton("Invite players to game"); // button to invite the chosen player to a game
+    private final JButton inviteChosenPlayerToTournamentButton = new JButton("Invite players to tournament"); // button to invite the chosen player to a tournament
 
     private final JTable gameTable = new JTable(); // shows all actions of game in a list
     private final JTable playerListTable = new JTable(); // shows all current connected users (except your connection)
@@ -237,7 +237,7 @@ public final class Gui extends JFrame {
             gameComponents.add(reloadPlayerListButton);
             gameComponents.add(addPlayerToInviteButton);
             gameComponents.add(removePlayerToInviteButton);
-            gameComponents.add(inviteChosenPlayerButton);
+            gameComponents.add(inviteChosenPlayerToGameButton);
             gameComponents.add(yourConnectionLabel);
             gameComponents.add(gameScroll);
             gameComponents.add(noActionCardsLabel);
@@ -285,7 +285,7 @@ public final class Gui extends JFrame {
                 reloadPlayerListButton.addActionListener(act);
                 addPlayerToInviteButton.addActionListener(act);
                 removePlayerToInviteButton.addActionListener(act);
-                inviteChosenPlayerButton.addActionListener(act);
+                inviteChosenPlayerToGameButton.addActionListener(act);
                 inviteChosenPlayerToTournamentButton.addActionListener(act);
             }
     }
@@ -310,7 +310,7 @@ public final class Gui extends JFrame {
             reloadPlayerListButton.setBounds(575, 0, 505, 30);
             addPlayerToInviteButton.setBounds(575, 245, 250, 30);
             removePlayerToInviteButton.setBounds(835, 245, 245, 30);
-            inviteChosenPlayerButton.setBounds(575, 485, 505, 30);
+            inviteChosenPlayerToGameButton.setBounds(575, 485, 505, 30);
             yourConnectionLabel.setBounds(575, 735, 520,30);
             gameScroll.setBounds(10,0,560,200);
             noActionCardsLabel.setBounds(575, 520, 250, 30);
@@ -454,8 +454,8 @@ public final class Gui extends JFrame {
     public JButton getRemovePlayerToInviteButton() {
         return removePlayerToInviteButton;
     }
-    public JButton getInviteChosenPlayerButton() {
-        return inviteChosenPlayerButton;
+    public JButton getInviteChosenPlayerToGameButton() {
+        return inviteChosenPlayerToGameButton;
     }
     public JTable getPlayerListTable() {
         return playerListTable;

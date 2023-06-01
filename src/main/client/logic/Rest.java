@@ -196,6 +196,14 @@ public class Rest {
         }
     }
 
+    /**
+     * method to invite the selected players to a new tournament
+     *
+     * @param players
+     * @param socketIDs
+     * @throws IOException
+     * @throws JSONException
+     */
     public static void invitePlayerToTournament(String[] players, String[] socketIDs) throws IOException, JSONException {
         LOG.info("current Connection: \n" + Constants.POST_CREATE_TOURNAMENT);
 
