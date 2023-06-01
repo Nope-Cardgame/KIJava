@@ -59,9 +59,6 @@ public class ServerEventHandler {
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
             if(game != null) {
-                if(game.getState().equals("preparation")){
-                    roundCounter = 0;
-                }
                 Gui.getInstance().refresh(game, false);
             }
             LOG.info("Received gamestate");
@@ -88,6 +85,8 @@ public class ServerEventHandler {
         socketInstance.on("gameEnd", args1 -> {
             roundCounter = 0;
             LOG.info("gameEnd: " +Arrays.toString(args1));
+            ComponentPainter.setEliminated(false);
+            Gui.getInstance().resetGameTable();
         });
 
         socketInstance.on("tournamentInvite", args1 -> {
@@ -113,10 +112,6 @@ public class ServerEventHandler {
 
         Gui.getInstance().refresh(game, true);
         Thread.sleep(Gui.getInstance().getDelay());
-
-        if(game.getState().equals("preparation")){
-            ComponentPainter.setEliminated(false);
-        }
 
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {

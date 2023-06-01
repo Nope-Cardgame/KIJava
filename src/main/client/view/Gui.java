@@ -55,7 +55,7 @@ public final class Gui extends JFrame {
     private final JComboBox<Boolean> noActionCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noActionCards
     private final JComboBox<Boolean> noWildCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noWildCards
     private final JComboBox<Boolean> oneMoreStartCardComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting oneMoreStartCard
-    private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "0.25", "0.5", "1", "1.5","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
+    private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "1","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
 
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton savaLoginDataButton = new JButton("Save Data"); // button to save login data in .txt document userdata.txt

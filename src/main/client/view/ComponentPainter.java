@@ -67,7 +67,11 @@ public class ComponentPainter extends JPanel{
    }
 
    // GETTER AND SETTER
-   public static void setEliminated(boolean eliminatedBoolean) {
+    public static boolean isEliminated() {
+        return eliminated;
+    }
+
+    public static void setEliminated(boolean eliminatedBoolean) {
         eliminated = eliminatedBoolean;
     }
 }
