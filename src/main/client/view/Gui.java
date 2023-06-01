@@ -63,6 +63,7 @@ public final class Gui extends JFrame {
     private final JButton addPlayerToInviteButton = new JButton("Add marked player to list"); // button to add the marked player to a new table below
     private final JButton removePlayerToInviteButton = new JButton("Remove marked player from list"); // button to remove the marked player(s) from the table
     private final JButton inviteChosenPlayerButton = new JButton("Invite players to game"); // button to invite the chosen player
+    private final JButton inviteChosenPlayerToTournamentButton = new JButton("Invite players to tournament");
 
     private final JTable gameTable = new JTable(); // shows all actions of game in a list
     private final JTable playerListTable = new JTable(); // shows all current connected users (except your connection)
@@ -247,6 +248,7 @@ public final class Gui extends JFrame {
             gameComponents.add(oneMoreStartCardComboBox);
             gameComponents.add(delayDisplayCombobox);
             gameComponents.add(delayLabel);
+            gameComponents.add(inviteChosenPlayerToTournamentButton);
             gameComponents.add(new JPanel());
         }
     }
@@ -271,11 +273,11 @@ public final class Gui extends JFrame {
     }
 
     /**
-     * add a actionhandler to the components needed for the login or for playing the game depending on the parameter
+     * add an actionlistener to the components needed for the login or for playing the game depending on the parameter
      * @param componentType
      * @param act
      */
-    public void addComponentsActionHandler(ComponentType componentType, ActionListener act){
+    public void addComponentsActionListeners(ComponentType componentType, ActionListener act){
             if(componentType.toString().equals("LOGIN")){
                 loginButton.addActionListener(act);
                 savaLoginDataButton.addActionListener(act);
@@ -284,6 +286,7 @@ public final class Gui extends JFrame {
                 addPlayerToInviteButton.addActionListener(act);
                 removePlayerToInviteButton.addActionListener(act);
                 inviteChosenPlayerButton.addActionListener(act);
+                inviteChosenPlayerToTournamentButton.addActionListener(act);
             }
     }
 
@@ -304,10 +307,10 @@ public final class Gui extends JFrame {
             componentPainter.setBounds(10,200,560,560);
             playerListScroll.setBounds(575,40, 505, 200);
             addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
-            reloadPlayerListButton.setBounds(575, 0, 525, 30);
+            reloadPlayerListButton.setBounds(575, 0, 505, 30);
             addPlayerToInviteButton.setBounds(575, 245, 250, 30);
             removePlayerToInviteButton.setBounds(835, 245, 245, 30);
-            inviteChosenPlayerButton.setBounds(575, 485, 520, 30);
+            inviteChosenPlayerButton.setBounds(575, 485, 505, 30);
             yourConnectionLabel.setBounds(575, 735, 520,30);
             gameScroll.setBounds(10,0,560,200);
             noActionCardsLabel.setBounds(575, 520, 250, 30);
@@ -317,6 +320,7 @@ public final class Gui extends JFrame {
             oneMoreStartCardComboBox.setBounds(830, 590, 100, 30);
             delayDisplayCombobox.setBounds(950, 555, 100, 30);
             delayLabel.setBounds(950, 520, 70, 30);
+            inviteChosenPlayerToTournamentButton.setBounds(575, 625, 505, 30);
         }
     }
 
@@ -343,7 +347,7 @@ public final class Gui extends JFrame {
     public void setupLoginComponents(ActionListener act){
         componentsToList(ComponentType.LOGIN);
         setVisabilityComponents(ComponentType.LOGIN,true);
-        addComponentsActionHandler(ComponentType.LOGIN, act);
+        addComponentsActionListeners(ComponentType.LOGIN, act);
         setComponentsBounds(ComponentType.LOGIN);
 
         LOG.info("Finished setting up the components for the login.");
@@ -359,7 +363,7 @@ public final class Gui extends JFrame {
     public void setupGameComponents(ActionListener act){
         componentsToList(ComponentType.GAME);
         setVisabilityComponents(ComponentType.GAME, false);
-        addComponentsActionHandler(ComponentType.GAME, act);
+        addComponentsActionListeners(ComponentType.GAME, act);
         setComponentsBounds(ComponentType.GAME);
 
         LOG.info("Finished setting up the components for the game.");
@@ -470,6 +474,9 @@ public final class Gui extends JFrame {
     }
     public JComboBox<Boolean> getOneMoreStartCardComboBox() {
         return oneMoreStartCardComboBox;
+    }
+    public JButton getInviteChosenPlayerToTournamentButton() {
+        return inviteChosenPlayerToTournamentButton;
     }
 
     public void setUsernameTextfield(String userName){

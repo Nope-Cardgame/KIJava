@@ -8,7 +8,6 @@ import view.Gui;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
@@ -141,7 +140,7 @@ public class Rest {
      * @throws IOException
      * @throws JSONException
      */
-    public static void invitePlayer(String[] players, String[] socketIDs) throws IOException, JSONException {
+    public static void invitePlayerToGame(String[] players, String[] socketIDs) throws IOException, JSONException {
         LOG.info("current Connection: \n" + Constants.POST_CREATE_GAME);
 
         URL obj = new URL(Constants.POST_CREATE_GAME.get());
@@ -176,6 +175,67 @@ public class Rest {
         jsonObject.put("oneMoreStartCards", Gui.getInstance().getOneMoreStartCardComboBox());
 
         jsonObject.put("players", playersArray);
+
+        // Send request to the server with its stream
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(String.valueOf(jsonObject));
+        wr.close();
+
+        int responseCode = con.getResponseCode();
+
+        LOG.info("Response Code: \n" + responseCode);
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()))) {
+            String inputLine;
+            // build response and print it
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            LOG.info("Response Body: \n" + response);
+        }
+    }
+
+    public static void invitePlayerToTournament(String[] players, String[] socketIDs) throws IOException, JSONException {
+        LOG.info("current Connection: \n" + Constants.POST_CREATE_TOURNAMENT);
+
+        URL obj = new URL(Constants.POST_CREATE_TOURNAMENT.get());
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // Invoke HTTP connection with POST-Request and application/json for sending
+        // element and web token
+        con.setRequestMethod(RequestType.POST.toString());
+        con.setRequestProperty("Content-Type", "application/json");
+        con.setRequestProperty("Accept", "application/json");
+        con.setRequestProperty("Authorization", "Bearer " + Main.getToken());
+
+        con.setDoOutput(true);
+
+        // creates a json-file with the settings, your connection and the selected players
+        JSONArray playersArray = new JSONArray();
+
+        JSONObject participants = new JSONObject();
+        participants.put("username", Main.getUsername_global());
+        participants.put("socketId", Main.findMySocketID());
+        playersArray.put(participants);
+
+        for (int i = 0; i < players.length; i++) {
+            JSONObject playerObject = new JSONObject();
+            playerObject.put("username", players[i]);
+            playerObject.put("socketId", socketIDs[i]);
+            playersArray.put(playerObject);
+        }
+
+        JSONObject mode = new JSONObject();
+        mode.put("name", "round-robin");
+        mode.put("numberOfRounds", 5);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());
+        jsonObject.put("noWildCards", Gui.getInstance().getNoWildCardsComboBox().getSelectedItem());
+        jsonObject.put("oneMoreStartCards", Gui.getInstance().getOneMoreStartCardComboBox());
+
+        jsonObject.put("mode", mode);
+        jsonObject.put("participants", playersArray);
 
         // Send request to the server with its stream
         DataOutputStream wr = new DataOutputStream(con.getOutputStream());

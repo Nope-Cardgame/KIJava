@@ -76,11 +76,27 @@ public class ActionHandler implements ActionListener {
                 socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
              }
              try {
-                 if(playernames.length > 0) Rest.invitePlayer(playernames, socketIDs);
+                 if(playernames.length > 0) Rest.invitePlayerToGame(playernames, socketIDs);
              }catch (IOException | JSONException ex) {
                  throw new RuntimeException(ex);
-            }
+             }
          }
+
+        if(src == Gui.getInstance().getInviteChosenPlayerToTournamentButton()){
+            Gui.getInstance().resetGameTable();
+            ComponentPainter.setEliminated(false);
+            String[] playernames = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
+            String[] socketIDs = new String[Gui.getInstance().getAddedPlayerToInviteTable().getRowCount()];
+            for(int i = 0; i <= playernames.length-1; i++) {
+                playernames[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 0);
+                socketIDs[i] = (String) Gui.getInstance().getAddedPlayerToInviteTable().getValueAt(i, 1);
+            }
+            try {
+                if(playernames.length > 0) Rest.invitePlayerToTournament(playernames, socketIDs);
+            }catch (IOException | JSONException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
 
          if(src == Gui.getInstance().getSavaLoginDataButton()) { // saves the data in the usernameTextfield and passwordTextfield to the file userdata.txt
              try (BufferedWriter writer = new BufferedWriter(new FileWriter("src\\main\\client\\userdata.txt"))) {

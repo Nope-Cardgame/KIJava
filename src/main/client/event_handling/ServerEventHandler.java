@@ -4,6 +4,7 @@ import ai.AIFactory;
 import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
 import ai.julius.valid.JAIValidOnly;
+import ai.marian.AIMarian;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -44,7 +45,7 @@ public class ServerEventHandler {
         this.username = username;
         LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = new AIJulius(new JAIValidOnly());
+        this.ai = new AIMarian();
         addEventListeners();
     }
 
@@ -58,7 +59,7 @@ public class ServerEventHandler {
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
             if(game != null) {
-                if(game.getState().equals("game_start")){
+                if(game.getState().equals("preparation")){
                     roundCounter = 0;
                 }
                 Gui.getInstance().refresh(game, false);
@@ -112,6 +113,10 @@ public class ServerEventHandler {
 
         Gui.getInstance().refresh(game, true);
         Thread.sleep(Gui.getInstance().getDelay());
+
+        if(game.getState().equals("preparation")){
+            ComponentPainter.setEliminated(false);
+        }
 
         if (!game.getState().equals("cancelled") && !game.getState().equals("game_end")) {
             if(game.getCurrentPlayer().getUsername().equals(this.username)) {
