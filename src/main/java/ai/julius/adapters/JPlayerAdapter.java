@@ -3,8 +3,8 @@ package ai.julius.adapters;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.*;
 
 public class JPlayerAdapter {
     private final Player player;
@@ -159,9 +159,66 @@ public class JPlayerAdapter {
         return cards;
     }
 
+    /**
+     * @return any card in the player's inventory
+     */
     public List<Card> getStupidCard() {
         List<Card> oneCard = new ArrayList<>();
         oneCard.add(player.getCards().get(0));
         return oneCard;
+    }
+
+    /**
+     * Checks if a Player has a specific Color on his hands
+     *
+     * @param color the color we're looking for
+     * @return true if player has color, false otherwise
+     */
+    public boolean hasColor(String color) {
+        for(Card card : player.getCards()) {
+            for (String cardColor : card.getColors()) {
+                if (cardColor.equals(color)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * returns the best color of the player which he has on his hands
+     * (best color for me is where he got the lessest amount of cards of)
+     *
+     * @return the best Color as string
+     */
+    public String getSmartColor() {
+        Set<String> colors = new HashSet<>();
+        colors.add("red");
+        colors.add("blue");
+        colors.add("yellow");
+        colors.add("green");
+        Iterator<String> iterator = colors.iterator();
+
+        int maxColorAmount = Integer.MAX_VALUE;
+        String bestColor = iterator.next();
+        while (iterator.hasNext()) {
+            String currentColor = iterator.next();
+            int currentCardAmount = 0;
+            for (Card card : player.getCards()) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasColor(currentColor)) {
+                    currentCardAmount++;
+                }
+            }
+            if (currentCardAmount < maxColorAmount) {
+                bestColor = currentColor;
+                maxColorAmount = currentCardAmount;
+            }
+        }
+        return bestColor;
+    }
+
+    public Card getSmartCard(String colorOfInvisible) {
+        return null;
     }
 }
