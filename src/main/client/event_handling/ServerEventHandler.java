@@ -45,7 +45,7 @@ public class ServerEventHandler {
         this.username = username;
         LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = new AIMarian();
+        this.ai = new AIJulius(new JAIValidOnly());
         addEventListeners();
     }
 

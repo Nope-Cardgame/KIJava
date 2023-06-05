@@ -4,6 +4,8 @@ import gameobjects.Game;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 
+import java.util.Comparator;
+
 public class JGameAdapter {
     private final Game game;
 
@@ -67,12 +69,20 @@ public class JGameAdapter {
      * @return the Player that's socketID is not equal to the current players socket id
      */
     public Player getStupidPlayer() {
-        Player anotherPlayer = null;
-        for (int iterator = 0; iterator < game.getPlayers().size() && anotherPlayer == null; iterator++) {
-            if (game.getPlayers().get(iterator).getSocketId().equals(game.getCurrentPlayer().getSocketId())) {
-                anotherPlayer = game.getPlayers().get(iterator);
-            }
-        }
-        return anotherPlayer;
+        return game.getPlayers().stream()
+                .filter(player -> !player.getSocketId().equals(game.getCurrentPlayer().getSocketId()))
+                .findFirst().get();
+    }
+
+    /**
+     * returns the player with the lowest amount of cards
+     *
+     * @return
+     */
+    public Player getSmartPlayer() {
+        return game.getPlayers().stream()
+                .filter(player -> !player.getUsername().equals(game.getCurrentPlayer().getUsername()))
+                .min(Comparator.comparingInt(Player::getCardAmount))
+                .get();
     }
 }
