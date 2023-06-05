@@ -175,14 +175,9 @@ public class JPlayerAdapter {
      * @return true if player has color, false otherwise
      */
     public boolean hasColor(String color) {
-        for(Card card : player.getCards()) {
-            for (String cardColor : card.getColors()) {
-                if (cardColor.equals(color)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return player.getCards().stream()
+                .flatMap(card -> card.getColors().stream())
+                .anyMatch(cardColor -> cardColor.equals(color));
     }
 
     /**
@@ -218,7 +213,146 @@ public class JPlayerAdapter {
         return bestColor;
     }
 
-    public Card getSmartCard(String colorOfInvisible) {
+    /**
+     * returns a smart card depending on a color
+     *
+     * @param color color the card must contain
+     * @return the best card for that specific color
+     */
+    public Card getSmartCard(String color) {
+        // for reset
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("reset")) {
+                return card;
+            }
+        }
+        // for nominate
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("nominate")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+        // for invisible
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("invisible")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for wildcard
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                if (card.getName().equals("wildcard")) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for multiple color
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasTwoColors() && cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for another card
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("number")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
         return null;
+    }
+
+    /**
+     * returns a smart card when the color doesn't matter
+     *
+     * @return a smart card for the player
+     */
+    public Card getSmartCard() {
+        // Looking for Reset
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("reset")) {
+                return card;
+            }
+        }
+        // Looking for nominate
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("nominate")) {
+                return card;
+            }
+        }
+        // looking for invisible
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("invisible")) {
+                return card;
+            }
+        }
+        // looking for wildcard
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                if (card.getName().equals("wildcard")) {
+                    return card;
+                }
+            }
+        }
+        // looking for multiple color
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasTwoColors()) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for another card
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                return card;
+            }
+        }
+        // returning not null here
+        return player.getCards().get(0);
+    }
+
+    /**
+     * Checks if the player has action cards in his
+     * inventory
+     *
+     * @return true if that is the case, false otherwise
+     */
+    public boolean hasActionCards() {
+        return player.getCards().stream().
+                anyMatch(card -> !card.getCardType().equals("number"));
+    }
+
+    /**
+     * Checks if a player contains a specific action card
+     * depending on a color
+     *
+     * @param color the color we are looking for in that specific action card
+     * @return true, if there is an action card with that specific color, false otherwise
+     */
+    public boolean hasActionCards(String color) {
+        return player.getCards().stream()
+                .filter(card -> {
+                    CardAdapter cardAdapter = new CardAdapter(card);
+                    return cardAdapter.hasColor(color);
+                })
+                .anyMatch(card -> !card.getCardType().equals("number"));
     }
 }
