@@ -355,4 +355,34 @@ public class JPlayerAdapter {
                 })
                 .anyMatch(card -> !card.getCardType().equals("number"));
     }
+
+    /**
+     * returns a smart for a given numbercard and a valid color
+     *
+     * @param currentCard the current card displayed on the discard pile
+     * @param color the color necessary for this purpose
+     *
+     * @return a smart set for that specific color
+     */
+    public List<Card> getSmartSet(NumberCard currentCard, String color) {
+        List<Card> set = new ArrayList<>();
+        int amount = currentCard.getValue();
+        for (Card card : player.getCards()) {
+            if (amount == set.size()) {
+                break;
+            }
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (cardAdapter.hasColor(color)) {
+                if (card.getName().equals("wildcard")) {
+                    set.add(card);
+                    continue;
+                } else if (cardAdapter.hasTwoColors()) {
+                    set.add(card);
+                    continue;
+                }
+                set.add(card);
+            }
+        }
+        return set;
+    }
 }
