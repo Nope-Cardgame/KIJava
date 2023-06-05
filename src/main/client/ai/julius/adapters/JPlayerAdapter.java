@@ -365,8 +365,22 @@ public class JPlayerAdapter {
      * @return a smart set for that specific color
      */
     public List<Card> getSmartSet(NumberCard currentCard, String color) {
+        return getSmartSetCallback(currentCard.getValue(),color);
+    }
+
+    /**
+     * Creates a smart set and returns it
+     *
+     * @param amount the amount of cards the set needs to contain
+     * @param color the color the set needs to provide
+     * @return a valid set of cards
+     */
+    public List<Card> getSmartSet(int amount, String color) {
+        return getSmartSetCallback(amount,color);
+    }
+
+    private List<Card> getSmartSetCallback(int amount, String color) {
         List<Card> set = new ArrayList<>();
-        int amount = currentCard.getValue();
         for (Card card : player.getCards()) {
             if (amount == set.size()) {
                 break;

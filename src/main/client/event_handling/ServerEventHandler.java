@@ -3,6 +3,7 @@ package event_handling;
 import ai.AIFactory;
 import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
+import ai.julius.smart.JAISmart;
 import ai.julius.valid.JAIValidOnly;
 import ai.marian.AIMarian;
 import com.google.gson.Gson;
@@ -45,7 +46,8 @@ public class ServerEventHandler {
         this.username = username;
         LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = new AIJulius(new JAIValidOnly());
+        this.ai = new AIJulius(new JAISmart());
+        LOG.info("Ai-Strategy: " + this.ai);
         addEventListeners();
     }
 
@@ -61,7 +63,7 @@ public class ServerEventHandler {
             if(game != null) {
                 Gui.getInstance().refresh(game, false);
             }
-            LOG.info("Received gamestate");
+            LOG.info("Received game-state");
             try {
                 handleGameState(objects);
             } catch (InterruptedException ignored) {
@@ -107,6 +109,7 @@ public class ServerEventHandler {
      */
     private void handleGameState(Object[] objects) throws InterruptedException {
         game = new Game(((JSONObject) objects[0]).toString());
+        LOG.info(game.toJSON());
         // method is only necessary if we are at turn
         currentPlayer = game.getCurrentPlayer().getUsername();
 
