@@ -1,14 +1,17 @@
 package ai.julius.smart;
 
-import ai.julius.Decider;
 import ai.julius.adapters.CardAdapter;
+import ai.julius.Decider;
 import ai.julius.adapters.JGameAdapter;
 import ai.julius.adapters.JPlayerAdapter;
 import gameobjects.Game;
 import gameobjects.actions.*;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
+import io.jsonwebtoken.lang.Collections;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class JAISmart implements Decider {
@@ -19,18 +22,23 @@ public class JAISmart implements Decider {
         JGameAdapter gameAdapter = new JGameAdapter(game);
         JPlayerAdapter playerAdapter = new JPlayerAdapter(game.getCurrentPlayer());
         if (gameAdapter.nominateOnly()) {
+            LOG.info("in nominateOnly");
             action = handleNominateOnly(game,gameAdapter,playerAdapter);
         } else if (gameAdapter.invisibleOnly()) {
+            LOG.info("in invisibleOnly");
             action = handleInvisibleOnlyBefore(game, gameAdapter, playerAdapter);
         } else if (gameAdapter.getTopCard().getCardType().equals("number")) {
+            LOG.info("in numbercard top");
             action = handleNumberCardBefore(game,gameAdapter,playerAdapter);
         } else {
+            LOG.info("in actioncard top");
             action = handleActionCardBefore(game,gameAdapter,playerAdapter);
         }
         return action;
     }
 
     private Action handleNominateOnly(Game game, JGameAdapter gameAdapter, JPlayerAdapter playerAdapter) {
+        LOG.info("in handleNominateOnly");
         Action action;
         Card topCard = gameAdapter.getTopCard();
         if (hasMoreThanOneColor(topCard)) {
@@ -59,27 +67,41 @@ public class JAISmart implements Decider {
     private Action handleActionCardBefore(Game game, JGameAdapter gameAdapter, JPlayerAdapter playerAdapter) {
         Action action = null;
         if (gameAdapter.getTopCard().getCardType().equals("nominate")) {
+            LOG.info("in handleActionCardAfter() at nominate");
             int nominatedAmount = game.getLastNominateAmount();
-            String nominateColor = game.getLastNominateColor();
+            LOG.info("nominateAmount: " + nominatedAmount);
+            String nominateColor = hasMoreThanOneColor(gameAdapter.getTopCard()) ? game.getLastNominateColor() : gameAdapter.getTopCard().getColors().get(0);
+            LOG.info("nominateColor: " + nominateColor);
             if (playerAdapter.hasCompleteSetWithColor(nominatedAmount,nominateColor)) {
+                LOG.info("handleActionCardBefore at has Set");
                 if (playerAdapter.hasActionCards(nominateColor)) {
+                    LOG.info("handleActionCardBefore at hasActionCards");
                     Card bestCard = playerAdapter.getSmartCard(nominateColor);
                     List<Card> cardList = new ArrayList<>();
                     cardList.add(bestCard);
+                    LOG.info("Best Card: " + bestCard.toJSON());
                     if (bestCard.getCardType().equals("nominate")) {
+                        LOG.info("card is nominate");
                         if (hasMoreThanOneColor(bestCard)) {
+                            LOG.info("nominate with all colors");
                             action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(),2);
                         } else {
+                            LOG.info("nominate with ONE COLOR ONLY");
                             action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), bestCard.getColors().get(0),2);
                         }
                     } else {
+                        LOG.info("NOT an nominateCard");
                         action = new DiscardCard("discard","had to discard",cardList.size(),cardList,game.getCurrentPlayer());
                     }
                 } else {
+                    LOG.info("handleActionCardBefore at has no action cards");
                     List<Card> set = playerAdapter.getSmartSet(nominatedAmount,nominateColor);
+                    LOG.info("Found set: ");
+                    LOG.info(Arrays.toString(set.toArray()));
                     action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                 }
             } else {
+                LOG.info("handleActionCardBefore at has NOT A Set");
                 action = new TakeCard("take","no cards to discard",1,new ArrayList<Card>(),game.getCurrentPlayer());
             }
         } else if (gameAdapter.getTopCard().getCardType().equals("reset")) {
@@ -178,8 +200,11 @@ public class JAISmart implements Decider {
     private Action handleActionCardAfter(Game game, JGameAdapter gameAdapter, JPlayerAdapter playerAdapter) {
         Action action = null;
         if (gameAdapter.getTopCard().getCardType().equals("nominate")) {
+            LOG.info("in handleActionCardAfter()");
             int nominatedAmount = game.getLastNominateAmount();
-            String nominateColor = game.getLastNominateColor();
+            LOG.info("nominateAmount: " + nominatedAmount);
+            String nominateColor = hasMoreThanOneColor(gameAdapter.getTopCard()) ? game.getLastNominateColor() : gameAdapter.getTopCard().getColors().get(0);
+            LOG.info("nominateColor: " + nominateColor);
             if (playerAdapter.hasCompleteSetWithColor(nominatedAmount,nominateColor)) {
                 if (playerAdapter.hasActionCards(nominateColor)) {
                     Card bestCard = playerAdapter.getSmartCard(nominateColor);

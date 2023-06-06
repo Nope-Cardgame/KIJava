@@ -3,11 +3,14 @@ package ai.julius.adapters;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
+import logging.NopeLogger;
 
 import java.util.*;
+import java.util.logging.Logger;
 
 public class JPlayerAdapter {
     private final Player player;
+    private static final Logger LOG = NopeLogger.getLogger(JPlayerAdapter.class.getSimpleName());
 
     public JPlayerAdapter(Player player) {
         this.player = player;
@@ -47,6 +50,7 @@ public class JPlayerAdapter {
                 amountCards++;
             }
         }
+        LOG.info("in hasCompleteSetWithColor: " + (amountCards >= amount));
         return amountCards >= amount;
     }
 
