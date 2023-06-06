@@ -224,6 +224,7 @@ public class Rest {
         JSONObject participants = new JSONObject();
         participants.put("username", Main.getUsername_global());
         participants.put("socketId", Main.findMySocketID());
+
         playersArray.put(participants);
 
         for (int i = 0; i < players.length; i++) {
@@ -235,7 +236,7 @@ public class Rest {
 
         JSONObject mode = new JSONObject();
         mode.put("name", "round-robin");
-        mode.put("numberOfRounds", 5);
+        mode.put("numberOfRounds", 100);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());

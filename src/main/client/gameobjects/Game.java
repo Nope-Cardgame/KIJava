@@ -105,11 +105,15 @@ public class Game implements IJsonable {
             this.invitationTimeout = gameObject.getInt("invitationTimeout");
 
             try {
-                this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
                 this.lastNominateColor = gameObject.getString("lastNominateColor");
             } catch (JSONException e) {
-                this.lastNominateAmount = 0;
                 this.lastNominateColor = null;
+            }
+
+            try {
+                this.lastNominateAmount = gameObject.getInt("lastNominateAmount");
+            } catch (JSONException e) {
+                this.lastNominateAmount = 0;
             }
 
             try {

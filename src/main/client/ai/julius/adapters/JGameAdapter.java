@@ -46,7 +46,7 @@ public class JGameAdapter {
     }
 
     public boolean nominateOnly() {
-        return game.getDiscardPile().size() == 1 && game.getDiscardPile().get(0).getCardType().equals("nominate");
+        return game.getState().equals("nominate_flipped");
     }
 
     public boolean resetOnly() {

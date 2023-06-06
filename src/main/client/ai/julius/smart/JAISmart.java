@@ -40,6 +40,7 @@ public class JAISmart implements Decider {
         LOG.info("in handleNominateOnly");
         Action action;
         Card topCard = gameAdapter.getTopCard();
+        LOG.info("in handleNominateOnly");
         if (hasMoreThanOneColor(topCard)) {
             action = new NominateCard("nominate","had to nominate",0,new ArrayList<Card>(),game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(),2);
         } else {
@@ -53,7 +54,10 @@ public class JAISmart implements Decider {
         Action action = null;
         JGameAdapter gameAdapter = new JGameAdapter(game);
         JPlayerAdapter playerAdapter = new JPlayerAdapter(game.getCurrentPlayer());
-        if (gameAdapter.invisibleOnly()) {
+        if (gameAdapter.nominateOnly()) {
+            LOG.info("in nominateOnly");
+            action = handleNominateOnly(game,gameAdapter,playerAdapter);
+        }else if (gameAdapter.invisibleOnly()) {
             action = handleInvisibleOnlyAfter(game, gameAdapter, playerAdapter);
         } else if (gameAdapter.getTopCard().getCardType().equals("number")) {
             action = handleNumberCardAfter(game, gameAdapter, playerAdapter);
@@ -95,6 +99,9 @@ public class JAISmart implements Decider {
                 } else {
                     LOG.info("handleActionCardBefore at has no action cards");
                     List<Card> set = playerAdapter.getSmartSet(nominatedAmount,nominateColor);
+                    if (set.isEmpty()) {
+                        set = playerAdapter.getStupidSetColor(nominatedAmount,nominateColor);
+                    }
                     LOG.info("Found set: ");
                     LOG.info(Arrays.toString(set.toArray()));
                     action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
@@ -143,6 +150,9 @@ public class JAISmart implements Decider {
                         }
                     } else {
                         List<Card> set = playerAdapter.getSmartSet(currentCard,validColor);
+                        if (set.isEmpty()) {
+                            set = playerAdapter.getStupidSetColor(currentCard,validColor);
+                        }
                         action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                     }
                 }
@@ -164,6 +174,9 @@ public class JAISmart implements Decider {
                         }
                     } else {
                         List<Card> set = playerAdapter.getSmartSet(currentCard,color);
+                        if (set.isEmpty()) {
+                            set = playerAdapter.getStupidSetColor(currentCard,color);
+                        }
                         action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                     }
                 } else {
@@ -220,6 +233,9 @@ public class JAISmart implements Decider {
                     }
                 } else {
                     List<Card> set = playerAdapter.getSmartSet(nominatedAmount,nominateColor);
+                    if (set.isEmpty()) {
+                        set = playerAdapter.getStupidSetColor(nominatedAmount,nominateColor);
+                    }
                     action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                 }
             } else {
@@ -281,6 +297,9 @@ public class JAISmart implements Decider {
                         }
                     } else {
                         List<Card> set = playerAdapter.getSmartSet(currentCard,validColor);
+                        if (set.isEmpty()) {
+                            set = playerAdapter.getStupidSetColor(currentCard,validColor);
+                        }
                         action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                     }
                 }
@@ -302,6 +321,9 @@ public class JAISmart implements Decider {
                         }
                     } else {
                         List<Card> set = playerAdapter.getSmartSet(currentCard,color);
+                        if (set.isEmpty()) {
+                            set = playerAdapter.getStupidSetColor(currentCard,color);
+                        }
                         action = new DiscardCard("discard","had to discard",set.size(),set,game.getCurrentPlayer());
                     }
                 } else {
