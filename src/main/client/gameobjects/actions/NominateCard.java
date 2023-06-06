@@ -51,7 +51,7 @@ public class NominateCard extends Action{
         super(jsonString);
         try {
             JSONObject nominateCardObject = new JSONObject(jsonString);
-            this.amount = nominateCardObject.getInt("amount");
+            this.amount = nominateCardObject.getInt("cardAmount");
             this.nominatedColor = nominateCardObject.getString("nominatedColor");
             // Cards
             this.cards = new ArrayList<>();
