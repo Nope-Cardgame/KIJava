@@ -79,8 +79,8 @@ public class AIMarian implements IArtificialIntelligence {
     public List<Card> chooseBestSet(Game game, Card topCard){
 
         ArrayList<List<Card>> actionsCards = getActionCards(game, topCard);
-        ArrayList<List<Card>> setsColor1 = getSetsOfFirstColor(game, topCard);
-        ArrayList<List<Card>> setsColor2 = getSetsOfSecondColor(game, topCard);
+        ArrayList<List<Card>> setsColor1 = getSetsOfColor(game, topCard, true);
+        ArrayList<List<Card>> setsColor2 = getSetsOfColor(game, topCard, false);
 
         ArrayList<List<Card>> allSets = new ArrayList<>();
 
@@ -208,7 +208,7 @@ public class AIMarian implements IArtificialIntelligence {
      * @param game
      * @return Arraylist with lists of cards
      */
-    public ArrayList<List<Card>> getSetsOfFirstColor(Game game, Card actTopCard){
+    public ArrayList<List<Card>> getSetsOfColor(Game game, Card actTopCard, boolean matchFirstColor){
 
         int actTopCardValue; // value of the card on the discard pile
 
@@ -221,8 +221,14 @@ public class AIMarian implements IArtificialIntelligence {
         if(actTopCardValue == 1){ // if value of top card is 1
             for(Card card: game.getCurrentPlayer().getCards()){
                 if(card.getCardType().equals("number")) {
-                    if (matchFirstNumberCardColor(actTopCard, card)) {
-                        foundCards.add(List.of(card));
+                    if(matchFirstColor) {
+                        if (matchFirstNumberCardColor(actTopCard, card)) {
+                            foundCards.add(List.of(card));
+                        }
+                    } else {
+                        if (matchSecondNumberCardColor(actTopCard, card)) {
+                            foundCards.add(List.of(card));
+                        }
                     }
                 }
             }
@@ -233,26 +239,32 @@ public class AIMarian implements IArtificialIntelligence {
         if(actTopCardValue == 2){ // if value of top card is 2
 
             // List for the (possible) first color of the card for devision
-            List<Card> cardsOfFirstColor = new ArrayList<>();
+            List<Card> cardsOfColor = new ArrayList<>();
 
             // puts cards fitting to the first color of the top card to the list cardsOfFirstColor
 
             for(Card card: game.getCurrentPlayer().getCards()){
                 if(card.getCardType().equals("number")) {
-                    if (matchFirstNumberCardColor(actTopCard, card)) {
-                        cardsOfFirstColor.add(card);
+                    if(matchFirstColor) {
+                        if (matchFirstNumberCardColor(actTopCard, card)) {
+                            cardsOfColor.add(card);
+                        }
+                    } else {
+                        if (matchSecondNumberCardColor(actTopCard, card)) {
+                            cardsOfColor.add(card);
+                        }
                     }
                 }
             }
 
             // creates possible sets with that color and adds them to the output arraylist
 
-            if(cardsOfFirstColor.size() == 2){
-                foundCards.add(cardsOfFirstColor);
-            } else if(cardsOfFirstColor.size() > 2){
-                for (int firstCardcounter = 0; firstCardcounter < cardsOfFirstColor.size() - 2; firstCardcounter++) {
-                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfFirstColor.size() - 1; secondCardCounter++) {
-                        foundCards.add(List.of(cardsOfFirstColor.get(firstCardcounter), cardsOfFirstColor.get(secondCardCounter)));
+            if(cardsOfColor.size() == 2){
+                foundCards.add(cardsOfColor);
+            } else if(cardsOfColor.size() > 2){
+                for (int firstCardcounter = 0; firstCardcounter < cardsOfColor.size() - 2; firstCardcounter++) {
+                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfColor.size() - 1; secondCardCounter++) {
+                        foundCards.add(List.of(cardsOfColor.get(firstCardcounter), cardsOfColor.get(secondCardCounter)));
                     }
                 }
             }
@@ -263,120 +275,32 @@ public class AIMarian implements IArtificialIntelligence {
         if(actTopCardValue == 3){ // if value of top card is 3
 
             // List for the (possible) second colors of the card for devision
-            List<Card> cardsOfFirstColor = new ArrayList<>();
+            List<Card> cardsOfColor = new ArrayList<>();
 
             // puts cards fitting to the first color of the top card to the list cardsOfFirstColor
             for(Card card: game.getCurrentPlayer().getCards()){
                 if(card.getCardType().equals("number")) {
-                    if (matchFirstNumberCardColor(actTopCard, card)) {
-                        cardsOfFirstColor.add(card);
-                    }
-                }
-            }
-
-            // creates possible sets with that color and adds them to the output arraylist
-
-            if(cardsOfFirstColor.size() == 3){
-                foundCards.add(cardsOfFirstColor);
-            } else if(cardsOfFirstColor.size() > 3) {
-                for (int firstCardcounter = 0; firstCardcounter < cardsOfFirstColor.size() - 3; firstCardcounter++) {
-                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfFirstColor.size() - 2; secondCardCounter++) {
-                        for (int thirdCardCounter = firstCardcounter + 2; thirdCardCounter < cardsOfFirstColor.size() - 1; thirdCardCounter++) {
-                            foundCards.add(List.of(cardsOfFirstColor.get(firstCardcounter), cardsOfFirstColor.get(secondCardCounter), cardsOfFirstColor.get(thirdCardCounter)));
+                    if(matchFirstColor) {
+                        if (matchFirstNumberCardColor(actTopCard, card)) {
+                            cardsOfColor.add(card);
+                        }
+                    } else {
+                        if (matchSecondNumberCardColor(actTopCard, card)) {
+                            cardsOfColor.add(card);
                         }
                     }
                 }
             }
-        }
-
-        return foundCards;
-    }
-
-    /**
-     * searches for fitting sets of cards in your hand depending on the top card of the discarding pile
-     *
-     * @param game
-     * @return Arraylist with lists of cards
-     */
-    public ArrayList<List<Card>> getSetsOfSecondColor(Game game, Card actTopCard){
-
-        int actTopCardValue; // value of the card on the discard pile
-
-        ArrayList<List<Card>> foundCards = new ArrayList<>(); // needed for return
-
-        actTopCardValue = ((NumberCard) actTopCard).getValue();
-
-        System.out.println(actTopCardValue);
-        System.out.println(actTopCard.getColors());
-
-        // searches for sets fitting to the color of the top card and the value 1
-
-        if(actTopCardValue == 1){ // if value of top card is 1
-            for(Card card: game.getCurrentPlayer().getCards()){
-                if(card.getCardType().equals("number")) {
-                    if (matchSecondNumberCardColor(actTopCard, card)) {
-                        foundCards.add(List.of(card));
-                    }
-                }
-            }
-        }
-
-        // searches for sets fitting to the color of the top card and the value 2
-
-        if(actTopCardValue == 2){ // if value of top card is 2
-
-            // List for the (possible) first color of the card for devision
-            List<Card> cardsOfSecondColor = new ArrayList<>();
-
-            // puts cards fitting to the second color of the top card to the list cardsOfFirstColor
-
-            for(Card card: game.getCurrentPlayer().getCards()){
-                if(card.getCardType().equals("number")) {
-                    if (matchSecondNumberCardColor(actTopCard, card)) {
-                        cardsOfSecondColor.add(card);
-                    }
-                }
-            }
 
             // creates possible sets with that color and adds them to the output arraylist
 
-            if(cardsOfSecondColor.size() == 2){
-                foundCards.add(cardsOfSecondColor);
-            } else if(cardsOfSecondColor.size() > 2) {
-                for (int firstCardcounter = 0; firstCardcounter < cardsOfSecondColor.size() - 2; firstCardcounter++) {
-                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfSecondColor.size() - 1; secondCardCounter++) {
-                        foundCards.add(List.of(cardsOfSecondColor.get(firstCardcounter), cardsOfSecondColor.get(secondCardCounter)));
-                    }
-                }
-            }
-        }
-
-        // searches for sets fitting to the color of the top card and the value 3
-
-        if(actTopCardValue == 3){ // if value of top card is 3
-
-            // List for the (possible) second color of the card for devision
-            List<Card> cardsOfSecondColor = new ArrayList<>();
-
-            // puts cards fitting to the second color of the top card to the list cardsOfFirstColor
-
-            for(Card card: game.getCurrentPlayer().getCards()){
-                if(card.getCardType().equals("number")) {
-                    if (matchSecondNumberCardColor(actTopCard, card)) {
-                        cardsOfSecondColor.add(card);
-                    }
-                }
-            }
-
-            // creates possible sets with that color and adds them to the output arraylist
-
-            if(cardsOfSecondColor.size() == 3){
-                foundCards.add(cardsOfSecondColor);
-            } else if(cardsOfSecondColor.size() > 3) {
-                for (int firstCardcounter = 0; firstCardcounter < cardsOfSecondColor.size() - 3; firstCardcounter++) {
-                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfSecondColor.size() - 2; secondCardCounter++) {
-                        for (int thirdCardCounter = firstCardcounter + 2; thirdCardCounter < cardsOfSecondColor.size() - 1; thirdCardCounter++) {
-                            foundCards.add(List.of(cardsOfSecondColor.get(firstCardcounter), cardsOfSecondColor.get(secondCardCounter), cardsOfSecondColor.get(thirdCardCounter)));
+            if(cardsOfColor.size() == 3){
+                foundCards.add(cardsOfColor);
+            } else if(cardsOfColor.size() > 3) {
+                for (int firstCardcounter = 0; firstCardcounter < cardsOfColor.size() - 3; firstCardcounter++) {
+                    for (int secondCardCounter = firstCardcounter + 1; secondCardCounter < cardsOfColor.size() - 2; secondCardCounter++) {
+                        for (int thirdCardCounter = firstCardcounter + 2; thirdCardCounter < cardsOfColor.size() - 1; thirdCardCounter++) {
+                            foundCards.add(List.of(cardsOfColor.get(firstCardcounter), cardsOfColor.get(secondCardCounter), cardsOfColor.get(thirdCardCounter)));
                         }
                     }
                 }
