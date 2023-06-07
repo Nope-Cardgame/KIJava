@@ -77,8 +77,7 @@ public class ActionHandler implements ActionListener {
              }
              try {
                  if(playernames.length > 0) Rest.invitePlayerToGame(playernames, socketIDs);
-             }catch (IOException | JSONException ex) {
-                 throw new RuntimeException(ex);
+             }catch (IOException | JSONException ignored) {
              }
          }
 

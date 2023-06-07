@@ -48,7 +48,7 @@ public final class Gui extends JFrame {
     private final JLabel passwortLabel = new JLabel("Password:"); // label added to the textfield passworddTextfield
     private final JLabel yourConnectionLabel = new JLabel(); // label to display your connection on the bottom of the gui
     private final JLabel noActionCardsLabel = new JLabel("Do you want to deactivate actioncards?"); // label added to the combobox noActionCardsComboBox
-    private final JLabel noWildCardsLabel = new JLabel("Do you want to deactivate wildcards??"); // label added to the combobox noWildCardsComboBox
+    private final JLabel noWildCardsLabel = new JLabel("Do you want to deactivate wildcards?"); // label added to the combobox noWildCardsComboBox
     private final JLabel oneMoreStartCardLabel = new JLabel("Do you want to start with one extra card?"); // label added to the combobox oneMoreStartCardComboBox
     private final JLabel delayLabel = new JLabel("DELAY:"); // label added to the combobox delayComboBox
 
@@ -405,7 +405,6 @@ public final class Gui extends JFrame {
      * clears the entries of the table which displays the played turns
      */
     public void resetGameTable(){
-        while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
         counter = 1;
     }
 
