@@ -44,7 +44,7 @@ public class JAISmart implements Decider {
         if (hasMoreThanOneColor(topCard)) {
             action = new NominateCard("nominate","had to nominate",0,new ArrayList<Card>(),game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(),2);
         } else {
-            action = new NominateCard("nominate","had to nominate",0,new ArrayList<Card>(),game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),topCard.getColors().get(0),2);
+            action = new NominateCard("nominate","had to nominate",0,new ArrayList<Card>(),game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
         }
         return action;
     }
@@ -90,7 +90,7 @@ public class JAISmart implements Decider {
                             action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(),2);
                         } else {
                             LOG.info("nominate with ONE COLOR ONLY");
-                            action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), bestCard.getColors().get(0),2);
+                            action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
                         }
                     } else {
                         LOG.info("NOT an nominateCard");
@@ -143,7 +143,7 @@ public class JAISmart implements Decider {
                             if (hasMoreThanOneColor(bestCard)) {
                                 action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
                             } else {
-                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(), 2);
+                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
                             }
                         } else {
                             action = new DiscardCard("discard","had to discard",1,cardList,game.getCurrentPlayer());
@@ -167,7 +167,7 @@ public class JAISmart implements Decider {
                             if (hasMoreThanOneColor(bestCard)) {
                                 action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
                             } else {
-                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(), 2);
+                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), 2);
                             }
                         } else {
                             action = new DiscardCard("discard","had to discard",1,cardList,game.getCurrentPlayer());
@@ -198,7 +198,7 @@ public class JAISmart implements Decider {
                 if (hasMoreThanOneColor(bestCard)) {
                     action = new NominateCard("nominate","had to nominate",1,cardList, game.getCurrentPlayer(), gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(), 2);
                 } else {
-                    action = new NominateCard("nominate","had to nominate",1,cardList, game.getCurrentPlayer(), gameAdapter.getSmartPlayer(),bestCard.getColors().get(0),2);
+                    action = new NominateCard("nominate","had to nominate",1,cardList, game.getCurrentPlayer(), gameAdapter.getSmartPlayer(),2);
                 }
             } else {
                 action = new DiscardCard("discard", "had to discard",1,cardList, game.getCurrentPlayer());
@@ -226,7 +226,7 @@ public class JAISmart implements Decider {
                         if (hasMoreThanOneColor(bestCard)) {
                             action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(),2);
                         } else {
-                            action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), bestCard.getColors().get(0),2);
+                            action = new NominateCard("nominate","had to nominate",cardList.size(),cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
                         }
                     } else {
                         action = new DiscardCard("discard","had to discard",cardList.size(),cardList,game.getCurrentPlayer());
@@ -256,7 +256,7 @@ public class JAISmart implements Decider {
             if (hasMoreThanOneColor(bestCard)) {
                 action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
             } else {
-                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),bestCard.getColors().get(0),2);
+                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
             }
         } else {
             action = new DiscardCard("discard","had to discard",1,cardList,game.getCurrentPlayer());
@@ -290,7 +290,7 @@ public class JAISmart implements Decider {
                             if (hasMoreThanOneColor(bestCard)) {
                                 action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
                             } else {
-                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(), 2);
+                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), 2);
                             }
                         } else {
                             action = new DiscardCard("discard","had to discard",1,cardList,game.getCurrentPlayer());
@@ -314,7 +314,7 @@ public class JAISmart implements Decider {
                             if (hasMoreThanOneColor(bestCard)) {
                                 action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
                             } else {
-                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), playerAdapter.getSmartColor(), 2);
+                                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(), 2);
                             }
                         } else {
                             action = new DiscardCard("discard","had to discard",1,cardList,game.getCurrentPlayer());
@@ -355,7 +355,7 @@ public class JAISmart implements Decider {
             if (hasMoreThanOneColor(card)) {
                 action = new NominateCard("nominate","nominate was best decision",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
             } else {
-                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),playerAdapter.getSmartColor(),2);
+                action = new NominateCard("nominate","had to nominate",1,cardList,game.getCurrentPlayer(),gameAdapter.getSmartPlayer(),2);
             }
         } else {
             action = new DiscardCard("discard","had to discard an actioncard",1,cardList,game.getCurrentPlayer());
