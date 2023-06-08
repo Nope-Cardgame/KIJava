@@ -5,6 +5,8 @@ import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
 import ai.julius.valid.JAIValidOnly;
 import ai.marian.AIMarian;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -12,10 +14,15 @@ import com.google.gson.JsonParser;
 import gameobjects.Game;
 import gameobjects.Tournament;
 import io.socket.client.Socket;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.socket.emitter.Emitter;
 import logging.NopeLogger;
@@ -90,11 +97,12 @@ public class ServerEventHandler {
         });
 
         socketInstance.on("tournamentInvite", args1 -> {
+            Gui.getInstance().clearTournamentResultModel();
             handleTournamentInvitation(args1,"tournament");
         });
 
         socketInstance.on("tournamentEnd", args1 -> {
-            roundCounter = getPlayerCount();
+            addUsernamesByRanking(Arrays.toString(args1));
             LOG.info("tournamentEnd: " + Arrays.toString(args1));
         });
     }
@@ -199,10 +207,40 @@ public class ServerEventHandler {
         return currentPlayer;
     }
 
-    public static int getPlayerCount(){
-        if(game != null) {
-            return game.getPlayers().size();
+    public void addUsernamesByRanking(String jsonString) {
+        List<String> usernames = new ArrayList<>();
+        List<String> scores = new ArrayList<>();
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode jsonNode = objectMapper.readTree(jsonString);
+
+            JsonNode participantsNode = jsonNode.path("participants");
+            if (participantsNode.isArray()) {
+                for (JsonNode participantNode : participantsNode) {
+                    String username = participantNode.path("username").asText();
+                    int score = participantNode.path("score").asInt();
+
+                    boolean inList = false;
+
+                    for(String user: usernames){
+                        if (user.equals(username)) {
+                            inList = true;
+                            break;
+                        }
+                    }
+                    if(!inList) {
+                        usernames.add(username);
+                        scores.add(String.valueOf(score));
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return 1;
+
+        for(int i = 0; i < usernames.size(); i++){
+            Gui.getInstance().addDataToTournamentResultModel(scores.get(i), usernames.get(i));
+        }
     }
 }

@@ -68,14 +68,17 @@ public final class Gui extends JFrame {
     private final JTable gameTable = new JTable(); // shows all actions of game in a list
     private final JTable playerListTable = new JTable(); // shows all current connected users (except your connection)
     private final JTable addedPlayerToInviteTable = new JTable(); // shows all players added to your invite-request
+    private final JTable tournamentResultTable = new JTable(); // shows
 
     private DefaultTableModel gameModel = new DefaultTableModel(new Object[][]{}, new String[]{"Nr.", "Player", "Action", "Cards"}); // model of the table gameTable and the jscrollpane gameTable
     private final DefaultTableModel playerListModel = new DefaultTableModel(new Object[][]{}, new String[]{"Playername", "Socket-ID"}); // model of the table playerListTable and the jscrollpane playerListTable
     private final DefaultTableModel addedPlayerToInviteModel = new DefaultTableModel(new Object[][]{}, new String[]{"Added player to invite", "Socket-ID"}); // model of the table addedPlayerToInviteTable and the jscrollpane addedPlayerToInvitewScroll
+    private final DefaultTableModel tournamentResultModel = new DefaultTableModel(new Object[][]{}, new String[]{"Score", "Username"});
 
     JScrollPane gameScroll = new JScrollPane(gameTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     JScrollPane playerListScroll = new JScrollPane(playerListTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    JScrollPane addedPlayerToInviteScroll= new JScrollPane(addedPlayerToInviteTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane addedPlayerToInviteScroll = new JScrollPane(addedPlayerToInviteTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane torunamentResultScroll = new JScrollPane(tournamentResultTable, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
     private int counter = 1; // counter to display the number of the current action
 
@@ -136,6 +139,14 @@ public final class Gui extends JFrame {
         gameScroll.setViewportView(gameTable);
         add(gameScroll);
 
+        // sets the table up for displaying the current connected clients
+        tournamentResultTable.getTableHeader().setReorderingAllowed(false);
+        tournamentResultTable.setModel(tournamentResultModel);
+        tournamentResultTable.getColumnModel().getColumn(0).setPreferredWidth(50);
+        tournamentResultTable.setEnabled(true);
+        torunamentResultScroll.setViewportView(tournamentResultTable);
+        add(torunamentResultScroll);
+
         //sets up all components and the gui itself
         setupLoginComponents(act);
 
@@ -173,6 +184,19 @@ public final class Gui extends JFrame {
      */
     public void addDataToAddedPlayerModel(Object... data){
         addedPlayerToInviteModel.addRow(data);
+    }
+
+    /**
+     * adds the given data to the Model tournamentResultModel
+     * @param score
+     * @param username
+     */
+    public void addDataToTournamentResultModel(String score, String username){
+        tournamentResultModel.addRow(new Object[]{ score, username });
+    }
+
+    public void clearTournamentResultModel(){
+        while(tournamentResultModel.getRowCount() != 0)tournamentResultModel.removeRow(0);
     }
 
     /**
@@ -249,6 +273,7 @@ public final class Gui extends JFrame {
             gameComponents.add(delayDisplayCombobox);
             gameComponents.add(delayLabel);
             gameComponents.add(inviteChosenPlayerToTournamentButton);
+            gameComponents.add(torunamentResultScroll);
             gameComponents.add(new JPanel());
         }
     }
@@ -303,24 +328,25 @@ public final class Gui extends JFrame {
             passwortLabel.setBounds(10,70,120,30);
             usernameLabel.setBounds(10,30,120,30);
         } else if(componentType.toString().equals("GAME")){
-            noWildCardsComboBox.setBounds(830, 555, 100, 30);
             componentPainter.setBounds(10,200,560,560);
             playerListScroll.setBounds(575,40, 505, 200);
-            addedPlayerToInviteScroll.setBounds(575, 280, 505, 200);
+            addedPlayerToInviteScroll.setBounds(575, 280, 505, 150);
             reloadPlayerListButton.setBounds(575, 0, 505, 30);
             addPlayerToInviteButton.setBounds(575, 245, 250, 30);
             removePlayerToInviteButton.setBounds(835, 245, 245, 30);
-            inviteChosenPlayerToGameButton.setBounds(575, 485, 505, 30);
+            inviteChosenPlayerToGameButton.setBounds(575, 435, 505, 30);
             yourConnectionLabel.setBounds(575, 735, 520,30);
             gameScroll.setBounds(10,0,560,200);
-            noActionCardsLabel.setBounds(575, 520, 250, 30);
-            noActionCardsComboBox.setBounds(830, 520, 100, 30);
-            noWildCardsLabel.setBounds(575, 555, 250, 30);
-            oneMoreStartCardLabel.setBounds(575, 590, 250, 30);
-            oneMoreStartCardComboBox.setBounds(830, 590, 100, 30);
-            delayDisplayCombobox.setBounds(950, 555, 100, 30);
-            delayLabel.setBounds(950, 520, 70, 30);
-            inviteChosenPlayerToTournamentButton.setBounds(575, 625, 505, 30);
+            noActionCardsLabel.setBounds(575, 470, 250, 30);
+            noActionCardsComboBox.setBounds(830, 470, 100, 30);
+            noWildCardsLabel.setBounds(575, 505, 250, 30);
+            noWildCardsComboBox.setBounds(830, 505, 100, 30);
+            oneMoreStartCardLabel.setBounds(575, 540, 250, 30);
+            oneMoreStartCardComboBox.setBounds(830, 540, 100, 30);
+            delayDisplayCombobox.setBounds(950, 505, 100, 30);
+            delayLabel.setBounds(950, 480, 70, 30);
+            inviteChosenPlayerToTournamentButton.setBounds(575, 575, 505, 30);
+            torunamentResultScroll.setBounds(575, 610, 505, 130);
         }
     }
 
@@ -402,7 +428,7 @@ public final class Gui extends JFrame {
     }
 
     /**
-     * clears the entries of the table which displays the played turns
+     * changes the counter of table to 1
      */
     public void resetGameTable(){
         counter = 1;
