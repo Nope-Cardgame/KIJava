@@ -205,11 +205,12 @@ public class AIAlexander implements IArtificialIntelligence {
         Action action = null;
         for (Card card: player.getCards()){
             if (card.getCardType().equals("nominate") && cardWithSameColor(frontcard, card)){
+                System.out.println("notf");
                if (card.getColors().size()==4){
-                   action = new NominateCard("nominate","had to nominate",1, List.of(card),player, getOpponent(g) , chooseNominateColor(card,player), getNomimationInt(g));
+                   action = new NominateCard("nominate","had to nominate",1, List.of(frontcard),player, getOpponent(g) , chooseNominateColor(card,player), getNomimationInt(g));
                }
                else {
-                   action = new NominateCard("nominate","had to nominate",1,List.of(card),player, getOpponent(g) , getNomimationInt(g));
+                   action = new NominateCard("nominate","had to nominate",1,List.of(frontcard),player, getOpponent(g) , getNomimationInt(g));
                }
                break;
             }
@@ -247,12 +248,11 @@ public class AIAlexander implements IArtificialIntelligence {
     public Action nominateflipped(Game game){
         if (game.getDiscardPile().get(0).getColors().size() == 4){
             return new NominateCard("nominate", "flipped", 0,
-                new ArrayList<Card>(), game.getPlayers().get(game.getPlayers().size()-1),
-                game.getCurrentPlayer(), game.getDiscardPile().get(0).getColors().get(0), 1);
+                new ArrayList<Card>(), game.getCurrentPlayer(), getOpponent(game),chooseNominateColor(game.getDiscardPile().get(0), game.getCurrentPlayer()), 1);
     }
        else  {
             return new NominateCard("nominate","flipped",0, new ArrayList<Card>(),
-                    game.getPlayers().get(game.getPlayers().size()-1), game.getCurrentPlayer(),1);
+                    game.getCurrentPlayer(), getOpponent(game),1);
         }
     }
 
@@ -307,7 +307,7 @@ public class AIAlexander implements IArtificialIntelligence {
      */
     public Player getOpponent(Game g) {
         for (Player p : g.getPlayers()) { //find opponent, which has another username and should not be disqualified
-            if (!p.equals(g.getCurrentPlayer()) && !p.isDisqualified()) {return p;}
+            if (!p.getUsername().equals(g.getCurrentPlayer().getUsername()) && !p.isDisqualified()) {return p;}
         }
         return g.getPlayers().get(0);//else return
     }

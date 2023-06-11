@@ -405,7 +405,7 @@ public final class Gui extends JFrame {
      * clears the entries of the table which displays the played turns
      */
     public void resetGameTable(){
-        while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
+      //  while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
         counter = 1;
     }
 
