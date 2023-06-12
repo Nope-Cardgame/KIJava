@@ -14,7 +14,7 @@ Im folgenden Absatz wird die Funktionalität der GUI beschrieben. In den beigef�
 <img src=".\images\gui_login.png">
 <ul>
 <br><li>Eingabe des Nutzernamens und des Passwortes <b>(2. und 3.)</b></li>
-<li>Auslesen und automatisches Einfügen des gespeicherten Nutzersin die Eingabefelder</li>
+<li>Auslesen und automatisches Einfügen des gespeicherten Nutzers in die Eingabefelder</li>
 <li>Anmelden mit den eingegeben Nutzerdaten an dem Server <b>(4.)</b></li>
 <li>Registrierung eines neuen Nutzers <b>(5.)</b></li>
 <li>Speichern der Nutzerdaten eines Nutzers <b>(6.)</b></li>
