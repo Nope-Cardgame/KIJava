@@ -1,11 +1,8 @@
 package event_handling;
 
-import ai.AIFactory;
 import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
 import ai.julius.smart.JAISmart;
-import ai.julius.valid.JAIValidOnly;
-import ai.marian.AIMarian;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -60,6 +57,8 @@ public class ServerEventHandler {
      */
     private void addEventListeners() {
         socketInstance.on("gameState", objects -> {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
             if(game != null) {
                 Gui.getInstance().refresh(game, false);
             }

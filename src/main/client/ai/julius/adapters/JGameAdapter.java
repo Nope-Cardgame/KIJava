@@ -81,6 +81,8 @@ public class JGameAdapter {
      */
     public Player getSmartPlayer() {
         return game.getPlayers().stream()
+                .filter(player -> !player.isDisqualified())
+                .filter(player -> player.getCardAmount() > 0)
                 .filter(player -> !player.getUsername().equals(game.getCurrentPlayer().getUsername()))
                 .min(Comparator.comparingInt(Player::getCardAmount))
                 .get();
