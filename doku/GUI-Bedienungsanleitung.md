@@ -26,7 +26,7 @@ Im folgenden Absatz wird die Funktionalität der GUI beschrieben. In den beigef�
 <br><li>Darstellung der bereits gespielten Züge (Spielername, Aktion und Anzahl an Handkarten) in einer chronologischen Liste <b>(2.)</b></li>
 <li>Anzeige der Handkarten des Spielers <b>(3.)</b></li>
 <li>Darstellung der obersten Karte des Ablagestapels <b>(4.)</b></li>
-<li>Informationen über die aktuelle Runde und der aktuelle Spieler <b>(5.)</b></li>
+<li>Informationen über die aktuelle Runde und den aktuellen Spieler <b>(5.)</b></li>
 <li>Aktualisieren der Spielerliste zur Laufzeit <b>(6.)</b></li>
 <li>Liste der aktuell verbundenen Clients zum Server <b>(7.)</b></li>
 <li>Ein oder mehrere Spieler in eine Liste hinzufügen, um sie später einladen zu können <b>(8.)</b></li>
