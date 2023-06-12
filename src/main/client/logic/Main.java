@@ -34,9 +34,9 @@ public class Main {
      * @param password
      * @return true (if connection was successful), false (if an error happened)
      */
-    public static boolean connect(String username, String password) {
+    public static boolean connect(String username, String password, Constants type) {
         ConnectionHandler newInstance = new ConnectionHandler();
-        WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
+        WebTokenReceiver webTokenReceiver = new WebTokenReceiver(type.get(), username, password);
 
         username_global = username;
 

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
+import logic.Constants;
 import logic.Main;
 import logic.Rest;
 import org.json.JSONException;
@@ -23,9 +24,28 @@ public class ActionHandler implements ActionListener {
         JButton src = (JButton) e.getSource();
 
          if(src == Gui.getInstance().getLoginButton()) {
-             boolean validLogin = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort());
+             boolean validLogin = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort(), Constants.POST_SIGN_IN);
 
              if(validLogin) {
+                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.LOGIN, false); // sets the components of the gui needed for login to invisible
+
+                 Gui.getInstance().getConnectedUserData(); // adds the connected users to the playerListTable
+
+                 try {
+                     Gui.getInstance().getYourConnectionLabel().setText("Own Connection: Username: " + Main.getUsername_global() + "; SocketID: " + Main.findMySocketID());
+                 } catch (JSONException ex) {
+                     throw new RuntimeException(ex);
+                 }
+
+                 Gui.getInstance().setVisabilityComponents(Gui.ComponentType.GAME, true); // sets the components of the gui needed for game to visible
+             }
+         }
+
+         if(src == Gui.getInstance().getRegisterButton()){
+
+             boolean validRegister = Main.connect(Gui.getInstance().getUsername(), Gui.getInstance().getPasswort(), Constants.POST_SIGN_UP);
+
+             if(validRegister) {
                  Gui.getInstance().setVisabilityComponents(Gui.ComponentType.LOGIN, false); // sets the components of the gui needed for login to invisible
 
                  Gui.getInstance().getConnectedUserData(); // adds the connected users to the playerListTable

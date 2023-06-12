@@ -59,6 +59,7 @@ public final class Gui extends JFrame {
     private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "1","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
 
     private final JButton loginButton = new JButton("Log in"); // button for login
+    private final JButton registerButton = new JButton("Register");
     private final JButton savaLoginDataButton = new JButton("Save Data"); // button to save login data in .txt document userdata.txt
     private final JButton reloadPlayerListButton = new JButton("Reload player list"); // button to reload the displayed list of connected players
     private final JButton addPlayerToInviteButton = new JButton("Add marked player to list"); // button to add the marked player to a new table below
@@ -230,6 +231,7 @@ public final class Gui extends JFrame {
     public void componentsToList(ComponentType componentType){
         if(componentType.toString().equals("LOGIN")){
             loginComponents.add(loginButton);
+            loginComponents.add(registerButton);
             loginComponents.add(savaLoginDataButton);
             loginComponents.add(usernameTextfield);
             loginComponents.add(usernameLabel);
@@ -285,6 +287,7 @@ public final class Gui extends JFrame {
     public void addComponentsActionListeners(ComponentType componentType, ActionListener act){
             if(componentType.toString().equals("LOGIN")){
                 loginButton.addActionListener(act);
+                registerButton.addActionListener(act);
                 savaLoginDataButton.addActionListener(act);
             } else if(componentType.toString().equals("GAME")){
                 reloadPlayerListButton.addActionListener(act);
@@ -302,7 +305,8 @@ public final class Gui extends JFrame {
     public void setComponentsBounds(ComponentType componentType){
         if(componentType.toString().equals("LOGIN")){
             loginButton.setBounds(250,30,120,30);
-            savaLoginDataButton.setBounds(250,70,120,30);
+            registerButton.setBounds(250, 70, 120, 30);
+            savaLoginDataButton.setBounds(250,110,120,30);
             usernameTextfield.setBounds(120,30,120,30);
             passwordTextfield.setBounds(120,70,120,30);
             passwortLabel.setBounds(10,70,120,30);
@@ -449,6 +453,9 @@ public final class Gui extends JFrame {
     public JPasswordField getPasswordTextfield(){return passwordTextfield;}
     public JTextField getUsernameTextfield(){return usernameTextfield;}
     public JButton getLoginButton(){return loginButton;}
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
     public JButton getSavaLoginDataButton(){return savaLoginDataButton;}
     public JButton getReloadPlayerListButton() {
         return reloadPlayerListButton;
