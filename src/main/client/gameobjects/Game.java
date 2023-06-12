@@ -203,13 +203,13 @@ public class Game implements IJsonable {
 
             try {
                 lastNominateAmount = gameObject.getInt("lastNominateAmount");
-
             } catch (JSONException ignored) {
             }
+
             try {
                 lastNominateColor = gameObject.getString("lastNominateColor");
+            } catch(JSONException ignored){
             }
-            catch (JSONException ignored){}
             try {
                 this.startTime = gameObject.getString("startTime");
             } catch (JSONException e) {

@@ -3,8 +3,12 @@ package ai.julius;
 import ai.julius.adapters.JGameAdapter;
 import gameobjects.Game;
 import gameobjects.actions.Action;
+import logging.NopeLogger;
+
+import java.util.logging.Logger;
 
 public interface Decider {
+    static final Logger LOG = NopeLogger.getLogger("Decider");
     /**
      * Adapter interface for strategy pattern which
      * is used to put a strategy into the strategy
@@ -23,6 +27,7 @@ public interface Decider {
             action = actionBeforeTakeCard(game);
         }
         assert action != null;
+        LOG.info("Played Action: " + action.getClass().getSimpleName() + ": " + action.toJSON());
         return action.toJSON();
     }
 

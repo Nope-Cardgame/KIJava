@@ -3,11 +3,14 @@ package ai.julius.adapters;
 import gameobjects.Player;
 import gameobjects.cards.Card;
 import gameobjects.cards.NumberCard;
-import java.util.ArrayList;
-import java.util.List;
+import logging.NopeLogger;
+
+import java.util.*;
+import java.util.logging.Logger;
 
 public class JPlayerAdapter {
     private final Player player;
+    private static final Logger LOG = NopeLogger.getLogger(JPlayerAdapter.class.getSimpleName());
 
     public JPlayerAdapter(Player player) {
         this.player = player;
@@ -47,6 +50,7 @@ public class JPlayerAdapter {
                 amountCards++;
             }
         }
+        LOG.info("in hasCompleteSetWithColor: " + (amountCards >= amount));
         return amountCards >= amount;
     }
 
@@ -159,9 +163,244 @@ public class JPlayerAdapter {
         return cards;
     }
 
+    /**
+     * @return any card in the player's inventory
+     */
     public List<Card> getStupidCard() {
         List<Card> oneCard = new ArrayList<>();
         oneCard.add(player.getCards().get(0));
         return oneCard;
+    }
+
+    /**
+     * Checks if a Player has a specific Color on his hands
+     *
+     * @param color the color we're looking for
+     * @return true if player has color, false otherwise
+     */
+    public boolean hasColor(String color) {
+        return player.getCards().stream()
+                .flatMap(card -> card.getColors().stream())
+                .anyMatch(cardColor -> cardColor.equals(color));
+    }
+
+    /**
+     * returns the best color of the player which he has on his hands
+     * (best color for me is where he got the lessest amount of cards of)
+     *
+     * @return the best Color as string
+     */
+    public String getSmartColor() {
+        Set<String> colors = new HashSet<>();
+        colors.add("red");
+        colors.add("blue");
+        colors.add("yellow");
+        colors.add("green");
+        Iterator<String> iterator = colors.iterator();
+
+        int maxColorAmount = Integer.MAX_VALUE;
+        String bestColor = iterator.next();
+        while (iterator.hasNext()) {
+            String currentColor = iterator.next();
+            int currentCardAmount = 0;
+            for (Card card : player.getCards()) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasColor(currentColor)) {
+                    currentCardAmount++;
+                }
+            }
+            if (currentCardAmount < maxColorAmount) {
+                bestColor = currentColor;
+                maxColorAmount = currentCardAmount;
+            }
+        }
+        return bestColor;
+    }
+
+    /**
+     * returns a smart card depending on a color
+     *
+     * @param color color the card must contain
+     * @return the best card for that specific color
+     */
+    public Card getSmartCard(String color) {
+        // for reset
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("reset")) {
+                return card;
+            }
+        }
+        // for nominate
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("nominate")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+        // for invisible
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("invisible")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for wildcard
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                if (card.getName().equals("wildcard")) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for multiple color
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasTwoColors() && cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for another card
+        for (Card card : player.getCards()) {
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (card.getCardType().equals("number")) {
+                if (cardAdapter.hasColor(color)) {
+                    return card;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * returns a smart card when the color doesn't matter
+     *
+     * @return a smart card for the player
+     */
+    public Card getSmartCard() {
+        // Looking for Reset
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("reset")) {
+                return card;
+            }
+        }
+        // Looking for nominate
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("nominate")) {
+                return card;
+            }
+        }
+        // looking for invisible
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("invisible")) {
+                return card;
+            }
+        }
+        // looking for wildcard
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                if (card.getName().equals("wildcard")) {
+                    return card;
+                }
+            }
+        }
+        // looking for multiple color
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                CardAdapter cardAdapter = new CardAdapter(card);
+                if (cardAdapter.hasTwoColors()) {
+                    return card;
+                }
+            }
+        }
+
+        // looking for another card
+        for (Card card : player.getCards()) {
+            if (card.getCardType().equals("number")) {
+                return card;
+            }
+        }
+        // returning not null here
+        return player.getCards().get(0);
+    }
+
+    /**
+     * Checks if the player has action cards in his
+     * inventory
+     *
+     * @return true if that is the case, false otherwise
+     */
+    public boolean hasActionCards() {
+        return player.getCards().stream().
+                anyMatch(card -> !card.getCardType().equals("number"));
+    }
+
+    /**
+     * Checks if a player contains a specific action card
+     * depending on a color
+     *
+     * @param color the color we are looking for in that specific action card
+     * @return true, if there is an action card with that specific color, false otherwise
+     */
+    public boolean hasActionCards(String color) {
+        return player.getCards().stream()
+                .filter(card -> {
+                    CardAdapter cardAdapter = new CardAdapter(card);
+                    return cardAdapter.hasColor(color);
+                })
+                .anyMatch(card -> !card.getCardType().equals("number"));
+    }
+
+    /**
+     * returns a smart for a given numbercard and a valid color
+     *
+     * @param currentCard the current card displayed on the discard pile
+     * @param color the color necessary for this purpose
+     *
+     * @return a smart set for that specific color
+     */
+    public List<Card> getSmartSet(NumberCard currentCard, String color) {
+        return getSmartSetCallback(currentCard.getValue(),color);
+    }
+
+    /**
+     * Creates a smart set and returns it
+     *
+     * @param amount the amount of cards the set needs to contain
+     * @param color the color the set needs to provide
+     * @return a valid set of cards
+     */
+    public List<Card> getSmartSet(int amount, String color) {
+        return getSmartSetCallback(amount,color);
+    }
+
+    private List<Card> getSmartSetCallback(int amount, String color) {
+        List<Card> set = new ArrayList<>();
+        for (Card card : player.getCards()) {
+            if (amount == set.size()) {
+                break;
+            }
+            CardAdapter cardAdapter = new CardAdapter(card);
+            if (cardAdapter.hasColor(color)) {
+                if (card.getName().equals("wildcard")) {
+                    set.add(card);
+                    continue;
+                } else if (cardAdapter.hasTwoColors()) {
+                    set.add(card);
+                    continue;
+                }
+                set.add(card);
+            }
+        }
+        return set;
     }
 }

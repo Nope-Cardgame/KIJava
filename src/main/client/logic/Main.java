@@ -17,7 +17,6 @@ public class Main {
 
     private static String token; // stores the Webtoken
     private static String username_global; // stores the username of the player using this client
-
     public static void main(String[] args) throws JSONException, URISyntaxException, IOException, InterruptedException {
         Gui.getInstance(); // creates the only instance of thje gui
 
@@ -35,9 +34,9 @@ public class Main {
      * @param password
      * @return true (if connection was successful), false (if an error happened)
      */
-    public static boolean connect(String username, String password) {
+    public static boolean connect(String username, String password, Constants type) {
         ConnectionHandler newInstance = new ConnectionHandler();
-        WebTokenReceiver webTokenReceiver = new WebTokenReceiver(Constants.POST_SIGN_IN.get(), username, password);
+        WebTokenReceiver webTokenReceiver = new WebTokenReceiver(type.get(), username, password);
 
         username_global = username;
 
@@ -47,6 +46,7 @@ public class Main {
             return false;
         }
 
+        // Build Authentification for JSON-Webtoken
         Map<String, String> map = Collections.singletonMap("token", token);
         IO.Options options = IO.Options.builder().setAuth(map).build();
         Socket socket = null;

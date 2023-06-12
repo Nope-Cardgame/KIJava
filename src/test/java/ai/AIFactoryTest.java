@@ -10,19 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AIFactoryTest {
     @Test
     void alexander() {
-        IArtificialIntelligence actualAI = AIFactory.getAI("AlexanderLauruhn");
+        IArtificialIntelligence actualAI = AIFactory.getAI("AI Alexander");
         assertTrue(actualAI instanceof AIAlexander);
     }
 
     @Test
     void julius() {
-        IArtificialIntelligence actualAI = AIFactory.getAI("Aremju");
+        IArtificialIntelligence actualAI = AIFactory.getAI("AI Julius");
         assertTrue(actualAI instanceof AIJulius);
     }
 
     @Test
     void marian() {
-        IArtificialIntelligence actualAI = AIFactory.getAI("MarianK99");
+        IArtificialIntelligence actualAI = AIFactory.getAI("AI Marian");
         assertTrue(actualAI instanceof AIMarian);
     }
 }
