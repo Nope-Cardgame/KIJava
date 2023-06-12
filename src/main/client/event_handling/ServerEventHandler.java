@@ -1,5 +1,6 @@
 package event_handling;
 
+import ai.AIFactory;
 import ai.IArtificialIntelligence;
 import ai.julius.AIJulius;
 import ai.julius.smart.JAISmart;
@@ -43,8 +44,8 @@ public class ServerEventHandler {
         this.username = username;
         LOG.info(username);
         LOG.setLevel(Level.ALL);
-        this.ai = new AIJulius(new JAISmart());
-        LOG.info("Ai-Strategy: " + this.ai);
+        this.ai = AIFactory.getAI(Gui.getInstance().getChosenAI());
+        LOG.info("Ai-Strategy: " + Gui.getInstance().getChosenAI());
         addEventListeners();
     }
 

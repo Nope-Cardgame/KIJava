@@ -57,6 +57,7 @@ public final class Gui extends JFrame {
     private final JComboBox<Boolean> noWildCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noWildCards
     private final JComboBox<Boolean> oneMoreStartCardComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting oneMoreStartCard
     private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "1","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
+    private final JComboBox<String> chosenAI = new JComboBox<>(new String[]{ "AI Julius", "AI Alexander", "AI Marian"});
 
     private final JButton loginButton = new JButton("Log in"); // button for login
     private final JButton registerButton = new JButton("Register");
@@ -237,6 +238,7 @@ public final class Gui extends JFrame {
             loginComponents.add(usernameLabel);
             loginComponents.add(passwordTextfield);
             loginComponents.add(passwortLabel);
+            loginComponents.add(chosenAI);
         } else if(componentType.toString().equals("GAME")) {
             gameComponents.add(componentPainter);
             gameComponents.add(addedPlayerToInviteScroll);
@@ -311,6 +313,7 @@ public final class Gui extends JFrame {
             passwordTextfield.setBounds(120,70,120,30);
             passwortLabel.setBounds(10,70,120,30);
             usernameLabel.setBounds(10,30,120,30);
+            chosenAI.setBounds(380, 30, 150, 70);
         } else if(componentType.toString().equals("GAME")){
             noWildCardsComboBox.setBounds(830, 555, 100, 30);
             componentPainter.setBounds(10,200,560,560);
@@ -496,6 +499,10 @@ public final class Gui extends JFrame {
     }
     public void setPasswordTextfield(String password){
         getPasswordTextfield().setText(password);
+    }
+
+    public String getChosenAI(){
+        return Objects.requireNonNull(chosenAI.getSelectedItem()).toString();
     }
 }
 
