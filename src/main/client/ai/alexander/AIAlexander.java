@@ -201,18 +201,19 @@ public class AIAlexander implements IArtificialIntelligence {
      * @param player current player
      * @return
      */
+
+
     public Action discardActionCard(Game g, Card frontcard, Player player){
         Action action = null;
         for (Card card: player.getCards()){
             if (card.getCardType().equals("nominate") && cardWithSameColor(frontcard, card)){
-                System.out.println("notf");
-               if (card.getColors().size()==4){
-                   action = new NominateCard("nominate","had to nominate",1, List.of(frontcard),player, getOpponent(g) , chooseNominateColor(card,player), getNomimationInt(g));
-               }
-               else {
-                   action = new NominateCard("nominate","had to nominate",1,List.of(frontcard),player, getOpponent(g) , getNomimationInt(g));
-               }
-               break;
+                if (card.getColors().size()==4){
+                    action = new NominateCard("nominate","had to nominate",1, List.of(card),player, getOpponent(g) , chooseNominateColor(frontcard,player),getNomimationInt(g));
+                }
+                else {
+                    action = new NominateCard("nominate","had to nominate",1,List.of(card),player, getOpponent(g) ,getNomimationInt(g));
+                }
+                break;
             }
             if (card.getCardType().equals("invisible") && cardWithSameColor(frontcard, card)){
                 return new DiscardCard("discard", "invisible", 1, List.of(card), player);
@@ -224,6 +225,7 @@ public class AIAlexander implements IArtificialIntelligence {
         }
         return action;
     }
+
 
     /**
      * compare two card and return true, if one color in both is the same
@@ -278,12 +280,26 @@ public class AIAlexander implements IArtificialIntelligence {
      * @return
      */
     public String chooseNominateColor(Card card, Player p){
-        int[] i = new int[4];//save the color amounts in this array
-        for (int index = 0; index < 4; index++) {i[index] = countCardsOfColor(p, card.getColors().get(index));}
-        if (i[0] < i[1] && i[0] < i[2] && i[0] < i[3]) {return card.getColors().get(0);}
-        else if (i[1] < i[0] && i[1] < i[2] && i[1] < i[3]) {return card.getColors().get(1);}
-        else if (i[2] < i[1] && i[2] < i[0] && i[2] < i[3]) {return card.getColors().get(2);}
-        else {return card.getColors().get(3);}
+        int a,b,c,d;
+        if (card.getColors().size()==4){ // check how many of which color is available
+            a = countCardsOfColor(p, card.getColors().get(0));
+            b = countCardsOfColor(p, card.getColors().get(1));
+            c = countCardsOfColor(p, card.getColors().get(2));
+            d = countCardsOfColor(p, card.getColors().get(3));
+            if (a<b && a<c && a<d){
+                return  card.getColors().get(0);
+            }
+            else if (b<a && b<c && b<d){
+                return card.getColors().get(1);
+            }
+            else if (c<b && c<a && c<d){
+                return  card.getColors().get(2);
+            }
+            else if (d<b && d<a && d<c){
+                return  card.getColors().get(3);
+            }
+        }
+        return card.getColors().get(0);
     }
 
     /**
