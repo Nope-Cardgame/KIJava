@@ -43,7 +43,7 @@ Im folgenden Absatz wird die Funktionalität der GUI beschrieben. In den beigef�
 Im folgenden Kapitel werden die Texturen dargestellt, die für die Darstellung des Spiels benötigt werden.
 <h3><br>Karten:</h3><br>
 <img src=".\images\cards.gif"/>
-<h3><br>Verwendete Texture, falls keine Karte gefunden wurde:</h3><br>
+<h3><br>Verwendete Textur, falls keine Karte gefunden wurde:</h3><br>
 <img src=".\images\error.png" />
 <br><h3><br>Hintergrund:</h3><br>
 <img src=".\images\background.png"/>
