@@ -9,6 +9,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 /**
+ * This class loads the images of the cards from a given path. The class is used by
+ * the ComponentPainter
+ */
+
+/**
  * this class is needed to load an images on the gui
  */
 public class ImageLoader {

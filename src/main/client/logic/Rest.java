@@ -168,6 +168,7 @@ public class Rest {
             playerObject.put("socketId", socketIDs[i]);
             playersArray.put(playerObject);
         }
+        // Set properties for Game
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());

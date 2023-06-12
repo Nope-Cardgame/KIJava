@@ -23,12 +23,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * class represents the gui of the client. It  provides  buttons and textfields for login, game invitation
+ * and tournament invitation. Furthermore it shows 
+ */
 public final class Gui extends JFrame {
 
-    /**
-     * enum for deciding which type the components belong to
-     */
-    public enum ComponentType {
+    public enum ComponentType { // enum to decide if the content belongs to the login or the game
         LOGIN,
         GAME
     }
@@ -85,6 +86,8 @@ public final class Gui extends JFrame {
     /**
      * Singleton-pattern for creating only one instance of the gui
      * @return INSTANCE
+     */    /**
+     * method to initiliase the single instance of the gui
      */
     public static Gui getInstance() {
         if(INSTANCE == null) {
@@ -95,8 +98,7 @@ public final class Gui extends JFrame {
     }
 
     /**
-     * Constructor of the class
-     * sets up the gui for displaying
+     * basic constrcutor of the class Gui
      */
     public Gui () {
         // for the buttons
@@ -147,6 +149,9 @@ public final class Gui extends JFrame {
     /**
      * update gui with current cards
      * @param game
+     */    /**
+     * method to reload the actual data to display
+     * like cards on the hand of the player, the top card on the discard pile and the table of the played turns
      */
     public void refresh(Game game, boolean refreshTable) {
         if(game != null) {
