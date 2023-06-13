@@ -6,8 +6,8 @@ In den folgenden Absätzen wird der Aufbau, die Funktionsweise und weitere wicht
 
 ## Dokumentation
 [Link zum Doku-Ordner](https://github.com/Nope-Cardgame/KIJava/tree/finished_build/doku)<br><br>
-<a href="#anleitung">[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/GUI-Bedienungsanleitung.md)</a> beschrieben, wie die GUI aufgebaut ist und wie sie zu bedienen ist.<br>
 <a id="anleitung">[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/GUI-Bedienungsanleitung.md)</a> beschrieben, wie die GUI aufgebaut ist und wie sie zu bedienen ist.<br>
+[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/JSON.md) erklärt, wie die JSON-Objekte in Java übersetzt werden (Server -> Client) und die Übersetzung von Java zurück in JSON-Objekte (Client -> Server) stattfindet.<br>
 [Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/Packagestruktur.md) wird die softwareinterne Packagestruktur dargestellt und beschrieben.<br>
 [Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/Rest.md) wir darauf eingegangen, wie der Client mittels Post-/Get-Request mit dem Server kommunzieren kann.<br>
 [Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/SocketIO.md) wird erklärt, wie der Client sich mit dem Server mittels SocketIO verbindet und bis zum Beenden des Programms verbunden bleibt.
@@ -15,9 +15,9 @@ In den folgenden Absätzen wird der Aufbau, die Funktionsweise und weitere wicht
 ## Mitglieder
 Mitglied | Entwickelter Client | 
 --- | --- |
-[Marian Koge](https://github.com/MarianK99) | Client1
-[Alexander Lauruhn](https://github.com/AlexanderLauruhn) | Client2
-[Julius Emil Arendt](https://github.com/Aremju) | Client3
+[Marian Koge](https://github.com/MarianK99) | <a href="#client1">Client1</a>
+[Alexander Lauruhn](https://github.com/AlexanderLauruhn) | <a href="#client2">Client2</a>
+[Julius Emil Arendt](https://github.com/Aremju) | <a href="#client3">Client3</a>
 
 
 ## Installation
@@ -34,13 +34,18 @@ Erklärung wie das Projekt korrekt installiert und ausgeführt wird:
 ## Benutzung
 Beschreibung, wie das Programm bedient werden muss, um eine Verbindung zum NOPE-Server herzustellen (welche GUI Interaktionen getätigt werden müssen) und ein NOPE Spiel zu starten. Eine genaue Erklärung lässt sich beim Punkt Dokumentation unter dem  <a href="#anleitung">diesem Punkt</a> der Dokumenation finden.
 
-### Client1
+
+## Coding-Conventions
+[In diesem Dokument](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/CodingConventions.md) werden die verschiedenen Richtlinien zur Umsetzung des Quellcodes beschrieben.
+
+### <a id="#client1">Client1</a>
 Beschreibung der Bedienung für Client1 um ein NOPE Spiel zu spielen
 
-### Client2
+### <a id="#client2">Client2</a>
 Beschreibung der Bedienung für Client2 um ein NOPE Spiel zu spielen
 
-### Client3 (Autor: Julius Emil Arendt)
+### <a id="#client3">Client3</a> 
+(Autor: Julius Emil Arendt)
 
 Prinzipiell wird bei einer Partie Nope meine Strategie folgendermaßen unterteilt:
 einmal in Züge, die gespielt werden, wenn noch keine Karte von mir selber genommen wurde
