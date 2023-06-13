@@ -32,7 +32,7 @@ Erklärung wie das Projekt korrekt installiert und ausgeführt wird:
 
 
 ## Benutzung
-Beschreibung, wie das Programm bedient werden muss, um eine Verbindung zum NOPE-Server herzustellen (welche GUI Interaktionen getätigt werden müssen) und ein NOPE Spiel zu starten. Eine genaue Erklärung lässt sich beim Punkt Dokumentation unter dem  <a href="#anleitung">zweiten Punkt</a> der Dokumenation finden.
+Beschreibung, wie das Programm bedient werden muss, um eine Verbindung zum NOPE-Server herzustellen (welche GUI Interaktionen getätigt werden müssen) und ein NOPE Spiel zu starten. Eine genaue Erklärung lässt sich beim Punkt Dokumentation unter dem  <a href="#anleitung">diesem Punkt</a> der Dokumenation finden.
 
 ### Client1
 Beschreibung der Bedienung für Client1 um ein NOPE Spiel zu spielen
