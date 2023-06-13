@@ -25,7 +25,7 @@ Erklärung wie das Projekt ausgeführt wird:
 
 1. Installation der benötigten Softwarepakete
 2. Klonen des GitHub-Repo
-3. Ausführen des Programms (Teilweise setzt IntelliJ nicht den Source-Root-Folder beim klonen, dies müsste im Nachhinein (falls nicht automatisch geschehen) auf .\src\main\client gesetzt werden)<br>
+3. Ausführen des Programms (Teilweise setzt IntelliJ nicht den Source-Root-Folder beim Klonen, dies müsste im Nachhinein (falls nicht automatisch geschehen) auf .\src\main\client gesetzt werden)<br>
 * Optional lässt sich das Projekt auch per Download als .zip-Datei herunterladen und ausführen
 <br>Hinweis: IntelliJ wird als Entwicklungsumgebung für das Ausführen des Projektes empfohlen.
 
