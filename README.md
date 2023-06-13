@@ -1,6 +1,7 @@
 # Nope - KI Spieler (Java)
 
-Kurze Beschreibung des Repos und der übergreifenden Schnittstelle für die unterschiedlichen Clients.
+In diesem Projekt wird die Implementation eines Clients in der Programmiersprache Java umgesetzt. Mithilfe dieses Clients lässt sich eine Verbindung zu dem Projektserver herstellen und das Kartenspiel ["Nope"](https://www.brettspielversand.de/mediafiles/spieleanleitungen/gamefactory/240-0013_nope_anleitung.pdf) mit anderen verbundenen Clients spielen. Hierbei ist es nicht vorgesehen, dass der Nutzer selbst die Karten auswählt, sondern stattdessen eine eingebaute KI (Auswahl aus drei verschiedenen) für den Nutzer die Spielzüge übernimmt.<br>
+In den folgenden Absätzen wird der Aufbau, die Funktionsweise und weitere wichtige Informationen bezüglich des Clients und der verwendeten KIs genauer erklärt.
 
 
 ## Dokumentation
@@ -21,11 +22,11 @@ Mitglied | Entwickelter Client |
 
 ## Installation
 
-Erklärung wie das Projekt ausgeführt wird:
+Erklärung wie das Projekt korrekt installiert und ausgeführt wird:
 
-1. Installation der benötigten Softwarepakete
+1. Installation der benötigten Softwarepakete (Git, IntelliJ und eine neuere Java-Version)
 2. Klonen des GitHub-Repo
-3. Ausführen des Programms (Teilweise setzt IntelliJ nicht den Source-Root-Folder beim Klonen, dies müsste im Nachhinein (falls nicht automatisch geschehen) auf .\src\main\client gesetzt werden)<br>
+3. Ausführen des Programms durch die Klasse Main (Teilweise setzt IntelliJ nicht den Source-Root-Folder beim Klonen, dies müsste im Nachhinein (falls nicht automatisch geschehen) auf .\src\main\client gesetzt werden)<br>
 * Optional lässt sich das Projekt auch per Download als .zip-Datei herunterladen und ausführen
 <br>Hinweis: IntelliJ wird als Entwicklungsumgebung für das Ausführen des Projektes empfohlen.
 
