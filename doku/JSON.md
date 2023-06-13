@@ -29,7 +29,7 @@ angepasst:
 
 Es darf wegen des Updates bei Auswahlkarten mit Farbe die Farbe selbst nicht mitgeschickt werden.<br><br>
 
-## Allgemeine Implementierung der Klassen
+## Allgemeine Richtlinien
 
 Bei der Implementierung wurde nach folgenden Richtlinien gehandelt:
 
@@ -132,7 +132,9 @@ Erzeugt werden die verschiedenen Kartentypen über eine Klasse CardFactory.java.
 
 ### Aktionen
 
-Es sind 5 verschiedene Aktionen implementiert worden: 
+Es sind 5 verschiedene Aktionen implementiert worden, welche
+von dem Client erzeugt werden und per Websocket via socket.emit(); an
+den Server gesendet werden: 
 
 1. DiscardCard (wirft Karten ab)
 2. DisqualifyPlayer (disqualifiziert einen Spieler)
