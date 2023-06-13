@@ -1,14 +1,18 @@
 # Nope - KI Spieler (Java)
 
-Kurze Beschreibung des Repos und der übergriefenden Schnittstelle für die unterschiedlichen Clients.
+Kurze Beschreibung des Repos und der übergreifenden Schnittstelle für die unterschiedlichen Clients.
 
 
 ## Dokumentation
-[Link zum Doku-Ordner](https://github.com/Nope-Cardgame/Repo-Template/Doku-Ordner)
-
+[Link zum Doku-Ordner](https://github.com/Nope-Cardgame/KIJava/tree/finished_build/doku)<br><br>
+<a href="#anleitung">[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/GUI-Bedienungsanleitung.md)</a> beschrieben, wie die GUI aufgebaut ist und wie sie zu bedienen ist.<br>
+<a id="anleitung">[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/GUI-Bedienungsanleitung.md)</a> beschrieben, wie die GUI aufgebaut ist und wie sie zu bedienen ist.<br>
+[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/Packagestruktur.md) wird die softwareinterne Packagestruktur dargestellt und beschrieben.<br>
+[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/Rest.md) wir darauf eingegangen, wie der Client mittels Post-/Get-Request mit dem Server kommunzieren kann.<br>
+[Hier](https://github.com/Nope-Cardgame/KIJava/blob/finished_build/doku/SocketIO.md) wird erklärt, wie der Client sich mit dem Server mittels SocketIO verbindet und bis zum Beenden des Programms verbunden bleibt.
 
 ## Mitglieder
-Mitglied | entwickelter Client | 
+Mitglied | Entwickelter Client | 
 --- | --- |
 [Marian Koge](https://github.com/MarianK99) | Client1
 [Alexander Lauruhn](https://github.com/AlexanderLauruhn) | Client2
@@ -17,15 +21,17 @@ Mitglied | entwickelter Client |
 
 ## Installation
 
-Erklärung wie das Projekt ausgeführt wird
+Erklärung wie das Projekt ausgeführt wird:
 
-1. Installation von benötigten Softwarepakete
+1. Installation der benötigten Softwarepakete
 2. Klonen des GitHub-Repo
-3. Ausführen des Programms
+3. Ausführen des Programms (Teilweise setzt IntelliJ nicht den Source-Root-Folder beim klonen, dies müsste im Nachhinein (falls nicht automatisch geschehen) auf .\src\main\client gesetzt werden)<br>
+* Optional lässt sich das Projekt auch per Download als .zip-Datei herunterladen und ausführen
+<br>Hinweis: IntelliJ wird als Entwicklungsumgebung für das Ausführen des Projektes empfohlen.
 
 
 ## Benutzung
-Beschreibung, wie das Programm bedient werden muss, um eine Verbindung zum NOPE-Server herzustellen (welche Konsoleneingaben/GUI Interaktionen müssen getätigt werden) und ein NOPE Spiel zu starten.
+Beschreibung, wie das Programm bedient werden muss, um eine Verbindung zum NOPE-Server herzustellen (welche GUI Interaktionen getätigt werden müssen) und ein NOPE Spiel zu starten. Eine genaue Erklärung lässt sich beim Punkt Dokumentation unter dem  <a href="#anleitung">zweiten Punkt</a> der Dokumenation finden.
 
 ### Client1
 Beschreibung der Bedienung für Client1 um ein NOPE Spiel zu spielen
