@@ -42,7 +42,5 @@ public class ActionCard extends Card {
     }
     public String getSpritePath(){
         return  "sprites/"+getName()+".png";
-
-
     }
 }
