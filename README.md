@@ -89,10 +89,10 @@ TakeCard gesagt wird, und bei der anderen geben wir einfach ein Nope-Json zurüc
 Wenn bisher noch keine Karte genommen worden ist, müssen wir prüfen, ob nominate alleine auf dem Stapel
 liegt, dann dürfen wir nämlich einen anderen Spieler auswählen, ohne selber legen zu müssen.
 Hier erfolg die Auswahl schlau: und zwar wird immer derjenige Spieler genommen, der am wenigsten Karten auf der Hand hat.
-Dies mache ich, damit ich mit höherer Wahrscheinlichkeit einen konkurrenten weniger im Spiel habe, um mich dann anschließend um
+Dies mache ich, damit ich mit höherer Wahrscheinlichkeit einen Konkurrenten weniger im Spiel habe, um mich dann anschließend um
 die anderen Konkurrenten kümmern zu können. Selbstverständlich wird auch darauf geachtet, dass man sich nicht selber nominiert.
 
-Wenn die Nominate-Karte alle vier farben hat, dann wähle ich die Farbe schlau aus, und zwar wähle ich genau die Farbe, wovon ich
+Wenn die Nominate-Karte alle vier Farben hat, dann wähle ich die Farbe schlau aus, und zwar wähle ich genau die Farbe, wovon ich
 selbst als Spieler am wenigsten auf der Hand habe, dadurch steigt die Wahrscheinlichkeit, dass der andere Spieler diese Farbe auf
 der Hand hat. Ebenfalls verringere ich dadurch die Wahrscheinlichkeit, dass ich selbst auch noch Karten ablegen muss.
 
