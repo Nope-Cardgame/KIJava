@@ -200,11 +200,13 @@ public class JPlayerAdapter {
 
         int maxColorAmount = Integer.MAX_VALUE;
         String bestColor = iterator.next();
+        // Loop through all colors
         while (iterator.hasNext()) {
             String currentColor = iterator.next();
             int currentCardAmount = 0;
             for (Card card : player.getCards()) {
                 CardAdapter cardAdapter = new CardAdapter(card);
+                // if a color is available, increment the amount
                 if (cardAdapter.hasColor(currentColor)) {
                     currentCardAmount++;
                 }

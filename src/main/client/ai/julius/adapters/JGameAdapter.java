@@ -41,14 +41,29 @@ public class JGameAdapter {
     }
 
 
+    /**
+     * Checks if invisible is the only card on the discard pile
+     *
+     * @return true if thats the case, false otherwise
+     */
     public boolean invisibleOnly() {
         return game.getDiscardPile().size() == 1 && game.getDiscardPile().get(0).getCardType().equals("invisible");
     }
 
+    /**
+     * checks if nominate is the only card on the discard pile
+     *
+     * @return true if that's the case, false otherwise
+     */
     public boolean nominateOnly() {
         return game.getState().equals("nominate_flipped");
     }
 
+    /**
+     * Checks if Reset is the only card available on the discard pile
+     *
+     * @return true if that's the case, false otherwise
+     */
     public boolean resetOnly() {
         return game.getDiscardPile().size() == 1 && game.getDiscardPile().get(0).getCardType().equals("reset");
     }

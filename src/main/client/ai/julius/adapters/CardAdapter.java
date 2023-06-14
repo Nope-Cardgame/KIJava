@@ -6,7 +6,7 @@ import logging.NopeLogger;
 import java.util.logging.Logger;
 
 public class CardAdapter {
-    private final Card card;
+    private final Card card; // Card where the operations are done on
     private static final Logger LOG = NopeLogger.getLogger("CardAdapter");
 
     /**
