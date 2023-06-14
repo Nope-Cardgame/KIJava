@@ -63,7 +63,7 @@ public class Rest {
      * @param id
      * @throws IOException
      */
-    public static void request(String urlString, String token, RequestType requestType, int id) throws IOException {
+    public static void request(String urlString, String token, RequestType requestType, String id) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
