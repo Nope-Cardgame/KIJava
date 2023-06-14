@@ -68,8 +68,9 @@ Nachdem die Strategien nacheinander durchlaufen wurden, wird diese abhängig von
 
 
 ### <a id="#client2">Client2</a>
-(Autor: Alexander Lauruhn)
+(Autor: Alexander Lauruhn)<br>
 Der Algorithmus für diesen Client beruht auf einer risikoreichen Strategie, die darauf abziehlt, den Gegner zu Beginn des Spiels mit Nominierungen zu schwächen, bei denen 3 Karten verlangt werden. Der Client spielt Nominate-Karten immer aus, wenn diese verfügbar sind. Hat der Gegner mehr als 4 Karten, werden immer 3 Karten verlangt. Hat der Gegner weniger Karten, wird entsprechend mit dem Wert 2 oder 1 nominiert. Sofern die Möglichkeit besteht, beim Nominieren eine Farbe auszuwählen, so wird immer die Farbe gewählt, die der Client selbst am wenigsten hat. Damit soll verhindert werden, dass der Client selbst die Nominierung bedienen muss, sofern der Gegner dies nicht kann. Eine Abfrage, ob der Client selbst eine Nominierung bedienen kann, um damit das Risiko eines Kartenverlusts zu vermeiden, wurde nicht implementiert, da insbesondere das Nominieren zu Spielbeginn fast immer erfüllt wird und dem Gegner großen Schaden zufügt. Eine Selbstnominierung mit dem Ziel, Karten aufnehmen zu dürfen, weil man die Nomierung nicht erfüllen kann, wurde geprüft, aber aufgrund schlechterer Spielergebnisse verworfen. 
+
 Sofern der Client über keine Nominierungskarte verfügt, werden (sofern vorhanden) invisible oder reset-Karten gespielt. Dadurch, dass Actionkarten immer gespielt werden, wenn welche vorhanden sind, hat den Vorteil, dass keine Actioncard gemeinsam mit Numbercards ausgespielt und damit verworfen wird. 
 Sofern keine Actioncards vorhanden sind, muss der Client Numbercards ausspielen. Hierzu werden die Karten des Clients absteigend nach der Anzahl der Farben sortiert (zuerst vierfarbige Karten, dann zweifarbige, dann einfarbige). Damit wird sichergestellt, dass der Client nach einigen Spielzügen nur noch einfarbige Karten hat. Damit hat der Client dann bessere Changen, eine Forderung nicht bedienen zu können und dadurch weitere Karten über die Nope-Action zu erhalten.
 Dieser Algorithmus basiert auf Erfahrungswerten und hat sich durch mehrfachen Spielen gut bewährt.
