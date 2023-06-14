@@ -12,7 +12,7 @@ Dieses Dokument beschreibt den Aufbau der einzelnen Packages und gibt Auskunft d
 </ul>
 <h3>Inhalt des src-Packages:</h3>
 Das src-Package enthält den gesamten Programm- und Testcode des Clients. Darin enthalten sind die Packages main und test. main enthält alle
-Klassen, um das Programm auszuführen. Das Test-Package enthält wichtige junit-Tests, um die Richtig der Funktionalität abzusichern. Getestet werden damit
+Klassen, um das Programm auszuführen. Das Test-Package enthält wichtige JUnit-Tests, um die Richtig der Funktionalität abzusichern. Getestet werden damit
 alle Game-Objects sowie die KIs.
 <h3>Inhalt des main-Packages:</h3>
 <ul>
