@@ -32,6 +32,7 @@ public class NumberCard extends Card {
         Gson gson = new Gson();
         this.value = gson.fromJson(jsonString,getClass()).getValue();
     }
+
     @Override
     public boolean equals(Object obj) {
         NumberCard other = (NumberCard) obj;

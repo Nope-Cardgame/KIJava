@@ -14,7 +14,7 @@ Im folgenden Absatz wird die Funktionalität der GUI beschrieben. In den beigef�
 <img src=".\images\gui_login.png">
 <ul>
 <br><li>Eingabe des Nutzernamens und des Passwortes <b>(2. und 3.)</b></li>
-<li>Auslesen und automatisches Einfügen des gespeicherten Nutzersin die Eingabefelder</li>
+<li>Auslesen und automatisches Einfügen des gespeicherten Nutzers in die Eingabefelder</li>
 <li>Anmelden mit den eingegeben Nutzerdaten an dem Server <b>(4.)</b></li>
 <li>Registrierung eines neuen Nutzers <b>(5.)</b></li>
 <li>Speichern der Nutzerdaten eines Nutzers <b>(6.)</b></li>
@@ -43,7 +43,7 @@ Im folgenden Absatz wird die Funktionalität der GUI beschrieben. In den beigef�
 Im folgenden Kapitel werden die Texturen dargestellt, die für die Darstellung des Spiels benötigt werden.
 <h3><br>Karten:</h3><br>
 <img src=".\images\cards.gif"/>
-<h3><br>Verwendete Texture, falls keine Karte gefunden wurde:</h3><br>
+<h3><br>Verwendete Textur, falls keine Karte gefunden wurde:</h3><br>
 <img src=".\images\error.png" />
 <br><h3><br>Hintergrund:</h3><br>
 <img src=".\images\background.png"/>

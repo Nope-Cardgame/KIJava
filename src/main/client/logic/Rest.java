@@ -237,7 +237,7 @@ public class Rest {
 
         JSONObject mode = new JSONObject();
         mode.put("name", "round-robin");
-        mode.put("numberOfRounds", 100);
+        mode.put("numberOfRounds", 5);
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());
