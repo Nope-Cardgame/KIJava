@@ -79,53 +79,46 @@ Dieser Algorithmus basiert auf Erfahrungswerten und hat sich durch mehrfachen Sp
 ### <a id="#client3">Client3</a> 
 (Autor: Julius Emil Arendt)
 
-Prinzipiell wird bei einer Partie Nope meine Strategie folgendermaßen unterteilt:
-einmal in Züge, die gespielt werden, wenn noch keine Karte von mir selber genommen wurde
-und Züge, die gemacht werden, wenn bereits eine Karte genommen worde ist.
+Implementierung der Strategie in: AIJulius.java sowie JAISmart.java
 
-Beide Unterteilungen sind im Prinzip gleich, nur dass bei der einen, wenn man keine Karte ablegen muss,
-TakeCard gesagt wird, und bei der anderen geben wir einfach ein Nope-Json zurück.
+Prinzipiell wird bei einer Partie Nope die Strategie der KI folgendermaßen unterteilt:
+einmal in Züge, die gespielt werden, wenn noch keine Karte von der KI genommen wurde
+und Züge, die gemacht werden, wenn bereits eine Karte genommen worden ist.
+Beide Unterteilungen sind im Prinzip gleich, nur dass bei der einen, wenn man keine Karte ablegen muss, eine Karte vom Stapel genommen wird, und bei der anderen wird einfach ein Nope-Json zurückgegeben.
 
-Wenn bisher noch keine Karte genommen worden ist, müssen wir prüfen, ob nominate alleine auf dem Stapel
-liegt, dann dürfen wir nämlich einen anderen Spieler auswählen, ohne selber legen zu müssen.
-Hier erfolg die Auswahl schlau: und zwar wird immer derjenige Spieler genommen, der am wenigsten Karten auf der Hand hat.
-Dies mache ich, damit ich mit höherer Wahrscheinlichkeit einen Konkurrenten weniger im Spiel habe, um mich dann anschließend um
-die anderen Konkurrenten kümmern zu können. Selbstverständlich wird auch darauf geachtet, dass man sich nicht selber nominiert.
+Wenn bisher noch keine Karte genommen worden ist, muss geprüft werden, ob eine Auswahlkarte alleine auf dem Stapel
+liegt, dann darf die KI einen anderen Spieler auswählen, ohne selbt eine Karte legen zu müssen.
+Hier erfolgt die Auswahl schlau: die KI wählt immer den Spieler, der am wenigsten Karten auf der Hand hat, damit dieser aus dem Spiel schneller ausscheidet.
+Selbstverständlich wird auch darauf geachtet, dass die KI sich nicht selbst auswählt.
 
-Wenn die Nominate-Karte alle vier Farben hat, dann wähle ich die Farbe schlau aus, und zwar wähle ich genau die Farbe, wovon ich
-selbst als Spieler am wenigsten auf der Hand habe, dadurch steigt die Wahrscheinlichkeit, dass der andere Spieler diese Farbe auf
-der Hand hat. Ebenfalls verringere ich dadurch die Wahrscheinlichkeit, dass ich selbst auch noch Karten ablegen muss.
+Wenn die Auswahl-Karte alle vier Farben hat, wählt die KI die Farbe, die am wenigsten auf der eigenen Hand vorhanden ist. Die Wahrscheinlichkeit ist hoch, dass der gegnerische Spieler die Farbe und die Anzahl an Karten auf seiner Hand hat. Ebenfalls wird dadurch verringert, dass die KI selbst möglicherweise ein Kartenset ablegen muss.
 
-Bei jeder Nominate-Aktion, die ich selber tätige, verlange ich immer 2 Karten oder wenn er nur noch eine Karte auf der Hand hat, 
-eine Karte. Zwei Karten ist der Median der Zahlenmenge 1 bis 3 und daher ein gutes Mittelmaß für das nominieren von Karten.
+Bei jeder Auswahl-Aktion, die selbst getätigt wird, verlangt die KI immer 2 Karten oder wenn der gegnerische Spieler nur noch eine Karte auf der Hand hat, 
+eine Karte. Zwei Karten sind der Median der Zahlenmenge 1 bis 3 und daher ein gutes Mittelmaß für das nominieren von Karten.
 
-Immer, wenn ich eine Nominate-Karte ablege, verfahre ich nach genau dieser Strategie.
+Die KI arbeitet stets nach diesem Verfahren, wenn sie eine Auswahl-Karte auf der Hand hat.
 
-Wenn ich eine Karte ablegen muss, zum Beispiel, wenn invisible als einzige Karte oben liegt oder 
-eine wildcard oder ein reset oben liegt, dann suche ich mir immer die beste aktuelle Karte aus meinem
-Inventar (entweder mit Farbe, beispielsweise, wenn nur eine einzige Invisible liegt) oder ohne Farbe.
-Dabei verfahre ich nach folgendem Muster: 
+Wenn eine Karte abgelegt werden muss, zum Beispiel, wenn die Durchblickkarte als einzige Karte oben liegt oder ein Joker oder ein Neustart oben liegt, dann wird immer die aktuell beste Karte aus der Hand gesucht (entweder mit Farbe, beispielsweise, wenn nur eine einzige Invisible liegt) oder ohne Farbe.
+Dabei wird folgendermaßen gearbeitet: 
 
-  - zuerst reset-Karten (der Andere Spieler muss definitiv eine Karte ablegen), außerdem
-    sinkt dadurch die Wahrscheinlichkeit, dass ich ein Set vervollständige etwas
-  - dann nominate (Spieler muss mehrere Karten ablegen, ggf. von einer Farbe, die ich gerne hätte)
-  - dann wildcards (Spieler muss definitiv eine Karte ablegen, ggf. geringere Wahrscheinlichkeit auf    Set-Vervollständigung)
-  - Multiple Farben bei Zahlenkarten (Wahrscheinlichkeit senken, dass man selbst ein vollständiges Set auf der Hand hat)
-  - erst dann normale Farbenkarten
+  - zuerst Neustart-Karten (der Andere Spieler muss definitiv eine Karte ablegen), dadurch
+    sinkt dadurch die Wahrscheinlichkeit, dass die KI ein vollständiges Set besitzt
+  - dann Auswahl-Karten (Spieler muss mehrere Karten ablegen, ggf. von einer bestimmten Farbe)
+  - dann Joker (Spieler muss definitiv eine Karte ablegen, ggf. geringere Wahrscheinlichkeit auf    Set-Vervollständigung)
+  - Multiple Farben bei Zahlenkarten (die Wahrscheinlichkeit wird gesenkt, sodass die KI kein vollständiges Set mehr auf der Hand hat)
+  - ganz zum Schluss normale Farbenkarten
 
-Ansonsten wenn oben einfach eine numbercard liegt, prüfe ich, ob ich ein vollständiges Set habe, dabei ist es erstmal egal,
-ob das Set nur aus Nummernkarten oder aus Aktionskarten besteht. Habe ich kein Set, kann ich je nach Situation eine Karte
-nehmen oder Nope sagen. Habe ich jedoch eins, schaue ich erst nach, ob ich eine zweifarbige Nummernkarte oben
-auf dem Ablagestapel liegen habe. Ist das der Fall, prüfe ich für jede Farbe einfach, ob ich ein Set vervollständige, finde 
-ich eine Farbe, speichere ich diese und nehme diese für das Set.
+Ansonsten wenn oben einfach eine Zahlenkarte liegt, wird, ob ein Set vollständig ist, dabei ist es erstmal egal,
+ob das Set nur aus Nummernkarten oder aus Aktionskarten besteht. Ist kein gültiges Set vorhanden, kann entweder je nach Lage eine Karte genommen werden oder "nope" gesagt werden.
 
-Anschließend schaue ich nach, ob ich Aktionskarten auf der Hand habe von dieser Farbe. Denn wir wollen möglichst wenig Karten
-auf einmal abwerfen, und bei einem vollständigen Set kann man einfach eine Aktionskarte abwerfen und den Zug sofort beenden.
-Habe ich eine Aktionskarte, prüfe ich, ob ich nominate habe, ist das der fall, nehme ich die von oben bekannte Nominate-Strategie,
-ansonsten lege ich die Aktionskarte regulär auf dem Ablagestapel ab.
+Ist jedoch ein Set vorhanden, wird erst nachgeschaut, auf dem Ablagestapel eine zweifarbige Nummernkarte liegt. Ist das der Fall, wird für jede Farbe geprüft, ob ein vollständiges Set vorhanden ist. Wird eine Farbe gefunden, auf welche dies zutrifft, merkt sich die KI diese für das Set.
 
-Habe ich jedoch keine Aktionskarte der Farbe, erstelle ich ein Set, und lege dieses ab. Das Set wird schlau erstellt, indem ich
-möglichst wildcards und mehrfarbige Karten ablege, und dann erst die eigentliche Farbe ablege. Somit verringert sich die Wahrscheinlichkeit, dass ich möglicherweise ein vollständiges Set auf der Hand in Zukunft haben werde/ haben könnte.
+Anschließend schaut die KI, ob sie Aktionskarten auf der Hand hat von dieser Farbe, Denn es sollen möglichst wenig Karten auf einmal abgeworfen werden, und bei einem vollständigen Set kann die KI ggf. eine Aktionskarte abwerfen und so sofort ihren Zug beenden.
 
-Habe ich auf dem Stapel eine Aktionskarte liegen, zum Beispiel Reset, dann hole ich mir einfach die aktuell schlaueste Karte, wie oben
-bereits beschrieben. Wenn jedoch nominate oben liegen sollte, verfahre ich ähnlich wie bei den Zahlenkarten.
+Hat die KI eine Aktionskarte, prüfe sie, ob sie eine Auswahlkarte hat, ist das der Fall, arbeitet sie nach der oben genannten Strategie für Auswahlkarten,
+ansonsten legt die KI die Aktionskarte regulär auf dem Ablagestapel ab.
+
+Besitzt die KI jedoch keine Aktionskarte, wird von ihr ein Set erstellt und sie wirft dieses Set ab. Das Set wird schlau erstellt, indem zuerst nach Jokern, dann nach zweifarbigen Zahlenkarten, und schlussendlich nach einfarbigen Zahlenkarten gesucht wird und die entsprechend in einer Liste gespeichert werden. Somit verringert sich die Wahrscheinlichkeit, dass die KI möglicherweise ein vollständiges Set auf der Hand hat und in Zukunft haben wird.
+
+Liegt oben auf dem Kartenstapel eine Aktionskarte, zum Beispiel Neustart, dann hole sich die KI einfach die aktuell schlaueste Karte, wie oben
+bereits beschrieben. Wenn jedoch eine Auswahl-Karte oben liegen sollte, arbeitet die KI ähnlich wie bei den Zahlenkarten.
