@@ -2,8 +2,8 @@
 
 ## Einleitung
 
-Dieses Dokument beschreibt den Aufbau der implementierung der JSON-Schnittstelle.
-Hier wird insbesondere auf die implementierung eingegangen. Zu finden ist
+Dieses Dokument beschreibt den Aufbau der Implementierung der JSON-Schnittstelle.
+Hier wird insbesondere auf die Implementierung eingegangen. Zu finden ist
 die Implementierung im Paket gameobjects.
 
 ## Interface IJsonable
@@ -45,7 +45,7 @@ Jede Klasse besitzt mindestens zwei Konstruktoren:
 
 1. einen Standard-Konstruktor, welcher als Parameter sämtliche Attribute besitzt
 2. einen JSON-Konstruktor, welcher einen JSON-String übergeben bekommt, dieser wird
-   mithilfe der Gson-Bibliothek geparst und das Objekt wird daraus erstellt. Bei dem erzeugen
+   mithilfe der Gson-Bibliothek geparst und das Objekt wird daraus erstellt. Bei dem Erzeugen
    von Java-Objekten benutzen wir eine Kombination von Gson-Objekten und JSONObject-Objekten.
 
 
