@@ -25,6 +25,7 @@ public class ClientFormatter extends SimpleFormatter {
     public String format(LogRecord record) {
         StringBuilder builder = new StringBuilder();
         if (record.getLevel() == Level.INFO) {
+            // Depending on the Class of the
             switch (classname) {
                 case "ConnectionHandler" -> builder.append(ANSI_GREEN);
                 case "Rest" -> builder.append(ANSI_BLUE);

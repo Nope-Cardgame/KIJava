@@ -6,6 +6,10 @@ import view.Gui;
 
 import java.util.logging.Logger;
 
+/**
+ * This class represents the SocketIO-Connection Handler and
+ * is there to connect this program to the server
+ */
 public class ConnectionHandler {
     private static final Logger LOG = NopeLogger.getLogger(ConnectionHandler.class.getSimpleName()); // logger of the class
 

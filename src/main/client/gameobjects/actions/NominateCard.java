@@ -20,7 +20,7 @@ public class NominateCard extends Action{
     private int nominatedAmount;
 
     /**
-     * Standard-Constructor for a NominateCardInstance
+     * Standard-Constructor for a NominateCardInstance to use a four colored nominate card
      *
      * @param type the type of this Action
      * @param explanation the reason of this Action
@@ -42,6 +42,25 @@ public class NominateCard extends Action{
     }
 
     /**
+     * Standard-Constructor for a NominateCardInstance to use a one colored nominate card
+     *
+     * @param type the type of this Action
+     * @param explanation the reason of this Action
+     * @param amount the Amount that is nominated by the Player
+     * @param cards the Cards placed by nomination
+     * @param player the Player who nominated another Player
+     * @param nominatedPlayer the nominated Player
+     */
+    public NominateCard(String type, String explanation, int amount, List<Card> cards, Player player, Player nominatedPlayer, int nominatedAmount) {
+        super(type, explanation);
+        this.amount = amount;
+        this.cards = cards;
+        this.nominatedPlayer = nominatedPlayer;
+        this.player = player;
+        this.nominatedAmount = nominatedAmount;
+    }
+
+    /**
      * Creates a NominateCard instance using a valid
      * jsonString
      *
@@ -52,7 +71,11 @@ public class NominateCard extends Action{
         try {
             JSONObject nominateCardObject = new JSONObject(jsonString);
             this.amount = nominateCardObject.getInt("amount");
-            this.nominatedColor = nominateCardObject.getString("nominatedColor");
+            try {
+                this.nominatedColor = nominateCardObject.getString("nominatedColor");
+            } catch (JSONException ignored){
+                this.nominatedColor = null;
+            }
             // Cards
             this.cards = new ArrayList<>();
             JSONArray cardArray = nominateCardObject.getJSONArray("cards");
@@ -64,14 +87,18 @@ public class NominateCard extends Action{
             // nominatedPlayer
             this.nominatedPlayer = new Player(nominateCardObject.getJSONObject("nominatedPlayer").toString());
             this.nominatedAmount = nominateCardObject.getInt("nominatedAmount");
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        } catch (JSONException ignored) {
         }
     }
 
     @Override
     public String toJSON() {
-        return new Gson().toJson(this);
+        if(nominatedColor != null) {
+            return new Gson().toJson(this);
+        } else {
+            return new Gson().toJson(new NominateCard(this.getType(), this.getExplanation(), this.getAmount(),
+                    this.getCards(), this.getPlayer(), this.getNominatedPlayer(), this.nominatedAmount));
+        }
     }
 
     public int getAmount() {

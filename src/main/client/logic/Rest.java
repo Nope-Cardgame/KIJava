@@ -63,7 +63,7 @@ public class Rest {
      * @param id
      * @throws IOException
      */
-    public static void request(String urlString, String token, RequestType requestType, int id) throws IOException {
+    public static void request(String urlString, String token, RequestType requestType, String id) throws IOException {
 
         LOG.info("current Connection: \n" + urlString);
 
@@ -168,6 +168,7 @@ public class Rest {
             playerObject.put("socketId", socketIDs[i]);
             playersArray.put(playerObject);
         }
+        // Set properties for Game
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("noActionCards", Gui.getInstance().getNoActionCardsComboBox().getSelectedItem());
@@ -224,6 +225,7 @@ public class Rest {
         JSONObject participants = new JSONObject();
         participants.put("username", Main.getUsername_global());
         participants.put("socketId", Main.findMySocketID());
+
         playersArray.put(participants);
 
         for (int i = 0; i < players.length; i++) {

@@ -23,12 +23,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * class represents the gui of the client. It  provides  buttons and textfields for login, game invitation
+ * and tournament invitation. Furthermore it shows 
+ */
 public final class Gui extends JFrame {
 
-    /**
-     * enum for deciding which type the components belong to
-     */
-    public enum ComponentType {
+    public enum ComponentType { // enum to decide if the content belongs to the login or the game
         LOGIN,
         GAME
     }
@@ -56,8 +57,10 @@ public final class Gui extends JFrame {
     private final JComboBox<Boolean> noWildCardsComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting noWildCards
     private final JComboBox<Boolean> oneMoreStartCardComboBox = new JComboBox<>(new Boolean[]{ true, false }); // combobox to set up the value of the setting oneMoreStartCard
     private final JComboBox<String> delayDisplayCombobox = new JComboBox<>(new String[]{ "0", "1","2", "3", "4", "5", "6", "7", "8" }); // combobox to set the delay of the gui to display the cards longer
+    private final JComboBox<String> chosenAI = new JComboBox<>(new String[]{ "AI Julius", "AI Alexander", "AI Marian"});
 
     private final JButton loginButton = new JButton("Log in"); // button for login
+    private final JButton registerButton = new JButton("Register");
     private final JButton savaLoginDataButton = new JButton("Save Data"); // button to save login data in .txt document userdata.txt
     private final JButton reloadPlayerListButton = new JButton("Reload player list"); // button to reload the displayed list of connected players
     private final JButton addPlayerToInviteButton = new JButton("Add marked player to list"); // button to add the marked player to a new table below
@@ -85,6 +88,8 @@ public final class Gui extends JFrame {
     /**
      * Singleton-pattern for creating only one instance of the gui
      * @return INSTANCE
+     */    /**
+     * method to initiliase the single instance of the gui
      */
     public static Gui getInstance() {
         if(INSTANCE == null) {
@@ -95,8 +100,7 @@ public final class Gui extends JFrame {
     }
 
     /**
-     * Constructor of the class
-     * sets up the gui for displaying
+     * basic constrcutor of the class Gui
      */
     public Gui () {
         // for the buttons
@@ -147,6 +151,9 @@ public final class Gui extends JFrame {
     /**
      * update gui with current cards
      * @param game
+     */    /**
+     * method to reload the actual data to display
+     * like cards on the hand of the player, the top card on the discard pile and the table of the played turns
      */
     public void refresh(Game game, boolean refreshTable) {
         if(game != null) {
@@ -225,11 +232,13 @@ public final class Gui extends JFrame {
     public void componentsToList(ComponentType componentType){
         if(componentType.toString().equals("LOGIN")){
             loginComponents.add(loginButton);
+            loginComponents.add(registerButton);
             loginComponents.add(savaLoginDataButton);
             loginComponents.add(usernameTextfield);
             loginComponents.add(usernameLabel);
             loginComponents.add(passwordTextfield);
             loginComponents.add(passwortLabel);
+            loginComponents.add(chosenAI);
         } else if(componentType.toString().equals("GAME")) {
             gameComponents.add(componentPainter);
             gameComponents.add(addedPlayerToInviteScroll);
@@ -280,6 +289,7 @@ public final class Gui extends JFrame {
     public void addComponentsActionListeners(ComponentType componentType, ActionListener act){
             if(componentType.toString().equals("LOGIN")){
                 loginButton.addActionListener(act);
+                registerButton.addActionListener(act);
                 savaLoginDataButton.addActionListener(act);
             } else if(componentType.toString().equals("GAME")){
                 reloadPlayerListButton.addActionListener(act);
@@ -297,11 +307,13 @@ public final class Gui extends JFrame {
     public void setComponentsBounds(ComponentType componentType){
         if(componentType.toString().equals("LOGIN")){
             loginButton.setBounds(250,30,120,30);
-            savaLoginDataButton.setBounds(250,70,120,30);
+            registerButton.setBounds(250, 70, 120, 30);
+            savaLoginDataButton.setBounds(250,110,120,30);
             usernameTextfield.setBounds(120,30,120,30);
             passwordTextfield.setBounds(120,70,120,30);
             passwortLabel.setBounds(10,70,120,30);
             usernameLabel.setBounds(10,30,120,30);
+            chosenAI.setBounds(380, 30, 150, 70);
         } else if(componentType.toString().equals("GAME")){
             noWildCardsComboBox.setBounds(830, 555, 100, 30);
             componentPainter.setBounds(10,200,560,560);
@@ -405,7 +417,7 @@ public final class Gui extends JFrame {
      * clears the entries of the table which displays the played turns
      */
     public void resetGameTable(){
-        while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
+      //  while(gameModel.getRowCount()>0) {gameModel.removeRow(0);}
         counter = 1;
     }
 
@@ -444,6 +456,9 @@ public final class Gui extends JFrame {
     public JPasswordField getPasswordTextfield(){return passwordTextfield;}
     public JTextField getUsernameTextfield(){return usernameTextfield;}
     public JButton getLoginButton(){return loginButton;}
+    public JButton getRegisterButton() {
+        return registerButton;
+    }
     public JButton getSavaLoginDataButton(){return savaLoginDataButton;}
     public JButton getReloadPlayerListButton() {
         return reloadPlayerListButton;
@@ -484,6 +499,10 @@ public final class Gui extends JFrame {
     }
     public void setPasswordTextfield(String password){
         getPasswordTextfield().setText(password);
+    }
+
+    public String getChosenAI(){
+        return Objects.requireNonNull(chosenAI.getSelectedItem()).toString();
     }
 }
 

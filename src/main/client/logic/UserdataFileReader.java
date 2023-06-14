@@ -19,6 +19,7 @@ public class UserdataFileReader {
     public static String[] getUserData(){
         String[] userData = new String[2];
         try {
+            // converting FileReader to BufferedReader
             BufferedReader reader = new BufferedReader(new FileReader("src\\main\\client\\userdata.txt"));
             userData[0] = reader.readLine();
             userData[1] = reader.readLine();

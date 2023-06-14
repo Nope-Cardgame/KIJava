@@ -1,9 +1,13 @@
 package ai.julius.adapters;
 
 import gameobjects.cards.Card;
+import logging.NopeLogger;
+
+import java.util.logging.Logger;
 
 public class CardAdapter {
-    private Card card;
+    private final Card card; // Card where the operations are done on
+    private static final Logger LOG = NopeLogger.getLogger("CardAdapter");
 
     /**
      * Standard-Constructor for a CardAdapter
@@ -23,14 +27,8 @@ public class CardAdapter {
      *         Card, false otherwise
      */
     public boolean hasColor(String colorValue) {
-        boolean found = false;
-        for (String color: card.getColors()) {
-            if (color.equals(colorValue)) {
-                found = true;
-                break;
-            }
-        }
-        return found;
+        return card.getColors().stream()
+                .anyMatch(color -> color.equals(colorValue));
     }
 
     /**
